@@ -513,7 +513,7 @@ function card(panel) {
 
       return `<li>
         ${badge}
-        <span class="item-text">${item.text}${item.sub ? `<br><span style="font-size:11px;color:var(--text-muted)">${item.sub}</span>` : ''}</span>
+        <span class="item-text">${item.name || item.text}${item.desc || item.sub ? `<br><span style="font-size:11px;color:var(--text-muted)">${item.desc || item.sub}</span>` : ''}</span>
       </li>`;
     }).join('');
   }
