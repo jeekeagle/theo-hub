@@ -30,11 +30,19 @@ body {
   font-size: 14px;
   line-height: 1.6;
   min-height: 100vh;
+  padding: 0 24px;
 }
 
-/* ─── Header ─── */
+/* ─── Main ─── */
+main {
+  padding: 36px 0 80px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
 header {
-  padding: 40px 56px 32px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 0 32px;
   border-bottom: 1px solid var(--border);
 }
 .header-label {
@@ -59,12 +67,6 @@ header p {
 }
 
 /* ─── Main ─── */
-main {
-  padding: 36px 56px 80px;
-  max-width: 1280px;
-  margin: 0 auto;
-}
-
 /* ─── Hermes Core Card ─── */
 .core-card {
   background: var(--bg-card);
@@ -268,9 +270,9 @@ footer {
 
 /* ─── Responsive ─── */
 @media (max-width: 960px) {
-  main { padding: 28px 24px 60px; }
-  header { padding: 28px 24px 24px; }
-  footer { padding: 20px 24px; flex-direction: column; gap: 8px; text-align: center; }
+  main { padding: 28px 0 60px; }
+  header { padding: 28px 0 24px; }
+  footer { padding: 20px 0; flex-direction: column; gap: 8px; text-align: center; }
   .systems-grid { grid-template-columns: repeat(2, 1fr); }
   .core-card { flex-direction: column; align-items: flex-start; gap: 20px; }
   .core-features { grid-template-columns: repeat(2, 1fr); }
