@@ -27,7 +27,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.6;
   min-height: 100vh;
   padding: 0 24px;
@@ -47,23 +47,24 @@ header {
 }
 .header-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.2em;
   color: var(--accent);
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 header h1 {
   font-family: 'Noto Serif SC', serif;
-  font-size: 32px;
+  font-size: 38px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: #111;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 header p {
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 14px;
+  max-width: 560px;
 }
 
 /* ─── Main ─── */
@@ -72,52 +73,56 @@ header p {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 28px 36px;
-  margin-bottom: 24px;
+  padding: 32px 36px;
+  margin-bottom: 28px;
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 40px;
   transition: border-color 0.2s;
 }
 .core-card:hover { border-color: var(--border-strong); }
 
 .core-icon-wrap {
-  width: 56px;
-  height: 56px;
+  width: 60px;
+  height: 60px;
   border-radius: 14px;
   background: var(--accent-light);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 26px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
   flex-shrink: 0;
+  letter-spacing: -0.02em;
 }
 
 .core-info { flex: 1; min-width: 0; }
 
 .core-title {
   font-family: 'Noto Serif SC', serif;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   color: #111;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 .core-sub {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .core-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 7px;
 }
 .core-tag {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  padding: 3px 8px;
+  font-size: 11px;
+  padding: 4px 10px;
   border-radius: 20px;
   background: var(--accent-light);
   color: var(--accent);
@@ -127,14 +132,14 @@ header p {
 .core-features {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px 24px;
+  gap: 10px 28px;
   flex-shrink: 0;
 }
 .core-feature {
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 12px;
+  gap: 8px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 .core-feature-dot {
@@ -168,7 +173,7 @@ header p {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 24px;
+  padding: 26px;
   transition: border-color 0.2s, transform 0.15s;
   cursor: default;
 }
@@ -181,28 +186,31 @@ header p {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 .sys-icon {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   flex-shrink: 0;
 }
 .sys-name {
   font-family: 'Noto Serif SC', serif;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #111;
 }
 .sys-tag {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  padding: 2px 6px;
+  font-size: 10px;
+  padding: 2px 7px;
   border-radius: 4px;
   background: var(--surface-hover);
   color: var(--text-muted);
@@ -210,25 +218,25 @@ header p {
   margin-left: auto;
 }
 .sys-desc {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
-  margin-bottom: 14px;
-  line-height: 1.5;
+  margin-bottom: 16px;
+  line-height: 1.6;
 }
 
 .sys-items {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
 }
 .sys-items li {
-  font-size: 11.5px;
+  font-size: 13px;
   color: var(--text-muted);
-  padding: 5px 8px;
+  padding: 7px 10px;
   background: var(--surface);
-  border-radius: 6px;
-  line-height: 1.4;
+  border-radius: 7px;
+  line-height: 1.45;
 }
 .sys-items li .item-label {
   color: var(--text);
@@ -257,13 +265,13 @@ header p {
 
 /* ─── Footer ─── */
 footer {
-  padding: 24px 56px;
+  padding: 24px 0;
   border-top: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-dim);
   letter-spacing: 0.06em;
 }
@@ -295,7 +303,7 @@ footer {
 
   <!-- ════ CORE: Hermes Agent ════ -->
   <div class="core-card">
-    <div class="core-icon-wrap">🧠</div>
+    <div class="core-icon-wrap">AI</div>
     <div class="core-info">
       <div class="core-title">Hermes Agent</div>
       <div class="core-sub">24/7 自主运行 · 思维伙伴 · 自我进化</div>
@@ -325,7 +333,7 @@ footer {
     <!-- 01 · 笔记系统 -->
     <div class="sys-card">
       <div class="sys-header">
-        <div class="sys-icon" style="background:rgba(91,159,255,0.1)">📒</div>
+        <div class="sys-icon" style="background:rgba(91,159,255,0.1)">NOTE</div>
         <span class="sys-name">笔记系统</span>
         <span class="sys-tag">theo-note/</span>
       </div>
@@ -345,7 +353,7 @@ footer {
     <!-- 02 · 探索系统 -->
     <div class="sys-card">
       <div class="sys-header">
-        <div class="sys-icon" style="background:rgba(255,79,109,0.1)">🧪</div>
+        <div class="sys-icon" style="background:rgba(255,79,109,0.1)">LAB</div>
         <span class="sys-name">探索系统</span>
         <span class="sys-tag">theo-lab/</span>
       </div>
@@ -362,7 +370,7 @@ footer {
     <!-- 03 · 输出系统 -->
     <div class="sys-card">
       <div class="sys-header">
-        <div class="sys-icon" style="background:rgba(78,205,196,0.1)">🌿</div>
+        <div class="sys-icon" style="background:rgba(78,205,196,0.1)">SEED</div>
         <span class="sys-name">输出系统</span>
         <span class="sys-tag">theo-output/</span>
       </div>
@@ -380,7 +388,7 @@ footer {
     <!-- 04 · 执行系统 -->
     <div class="sys-card">
       <div class="sys-header">
-        <div class="sys-icon" style="background:rgba(255,159,67,0.1)">⚡</div>
+        <div class="sys-icon" style="background:rgba(255,159,67,0.1)">AUTO</div>
         <span class="sys-name">执行系统</span>
         <span class="sys-tag">theo-auto/</span>
       </div>
@@ -399,7 +407,7 @@ footer {
     <!-- 05 · 工具生态 -->
     <div class="sys-card">
       <div class="sys-header">
-        <div class="sys-icon" style="background:rgba(167,139,250,0.1)">🔧</div>
+        <div class="sys-icon" style="background:rgba(167,139,250,0.1)">TOOL</div>
         <span class="sys-name">工具生态</span>
         <span class="sys-tag">theo-agent/</span>
       </div>
@@ -417,7 +425,7 @@ footer {
     <!-- 06 · 附件库 -->
     <div class="sys-card">
       <div class="sys-header">
-        <div class="sys-icon" style="background:rgba(255,217,61,0.1)">📎</div>
+        <div class="sys-icon" style="background:rgba(255,217,61,0.1)">FILE</div>
         <span class="sys-name">附件库</span>
         <span class="sys-tag">theo-resource/</span>
       </div>
