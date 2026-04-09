@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ─── Tokens ─── */
 :root {
   --bg: #f7f6f2;
   --bg-card: #ffffff;
@@ -20,7 +19,6 @@
   --text-dim: #a8a49a;
   --accent-hue: 28;
   --accent: oklch(48% 0.14 calc(var(--accent-hue) - 5));
-  --accent-hover: oklch(42% 0.15 calc(var(--accent-hue) - 5));
   --accent-bg: oklch(96% 0.02 calc(var(--accent-hue) - 5));
   --accent-dim: oklch(70% 0.12 calc(var(--accent-hue) - 5));
   --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.04), 0 1px 3px oklch(0% 0 0 / 0.03);
@@ -28,16 +26,9 @@
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 18px;
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
-  --space-16: 64px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --font-sans: 'Outfit', system-ui, sans-serif;
   --font-serif: 'Noto Serif SC', 'Songti SC', serif;
@@ -91,46 +82,45 @@ body {
 .header-desc {
   font-size: 15px;
   color: var(--text-muted);
-  max-width: none;
   line-height: 1.65;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* ─── Hermes Core: full-width hero ─── */
-.core-section {
-  padding: var(--space-10) 0;
-  border-bottom: 1px solid var(--border);
+/* ─── Master Card ─── */
+.master-section {
+  padding: var(--space-10) 0 var(--space-16);
 }
 
-.core-card {
+.master-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: var(--space-10) var(--space-8);
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: auto auto;
-  gap: var(--space-6) var(--space-10);
-  box-shadow: var(--shadow-sm);
-  transition: border-color var(--transition), box-shadow var(--transition);
-  position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
-.core-card::before {
+/* Top accent bar */
+.master-card::before {
   content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  display: block;
   height: 3px;
   background: linear-gradient(90deg, var(--accent), oklch(65% 0.12 calc(var(--accent-hue) - 5)));
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/* ─── Hermes Core Header inside card ─── */
+.core-header {
+  padding: var(--space-8) var(--space-8) var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  border-bottom: 1px solid var(--border);
 }
 
 .core-icon {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   border-radius: var(--radius-md);
   background: var(--accent-bg);
   border: 1px solid oklch(88% 0.05 calc(var(--accent-hue) - 5) / 0.4);
@@ -138,28 +128,23 @@ body {
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--accent);
   letter-spacing: -0.02em;
-  grid-row: 1;
-  align-self: start;
+  flex-shrink: 0;
 }
 
-.core-info {
-  grid-row: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+.core-meta {}
 
 .core-title {
   font-family: var(--font-serif);
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 6px;
   letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 4px;
 }
 
 .core-sub {
@@ -167,12 +152,14 @@ body {
   color: var(--text-muted);
 }
 
+/* ─── Core features text list ─── */
 .core-features {
-  grid-column: 1 / -1;
-  grid-row: 2;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: var(--space-2);
+  padding: var(--space-5) var(--space-8);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-8);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
 }
 
 .core-feature {
@@ -182,84 +169,54 @@ body {
   font-family: var(--font-mono);
   font-size: 12px;
   color: var(--text-muted);
-  padding: var(--space-3) var(--space-4);
-  background: var(--surface);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  transition: background var(--transition), border-color var(--transition);
-}
-.core-feature:hover {
-  background: var(--surface-hover);
-  border-color: var(--border-strong);
+  white-space: nowrap;
 }
 
 .core-feature-dot {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--accent-dim);
   flex-shrink: 0;
 }
 
-/* ─── Systems ─── */
-.systems-section {
-  padding: var(--space-10) 0 var(--space-16);
-}
-
-.section-label {
+/* ─── Section label inside card ─── */
+.card-section-label {
+  padding: var(--space-5) var(--space-8) var(--space-4);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.2em;
   color: var(--text-dim);
   text-transform: uppercase;
-  margin-bottom: var(--space-6);
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-.section-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
-.systems-grid {
+/* ─── Systems list inside card ─── */
+.systems-list {
+  padding: var(--space-6) var(--space-8);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-5);
+  gap: var(--space-6) var(--space-8);
 }
 
-.sys-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: var(--space-6);
-  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
-  box-shadow: var(--shadow-sm);
-}
-.sys-card:hover {
-  border-color: var(--border-strong);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
+.sys-item {}
 
-.sys-header {
+.sys-item-header {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-4);
+  gap: var(--space-2);
+  margin-bottom: var(--space=3);
 }
 
 .sys-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-sm);
+  width: 28px;
+  height: 28px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.04em;
   flex-shrink: 0;
@@ -267,51 +224,46 @@ body {
 
 .sys-name {
   font-family: var(--font-serif);
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text);
   letter-spacing: -0.01em;
-  flex: 1;
 }
 
 .sys-tag {
   font-family: var(--font-mono);
   font-size: 9px;
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: 1px 5px;
+  border-radius: 3px;
   background: var(--surface);
   color: var(--text-dim);
   letter-spacing: 0.04em;
   border: 1px solid var(--border);
+  margin-left: auto;
 }
 
 .sys-desc {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-muted);
-  margin-bottom: var(--space-4);
-  line-height: 1.6;
+  margin-bottom: var(--space-3);
+  line-height: 1.55;
 }
 
 .sys-items {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 3px;
 }
 
 .sys-items li {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-muted);
-  padding: 5px var(--space-2);
-  border-radius: var(--radius-sm);
-  line-height: 1.5;
+  padding: 3px 0;
+  line-height: 1.45;
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  transition: background var(--transition);
-}
-.sys-items li:hover {
-  background: var(--surface);
+  gap: 5px;
 }
 
 .item-label {
@@ -328,21 +280,18 @@ body {
   border-bottom: 1px solid transparent;
   transition: border-color var(--transition);
 }
-.sys-items li a:hover {
-  border-color: var(--accent);
-}
+.sys-items li a:hover { border-color: var(--accent); }
 
 .tag-pill {
   display: inline-block;
   font-family: var(--font-mono);
   font-size: 9px;
-  padding: 1px 5px;
+  padding: 1px 4px;
   border-radius: 3px;
   background: var(--surface);
   color: var(--text-dim);
   letter-spacing: 0.03em;
   border: 1px solid var(--border);
-  flex-shrink: 0;
 }
 
 .sys-items li .arrow {
@@ -369,19 +318,18 @@ body {
 
 /* ─── Responsive ─── */
 @media (max-width: 960px) {
-  .core-features { grid-template-columns: repeat(3, 1fr); }
-  .systems-grid { grid-template-columns: repeat(2, 1fr); }
+  .systems-list { grid-template-columns: repeat(2, 1fr); }
+  .header-desc { white-space: normal; overflow: visible; text-overflow: unset; }
 }
 @media (max-width: 640px) {
   .container { padding: 0 var(--space-5); }
   .site-header { padding: var(--space-8) 0 var(--space-6); }
-  .core-card {
-    grid-template-columns: 1fr;
-    gap: var(--space-5);
-    padding: var(--space-8) var(--space-6);
-  }
-  .core-features { grid-template-columns: repeat(2, 1fr); }
-  .systems-grid { grid-template-columns: 1fr; }
+  .systems-list { grid-template-columns: 1fr; }
+  .core-header { flex-direction: column; align-items: flex-start; gap: var(--space-4); padding: var(--space-6); }
+  .master-card { border-radius: var(--radius-md); }
+  .core-features { padding: var(--space-4) var(--space-6); }
+  .card-section-label { padding: var(--space-4) var(--space-6) var(--space-3); }
+  .systems-list { padding: var(--space-5) var(--space-6); }
   .site-footer { flex-direction: column; gap: var(--space-2); text-align: center; }
   .header-desc { white-space: normal; }
 }
@@ -398,14 +346,20 @@ body {
     <p class="header-desc">个人知识系统的架构全景图——模块、连接与流向。不是数据面板，而是地图。</p>
   </header>
 
-  <!-- ── Core: Hermes Agent ── -->
-  <section class="core-section">
-    <div class="core-card">
-      <div class="core-icon">AI</div>
-      <div class="core-info">
-        <div class="core-title">Hermes Agent</div>
-        <div class="core-sub">24/7 自主运行 · 思维伙伴 · 自我进化</div>
+  <!-- ── Master Card: Everything inside ── -->
+  <section class="master-section">
+    <div class="master-card">
+
+      <!-- Hermes Agent Core -->
+      <div class="core-header">
+        <div class="core-icon">AI</div>
+        <div class="core-meta">
+          <div class="core-title">Hermes Agent</div>
+          <div class="core-sub">24/7 自主运行 · 思维伙伴 · 自我进化</div>
+        </div>
       </div>
+
+      <!-- Core features as plain text lines -->
       <div class="core-features">
         <div class="core-feature"><div class="core-feature-dot"></div>会话记忆 · SQLite FTS5</div>
         <div class="core-feature"><div class="core-feature-dot"></div>持久记忆 · MEMORY.md</div>
@@ -414,122 +368,122 @@ body {
         <div class="core-feature"><div class="core-feature-dot"></div>飞书 CLI · Webhook</div>
         <div class="core-feature"><div class="core-feature-dot"></div>GitHub · 自动化发布</div>
       </div>
-    </div>
-  </section>
 
-  <!-- ── Six Systems ── -->
-  <section class="systems-section">
-    <div class="section-label">// 六大子系统</div>
-    <div class="systems-grid">
+      <!-- Six Subsystems -->
+      <div class="card-section-label">// 六大子系统</div>
 
-      <!-- 01 · NOTE -->
-      <article class="sys-card">
-        <div class="sys-header">
-          <div class="sys-icon" style="background: oklch(94% 0.06 235); color: oklch(45% 0.15 235);">NOTE</div>
-          <span class="sys-name">笔记系统</span>
-          <span class="sys-tag">theo-note/</span>
+      <div class="systems-list">
+
+        <!-- 01 · NOTE -->
+        <div class="sys-item">
+          <div class="sys-item-header">
+            <div class="sys-icon" style="background: oklch(94% 0.06 235); color: oklch(45% 0.15 235);">NOTE</div>
+            <span class="sys-name">笔记系统</span>
+            <span class="sys-tag">theo-note/</span>
+          </div>
+          <div class="sys-desc">所有原始内容的沉淀地。思想的入口，也是 Night Routine 的原材料。</div>
+          <ul class="sys-items">
+            <li><span class="item-label">note-flow/</span> — 思想流动地</li>
+            <li><span class="arrow">→</span> <a href="https://jeekeagle.github.io/Seed/" target="_blank">seed.md</a> 高价值沉淀 <span class="tag-pill">核心</span></li>
+            <li><span class="arrow">→</span> future.md 想法种子库 <span class="tag-pill">胚芽/发芽中/已行动</span></li>
+            <li><span class="arrow">→</span> qa.md 问题收集箱</li>
+            <li><span class="arrow">→</span> Writing-Thoughts.md 写作主题</li>
+            <li><span class="item-label">note-auto/</span> — Night Routine 输出</li>
+            <li><span class="item-label">note-topic/</span> — 主题分类笔记</li>
+            <li><span class="item-label">note-wiki/</span> — LLM Wiki</li>
+          </ul>
         </div>
-        <div class="sys-desc">所有原始内容的沉淀地。思想的入口，也是 Night Routine 的原材料。</div>
-        <ul class="sys-items">
-          <li><span class="item-label">note-flow/</span> — 思想流动地</li>
-          <li><span class="arrow">→</span> <a href="https://jeekeagle.github.io/Seed/" target="_blank">seed.md</a> 高价值沉淀 <span class="tag-pill">核心</span></li>
-          <li><span class="arrow">→</span> future.md 想法种子库 <span class="tag-pill">胚芽/发芽中/已行动</span></li>
-          <li><span class="arrow">→</span> qa.md 问题收集箱</li>
-          <li><span class="arrow">→</span> Writing-Thoughts.md 写作主题</li>
-          <li><span class="item-label">note-auto/</span> — Night Routine 输出</li>
-          <li><span class="item-label">note-topic/</span> — 主题分类笔记</li>
-          <li><span class="item-label">note-wiki/</span> — LLM Wiki</li>
-        </ul>
-      </article>
 
-      <!-- 02 · LAB -->
-      <article class="sys-card">
-        <div class="sys-header">
-          <div class="sys-icon" style="background: oklch(93% 0.10 15); color: oklch(45% 0.14 25);">LAB</div>
-          <span class="sys-name">探索系统</span>
-          <span class="sys-tag">theo-lab/</span>
+        <!-- 02 · LAB -->
+        <div class="sys-item">
+          <div class="sys-item-header">
+            <div class="sys-icon" style="background: oklch(93% 0.10 15); color: oklch(45% 0.14 25);">LAB</div>
+            <span class="sys-name">探索系统</span>
+            <span class="sys-tag">theo-lab/</span>
+          </div>
+          <div class="sys-desc">新项目孵化地，实验性想法的验证场所。低成本进入，高成本离开。</div>
+          <ul class="sys-items">
+            <li>快速试错，不做深度整理</li>
+            <li>跑通 <span class="arrow">→</span> 迁移到输出系统</li>
+            <li>跑死 <span class="arrow">→</span> 删掉，不留痕迹</li>
+            <li><span class="item-label">005-ai-kid</span> — AI 幼儿融合教育</li>
+            <li><span class="item-label">饮食脚本</span> <span class="arrow">→</span> theo-auto/</li>
+          </ul>
         </div>
-        <div class="sys-desc">新项目孵化地，实验性想法的验证场所。低成本进入，高成本离开。</div>
-        <ul class="sys-items">
-          <li>快速试错，不做深度整理</li>
-          <li>跑通 <span class="arrow">→</span> 迁移到输出系统</li>
-          <li>跑死 <span class="arrow">→</span> 删掉，不留痕迹</li>
-          <li><span class="item-label">005-ai-kid</span> — AI 幼儿融合教育</li>
-          <li><span class="item-label">饮食脚本</span> <span class="arrow">→</span> theo-auto/</li>
-        </ul>
-      </article>
 
-      <!-- 03 · SEED -->
-      <article class="sys-card">
-        <div class="sys-header">
-          <div class="sys-icon" style="background: oklch(93% 0.06 175); color: oklch(42% 0.12 175);">SEED</div>
-          <span class="sys-name">输出系统</span>
-          <span class="sys-tag">theo-output/</span>
+        <!-- 03 · SEED -->
+        <div class="sys-item">
+          <div class="sys-item-header">
+            <div class="sys-icon" style="background: oklch(93% 0.06 175); color: oklch(42% 0.12 175);">SEED</div>
+            <span class="sys-name">输出系统</span>
+            <span class="sys-tag">theo-output/</span>
+          </div>
+          <div class="sys-desc">最终发布的内容产品。验证通过的想法，在这里变成公开的价值。</div>
+          <ul class="sys-items">
+            <li><span class="item-label">theo-openwalk/</span> — 技术博客</li>
+            <li><span class="arrow">→</span> AstroPaper 主题</li>
+            <li><span class="arrow">→</span> GitHub Pages 托管</li>
+            <li><span class="arrow">→</span> Night Routine 自动发布</li>
+            <li>来自 note-topic 成熟主题</li>
+            <li>来自 lab 验证通过的实验</li>
+          </ul>
         </div>
-        <div class="sys-desc">最终发布的内容产品。验证通过的想法，在这里变成公开的价值。</div>
-        <ul class="sys-items">
-          <li><span class="item-label">theo-openwalk/</span> — 技术博客</li>
-          <li><span class="arrow">→</span> AstroPaper 主题</li>
-          <li><span class="arrow">→</span> GitHub Pages 托管</li>
-          <li><span class="arrow">→</span> Night Routine 自动发布</li>
-          <li>来自 note-topic 成熟主题</li>
-          <li>来自 lab 验证通过的实验</li>
-        </ul>
-      </article>
 
-      <!-- 04 · AUTO -->
-      <article class="sys-card">
-        <div class="sys-header">
-          <div class="sys-icon" style="background: oklch(93% 0.08 55); color: oklch(45% 0.13 50);">AUTO</div>
-          <span class="sys-name">执行系统</span>
-          <span class="sys-tag">theo-auto/</span>
+        <!-- 04 · AUTO -->
+        <div class="sys-item">
+          <div class="sys-item-header">
+            <div class="sys-icon" style="background: oklch(93% 0.08 55); color: oklch(45% 0.13 50);">AUTO</div>
+            <span class="sys-name">执行系统</span>
+            <span class="sys-tag">theo-auto/</span>
+          </div>
+          <div class="sys-desc">所有自动化脚本、定时任务、提醒规则。系统的引擎，人不需要介入。</div>
+          <ul class="sys-items">
+            <li><span class="item-label">Night Routine</span> <span class="arrow">→</span> 每晚 01:30</li>
+            <li><span class="arrow">→</span> 整理 note-flow 当天内容</li>
+            <li><span class="arrow">→</span> 让胚芽想法往前走一步</li>
+            <li><span class="arrow">→</span> 生成写作主题</li>
+            <li><span class="arrow">→</span> 推送发布到 Seed</li>
+            <li><span class="item-label">饮食脚本</span> <span class="arrow">→</span> 定时提醒</li>
+            <li><span class="item-label">飞书 CLI</span> <span class="arrow">→</span> 文档自动同步</li>
+          </ul>
         </div>
-        <div class="sys-desc">所有自动化脚本、定时任务、提醒规则。系统的引擎，人不需要介入。</div>
-        <ul class="sys-items">
-          <li><span class="item-label">Night Routine</span> <span class="arrow">→</span> 每晚 01:30</li>
-          <li><span class="arrow">→</span> 整理 note-flow 当天内容</li>
-          <li><span class="arrow">→</span> 让胚芽想法往前走一步</li>
-          <li><span class="arrow">→</span> 生成写作主题</li>
-          <li><span class="arrow">→</span> 推送发布到 Seed</li>
-          <li><span class="item-label">饮食脚本</span> <span class="arrow">→</span> 定时提醒</li>
-          <li><span class="item-label">飞书 CLI</span> <span class="arrow">→</span> 文档自动同步</li>
-        </ul>
-      </article>
 
-      <!-- 05 · TOOL -->
-      <article class="sys-card">
-        <div class="sys-header">
-          <div class="sys-icon" style="background: oklch(93% 0.06 290); color: oklch(45% 0.13 290);">TOOL</div>
-          <span class="sys-name">工具生态</span>
-          <span class="sys-tag">theo-agent/</span>
+        <!-- 05 · TOOL -->
+        <div class="sys-item">
+          <div class="sys-item-header">
+            <div class="sys-icon" style="background: oklch(93% 0.06 290); color: oklch(45% 0.13 290);">TOOL</div>
+            <span class="sys-name">工具生态</span>
+            <span class="sys-tag">theo-agent/</span>
+          </div>
+          <div class="sys-desc">Agent 的技能库。经验的结晶，遇到特定任务自动加载对应 Skill。</div>
+          <ul class="sys-items">
+            <li><span class="item-label">写作技能</span> <span class="arrow">→</span> 写作引擎 · 润色 · 翻译</li>
+            <li><span class="item-label">发布技能</span> <span class="arrow">→</span> Seed · 微信公众号 · OpenWalk</li>
+            <li><span class="item-label">研究技能</span> <span class="arrow">→</span> 论文 · RSS · 圆桌讨论</li>
+            <li><span class="item-label">系统技能</span> <span class="arrow">→</span> Night Routine · Skill 管理</li>
+            <li>所有 Skill 存于 ~/.hermes/skills/</li>
+            <li>按场景调用，不由人主动选择</li>
+          </ul>
         </div>
-        <div class="sys-desc">Agent 的技能库。经验的结晶，遇到特定任务自动加载对应 Skill。</div>
-        <ul class="sys-items">
-          <li><span class="item-label">写作技能</span> <span class="arrow">→</span> 写作引擎 · 润色 · 翻译</li>
-          <li><span class="item-label">发布技能</span> <span class="arrow">→</span> Seed · 微信公众号 · OpenWalk</li>
-          <li><span class="item-label">研究技能</span> <span class="arrow">→</span> 论文 · RSS · 圆桌讨论</li>
-          <li><span class="item-label">系统技能</span> <span class="arrow">→</span> Night Routine · Skill 管理</li>
-          <li>所有 Skill 存于 ~/.hermes/skills/</li>
-          <li>按场景调用，不由人主动选择</li>
-        </ul>
-      </article>
 
-      <!-- 06 · FILE -->
-      <article class="sys-card">
-        <div class="sys-header">
-          <div class="sys-icon" style="background: oklch(93% 0.06 80); color: oklch(45% 0.13 75);">FILE</div>
-          <span class="sys-name">附件库</span>
-          <span class="sys-tag">theo-resource/</span>
+        <!-- 06 · FILE -->
+        <div class="sys-item">
+          <div class="sys-item-header">
+            <div class="sys-icon" style="background: oklch(93% 0.06 80); color: oklch(45% 0.13 75);">FILE</div>
+            <span class="sys-name">附件库</span>
+            <span class="sys-tag">theo-resource/</span>
+          </div>
+          <div class="sys-desc">所有静态资源文件。不做深度整理，只管存取。</div>
+          <ul class="sys-items">
+            <li><span class="item-label">theo-picture/</span> <span class="arrow">→</span> 图片资源</li>
+            <li>笔记中引用的图片</li>
+            <li>信息卡配图</li>
+            <li>Seed 博客文章配图</li>
+            <li>不做分类，只按时间归档</li>
+          </ul>
         </div>
-        <div class="sys-desc">所有静态资源文件。不做深度整理，只管存取。</div>
-        <ul class="sys-items">
-          <li><span class="item-label">theo-picture/</span> <span class="arrow">→</span> 图片资源</li>
-          <li>笔记中引用的图片</li>
-          <li>信息卡配图</li>
-          <li>Seed 博客文章配图</li>
-          <li>不做分类，只按时间归档</li>
-        </ul>
-      </article>
+
+      </div>
 
     </div>
   </section>
