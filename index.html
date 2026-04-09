@@ -3,629 +3,601 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Theo Hub</title>
+<title>Theo Hub — 系统架构</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: rgba(255,255,255,0.06);
-    --surface-hover: rgba(255,255,255,0.10);
-    --border: rgba(255,255,255,0.10);
-    --text: #e8e8ed;
-    --text-muted: #8888a0;
-    --accent-red: #ff4f6d;
-    --accent-orange: #ff9f43;
-    --accent-yellow: #ffd93d;
-    --accent-green: #6bcb77;
-    --accent-cyan: #4ecdc4;
-    --accent-blue: #5b9fff;
-    --accent-purple: #a78bfa;
-    --accent-pink: #f472b6;
-    --radius: 16px;
-    --blur: blur(20px);
-  }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0c0c0e;
+  --surface: rgba(255,255,255,0.035);
+  --surface-hover: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.14);
+  --text: #e8e8ec;
+  --text-muted: #6b6b78;
+  --text-dim: #3a3a45;
+  --accent: #a78bfa;
+  --accent-glow: rgba(167,139,250,0.15);
+}
 
-  body {
-    font-family: 'Inter', -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    background-image:
-      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(91,159,255,0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 90%, rgba(167,139,250,0.10) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 50% at 50% 50%, rgba(78,205,196,0.05) 0%, transparent 70%);
-  }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
 
-  /* ── HEADER ── */
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 32px 48px 24px;
-    border-bottom: 1px solid var(--border);
-  }
+/* ─── Header ─── */
+header {
+  padding: 48px 64px 40px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.4;
+}
+.header-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+header h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 8px;
+}
+header p {
+  color: var(--text-muted);
+  font-size: 14px;
+  max-width: 560px;
+}
 
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
+/* ─── Main Grid ─── */
+main {
+  padding: 48px 64px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  align-items: start;
+}
 
-  .logo-icon {
-    width: 44px;
-    height: 44px;
-    background: linear-gradient(135deg, #5b9fff, #a78bfa);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-  }
+/* ─── Section ─── */
+.section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  transition: border-color 0.2s;
+}
+.section:hover {
+  border-color: var(--border-strong);
+}
 
-  .logo h1 {
-    font-size: 22px;
-    font-weight: 700;
-    background: linear-gradient(90deg, #e8e8ed, #8888a0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+.sec-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
 
-  .logo span {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
-  }
+/* ─── Module Block ─── */
+.module {
+  margin-bottom: 20px;
+}
+.module:last-child { margin-bottom: 0; }
 
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+.module-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.module-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.module-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+.module-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--surface-hover);
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+.module-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.module-items {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.module-items li {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 5px 8px;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.025);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.module-items li::before {
+  content: '→';
+  font-size: 10px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.module-items li span {
+  color: var(--text);
+  font-weight: 500;
+}
 
-  .last-updated {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
-  }
+/* ─── Layout Spans ─── */
+.span-3  { grid-column: span 3; }
+.span-4  { grid-column: span 4; }
+.span-5  { grid-column: span 5; }
+.span-6  { grid-column: span 6; }
+.span-7  { grid-column: span 7; }
+.span-8  { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
 
-  .refresh-btn {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 8px 16px;
-    border-radius: 10px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
-  }
-  .refresh-btn:hover {
-    background: var(--surface-hover);
-    border-color: rgba(255,255,255,0.2);
-  }
+/* ─── Connector Lines (decorative) ─── */
+.connector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  color: var(--text-dim);
+  font-size: 11px;
+}
+.connector::before,
+.connector::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
 
-  /* ── GRID ── */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 32px 48px 64px;
-  }
+/* ─── Special: Core Ring ─── */
+.core-ring {
+  grid-column: span 12;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.core-center {
+  grid-column: 4 / span 6;
+  background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(167,139,250,0.03));
+  border: 1px solid rgba(167,139,250,0.25);
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+}
+.core-center .ring-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+.core-center .ring-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.core-center .ring-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+.core-center .ring-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.core-center .ring-feature {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(167,139,250,0.12);
+  color: var(--accent);
+  border: 1px solid rgba(167,139,250,0.2);
+}
 
-  /* ── PANEL ── */
-  .panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    backdrop-filter: var(--blur);
-    overflow: hidden;
-    transition: all 0.25s;
-    cursor: pointer;
-  }
+/* ─── Footer ─── */
+footer {
+  padding: 32px 64px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+footer .version {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+footer .status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+}
 
-  .panel:hover {
-    border-color: rgba(255,255,255,0.18);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-  }
-
-  .panel.accent-red  { border-top: 3px solid var(--accent-red); }
-  .panel.accent-orange { border-top: 3px solid var(--accent-orange); }
-  .panel.accent-yellow { border-top: 3px solid var(--accent-yellow); }
-  .panel.accent-green  { border-top: 3px solid var(--accent-green); }
-  .panel.accent-cyan   { border-top: 3px solid var(--accent-cyan); }
-  .panel.accent-blue   { border-top: 3px solid var(--accent-blue); }
-  .panel.accent-purple { border-top: 3px solid var(--accent-purple); }
-  .panel.accent-pink   { border-top: 3px solid var(--accent-pink); }
-
-  .panel-header {
-    padding: 20px 22px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .panel-icon {
-    font-size: 28px;
-    margin-right: 12px;
-  }
-
-  .panel-title {
-    font-size: 15px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .panel-count {
-    background: rgba(255,255,255,0.1);
-    color: var(--text-muted);
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .panel-count.has-items {
-    background: rgba(255,255,255,0.15);
-    color: var(--text);
-  }
-
-  .panel-meta {
-    font-size: 11px;
-    color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .panel-body {
-    padding: 0 22px 20px;
-  }
-
-  /* ── PANEL LIST ── */
-  .panel-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .panel-list li {
-    padding: 8px 12px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 8px;
-    font-size: 13px;
-    color: var(--text);
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    line-height: 1.5;
-    transition: background 0.15s;
-    border: 1px solid transparent;
-  }
-
-  .panel-list li:hover {
-    background: rgba(255,255,255,0.08);
-    border-color: var(--border);
-  }
-
-  .panel-list .prio {
-    font-size: 10px;
-    font-weight: 700;
-    font-family: 'JetBrains Mono', monospace;
-    padding: 1px 6px;
-    border-radius: 4px;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .prio.high { background: rgba(255,79,109,0.25); color: var(--accent-red); }
-  .prio.medium { background: rgba(255,159,67,0.25); color: var(--accent-orange); }
-  .prio.low { background: rgba(255,217,61,0.15); color: var(--accent-yellow); }
-
-  .panel-list .status {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 1px 6px;
-    border-radius: 4px;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .status.pending { background: rgba(91,159,255,0.2); color: var(--accent-blue); }
-  .status.done { background: rgba(107,203,119,0.2); color: var(--accent-green); }
-  .status.failed { background: rgba(255,79,109,0.2); color: var(--accent-red); }
-
-  .panel-list .item-text { flex: 1; }
-
-  /* ── EMPTY ── */
-  .empty {
-    color: var(--text-muted);
-    font-size: 13px;
-    text-align: center;
-    padding: 16px 0;
-  }
-
-  /* ── MORE ── */
-  .more-hint {
-    font-size: 11px;
-    color: var(--text-muted);
-    text-align: center;
-    padding: 10px 0 2px;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .panel:hover .more-hint { opacity: 1; }
-
-  /* ── MODAL ── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(8px);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    padding: 32px;
-  }
-
-  .modal-overlay.active { display: flex; }
-
-  .modal {
-    background: #13131a;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    max-width: 720px;
-    width: 100%;
-    max-height: 80vh;
-    overflow-y: auto;
-    position: relative;
-  }
-
-  .modal-header {
-    padding: 24px 28px 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    background: #13131a;
-    z-index: 1;
-    border-radius: 20px 20px 0 0;
-  }
-
-  .modal-title {
-    font-size: 18px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .modal-close {
-    width: 32px;
-    height: 32px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    cursor: pointer;
-    color: var(--text-muted);
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-
-  .modal-close:hover {
-    background: rgba(255,255,255,0.12);
-    color: var(--text);
-  }
-
-  .modal-body { padding: 24px 28px 32px; }
-
-  /* ── MODAL LIST ── */
-  .modal-section {
-    margin-bottom: 28px;
-  }
-
-  .modal-section:last-child { margin-bottom: 0; }
-
-  .modal-section-title {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .modal-items { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-
-  .modal-item {
-    padding: 14px 16px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 12px;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    transition: all 0.15s;
-  }
-
-  .modal-item:hover {
-    background: rgba(255,255,255,0.07);
-    border-color: rgba(255,255,255,0.12);
-  }
-
-  .modal-item-icon {
-    font-size: 20px;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .modal-item-content { flex: 1; min-width: 0; }
-
-  .modal-item-title {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-
-  .modal-item-desc {
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.6;
-    white-space: pre-wrap;
-    word-break: break-word;
-  }
-
-  .modal-item-meta {
-    display: flex;
-    gap: 8px;
-    margin-top: 6px;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  /* ── DIARY ── */
-  .diary-entry {
-    padding: 16px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 12px;
-    margin-bottom: 10px;
-  }
-
-  .diary-date {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
-    margin-bottom: 8px;
-  }
-
-  .diary-themes { display: flex; flex-direction: column; gap: 6px; }
-
-  .diary-theme {
-    padding: 8px 12px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 8px;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 1024px) {
-    .grid { grid-template-columns: repeat(2, 1fr); padding: 24px 24px 48px; }
-    header { padding: 24px 24px 20px; }
-  }
-
-  @media (max-width: 640px) {
-    .grid { grid-template-columns: 1fr; }
-    header { padding: 20px 16px 16px; }
-    .grid { padding: 16px 16px 40px; }
-  }
-
-  /* ── WIDE PANELS ── */
-  .panel.wide { grid-column: span 2; }
-
-  /* ── FOOTER ── */
-  footer {
-    text-align: center;
-    padding: 20px;
-    color: var(--text-muted);
-    font-size: 11px;
-    font-family: 'JetBrains Mono', monospace;
-    border-top: 1px solid var(--border);
-  }
+/* ─── Responsive ─── */
+@media (max-width: 1100px) {
+  main { padding: 32px 32px; }
+  header { padding: 32px 32px 28px; }
+  footer { padding: 24px 32px; }
+  .span-3, .span-4, .span-5, .span-6 { grid-column: span 6; }
+  .core-ring { grid-template-columns: 1fr; }
+  .core-center { grid-column: 1 / -1; }
+}
+@media (max-width: 700px) {
+  main { padding: 20px 16px; }
+  header { padding: 24px 16px 20px; }
+  footer { padding: 20px 16px; flex-direction: column; gap: 8px; }
+  .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+  header h1 { font-size: 26px; }
+}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">
-    <div class="logo-icon">🌱</div>
-    <div>
-      <h1>Theo Hub</h1>
-      <span>全景面板 v1.0</span>
-    </div>
-  </div>
-  <div class="header-right">
-    <span class="last-updated" id="lastUpdated"></span>
-    <button class="refresh-btn" onclick="window.location.reload()">↻ 刷新</button>
-  </div>
+  <div class="header-label">// system.architecture</div>
+  <h1>Theo Hub</h1>
+  <p>个人知识系统的架构全景图——模块、连接与流向。不是数据面板，而是地图。</p>
 </header>
 
-<div class="grid" id="grid">
-  <!-- panels injected by JS -->
-</div>
+<main>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="modalTitle"></div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+  <!-- ════ CORE: Hermes Agent ════ -->
+  <div class="core-ring">
+    <div class="core-center">
+      <div class="ring-icon">🧠</div>
+      <div class="ring-title">Hermes Agent</div>
+      <div class="ring-sub">24/7 自主运行 · 思维伙伴 · 自我进化</div>
+      <div class="ring-features">
+        <span class="ring-feature">三层记忆</span>
+        <span class="ring-feature">Skill 系统</span>
+        <span class="ring-feature">40+ 工具</span>
+        <span class="ring-feature">MCP 集成</span>
+        <span class="ring-feature">Night Routine</span>
+        <span class="ring-feature">学习循环</span>
+      </div>
     </div>
-    <div class="modal-body" id="modalBody"></div>
   </div>
-</div>
 
-<script>
-const DATA = {"generated_at": "2026-04-09 03:52", "panels": [{"id": "tasks", "icon": "🔴", "title": "任务面板", "accent": "accent-red", "items": [], "preview": 5}, {"id": "writing", "icon": "✍️", "title": "写作面板", "accent": "accent-orange", "items": [{"text": "人最核心的价值：价值判断 + 想做什么的引导", "icon": "✍️"}, {"text": "想法 表象、评价与本质——认识世界的新框架", "icon": "✍️"}, {"text": "表象（appearance）、评价（evaluation）、本质（essence）是理解和认识世界/社会的三个基本机制", "icon": "✍️"}, {"text": "一表象对多本质：同一个现象背后有多个深层逻辑", "icon": "✍️"}, {"text": "一本质对多表象：同一个本质在不同场景下呈现不同面貌", "icon": "✍️"}, {"text": "想法 默认——技术改变与行为习惯的博弈", "icon": "✍️"}, {"text": "成长本质上是主动打破自己的默认设置", "icon": "✍️"}, {"text": "主题1 打破默认：创新的起点与成长的本质", "icon": "✍️"}, {"text": "主题2 表象、评价与本质——认识世界的新框架", "icon": "✍️"}, {"text": "主题3 AI工具三分法——规划层、执行层与自主层", "icon": "✍️"}], "preview": 5}, {"id": "research", "icon": "🔬", "title": "研究面板", "accent": "accent-yellow", "items": [{"text": "触发背景**: 家里有一个女儿，必然会思考 AI 时代下教育、成长、一代人面对的未来", "icon": "🌰", "tag": "智能时代的儿童教育", "tagBg": "rgba(107,203,119,0.2)", "tagColor": "#6bcb77"}, {"text": "可能的方向**:", "icon": "🌰", "tag": "智能时代的儿童教育", "tagBg": "rgba(107,203,119,0.2)", "tagColor": "#6bcb77"}, {"text": "AI 时代需要什么样的能力？哪些是 AI 替代不了的人？", "icon": "🌰", "tag": "智能时代的儿童教育", "tagBg": "rgba(107,203,119,0.2)", "tagColor": "#6bcb77"}, {"text": "女儿这一代人的信息环境和父母完全不同，教育方式需要怎么调整？", "icon": "🌰", "tag": "智能时代的儿童教育", "tagBg": "rgba(107,203,119,0.2)", "tagColor": "#6bcb77"}, {"text": "智能时代，「会提问」和「能判断」比「知道答案」更重要——这个认知怎么落地？", "icon": "🌰", "tag": "智能时代的儿童教育", "tagBg": "rgba(107,203,119,0.2)", "tagColor": "#6bcb77"}, {"text": "面对信息爆炸和 AI 生成内容爆炸，怎么培养女儿的批判性思维？", "icon": "🌰", "tag": "智能时代的儿童教育", "tagBg": "rgba(107,203,119,0.2)", "tagColor": "#6bcb77"}, {"text": "本质**: 不是碎片观点，是系统性的长期写作方向", "icon": "🌰", "tag": "智能时代的儿童教育", "tagBg": "rgba(107,203,119,0.2)", "tagColor": "#6bcb77"}, {"text": "触发线索**: 「教育」「女儿」「AI时代」「儿童」「未来一代」", "icon": "🌰", "tag": "智能时代的儿童教育", "tagBg": "rgba(107,203,119,0.2)", "tagColor": "#6bcb77"}, {"text": "状态**: 胚芽", "icon": "🌰", "tag": "智能时代的儿童教育", "tagBg": "rgba(107,203,119,0.2)", "tagColor": "#6bcb77"}, {"text": "存储**: topic-growth 或新建 topic-education", "icon": "🌰", "tag": "智能时代的儿童教育", "tagBg": "rgba(107,203,119,0.2)", "tagColor": "#6bcb77"}], "preview": 5}, {"id": "diary", "icon": "📅", "title": "日记面板", "accent": "accent-green", "items": [{"date": "2026-04-09", "themes": [{"name": "default-innovation", "icon": "📝"}, {"name": "appearance-evaluation-essence", "icon": "📝"}, {"name": "ai-tools-trinity", "icon": "📝"}]}], "preview": 3}, {"id": "qa", "icon": "❓", "title": "问答面板", "accent": "accent-cyan", "items": [{"text": "**会话记忆（情景记忆）**：记录对话内容+工具调用+返回结果", "sub": "SQLite + FTS5 索引 → 按需检索，回答\"发生了什么\"", "icon": "❓", "tag": "Q: Hermes 三层记忆架构是什么？各层存什么？", "tagBg": "rgba(167,139,250,0.2)", "tagColor": "#a78bfa"}, {"text": "**持久记忆（语义记忆）**：从对话中提炼用户持久状态（编码偏好/项目结构/工具链）", "sub": "MEMORY.md + USER.md，回答\"你是谁\"", "icon": "❓", "tag": "Q: Hermes 三层记忆架构是什么？各层存什么？", "tagBg": "rgba(167,139,250,0.2)", "tagColor": "#a78bfa"}, {"text": "**Skill 记忆（程序性记忆）**：方法论和操作规范", "sub": "~/.hermes/skills/*.md，回答\"怎么做事\"", "icon": "❓", "tag": "Q: Hermes 三层记忆架构是什么？各层存什么？", "tagBg": "rgba(167,139,250,0.2)", "tagColor": "#a78bfa"}, {"text": "**核心洞察**：找得准而非存得多；三层协作：部署时先搜索会话记忆找上次冲突", "sub": "持久记忆确认环境→Skill记忆加载步骤", "icon": "❓", "tag": "Q: Hermes 三层记忆架构是什么？各层存什么？", "tagBg": "rgba(167,139,250,0.2)", "tagColor": "#a78bfa"}], "preview": 4}, {"id": "lab", "icon": "🧪", "title": "实验面板", "accent": "accent-blue", "items": [{"text": "添加时间**: 2026-04-09", "icon": "🧪"}], "preview": 4}, {"id": "skills", "icon": "⚡", "title": "技能面板", "accent": "accent-purple", "items": [{"name": "theo-night-routine", "desc": "夜间 Routine — 从想法到发布的完整管道", "category": "系统运维", "icon": "🌙"}, {"name": "theo-post", "desc": "文章发布到 Seed 博客", "category": "输出铸造", "icon": "▲"}, {"name": "theo-post-to-wechat", "desc": "微信公众号 HTML 发布", "category": "输出铸造", "icon": "▲"}, {"name": "theo-note-writes", "desc": "写作引擎 — 带着观点出发，在写的过程中把它想透", "category": "认知原子", "icon": "◆"}, {"name": "theo-note-rank", "desc": "领域降秩 — 找不可再少的生成器", "category": "认知原子", "icon": "◆"}, {"name": "theo-note-roundtable", "desc": "结构化圆桌讨论", "category": "认知原子", "icon": "◆"}, {"name": "theo-note-word", "desc": "英文单词深度拆解", "category": "认知原子", "icon": "◆"}, {"name": "theo-paper", "desc": "Paper 阅读器", "category": "认知原子", "icon": "◆"}, {"name": "theo-paper-flow", "desc": "Paper 工作流", "category": "认知原子", "icon": "◆"}, {"name": "theo-infocard", "desc": "高级信息卡视觉设计", "category": "输出铸造", "icon": "▲"}, {"name": "theo-note-card", "desc": "内容转 PNG 可视化", "category": "输出铸造", "icon": "▲"}, {"name": "theo-style-polish", "desc": "语言风格润色 — 让人话说得更顺滑", "category": "输出铸造", "icon": "▲"}, {"name": "theo-translate", "desc": "翻译引擎", "category": "输出铸造", "icon": "▲"}, {"name": "theo-supercourse", "desc": "超级备课工具", "category": "认知原子", "icon": "◆"}, {"name": "theo-report", "desc": "汇报词汇优化助手", "category": "输出铸造", "icon": "▲"}, {"name": "theo-nuwa-course", "desc": "从0到1打造一门好课", "category": "认知原子", "icon": "◆"}, {"name": "theo-write-tech", "desc": "技术博客写作", "category": "认知原子", "icon": "◆"}, {"name": "theo-write-tech-flow", "desc": "技术博客写作工作流", "category": "认知原子", "icon": "◆"}, {"name": "web-shader-extractor", "desc": "WebGL/Shader 效果提取", "category": "实验", "icon": "★"}, {"name": "llm-wiki", "desc": "Karpathy LLM Wiki 构建", "category": "知识管理", "icon": "📚"}], "preview": 6}, {"id": "seed", "icon": "🌱", "title": "沉淀面板", "accent": "accent-pink", "items": [{"text": "[2026-04-08] 来源：session/skill-setup", "icon": "🌱"}, {"text": "[2026-04-08] 来源：session/skill-setup", "icon": "🌱"}, {"text": "[2026-04-08] 来源：session/操作指南", "icon": "🌱"}, {"text": "[2026-04-08] 来源：Theo 分享（外网分析）", "icon": "🌱"}, {"text": "[2026-04-08] 来源：Theo 分享", "icon": "🌱"}, {"text": "[2026-04-08] 来源：Theo 分享", "icon": "🌱"}, {"text": "[2026-04-08] 来源：Theo 告知", "icon": "🌱"}, {"text": "[2026-04-08] 来源：Theo 分享", "icon": "🌱"}, {"text": "[2026-04-08] 来源：Theo 告知 + 实操验证", "icon": "🌱"}, {"text": "[2026-04-08] 来源：教训记录", "icon": "🌱"}], "preview": 5}, {"id": "wiki", "icon": "📚", "title": "知识面板", "accent": "accent-cyan", "items": [{"title": "Karpathy LLM Wiki Gist", "type": "concept", "desc": "---", "icon": "💡"}, {"title": "信息化、数字化、智能化的秩", "type": "concept", "desc": "---", "icon": "💡"}, {"title": "被看不见的手管理：数字化管理的权力重构", "type": "concept", "desc": "---", "icon": "💡"}, {"title": "Andrej Karpathy", "type": "entity", "desc": "---", "icon": "👤"}, {"title": "L先生", "type": "entity", "desc": "---", "icon": "👤"}, {"title": "Theo", "type": "entity", "desc": "---", "icon": "👤"}, {"title": "低秩结构", "type": "concept", "desc": "---", "icon": "💡"}, {"title": "决策权转移", "type": "concept", "desc": "---", "icon": "💡"}, {"title": "压缩即智能", "type": "concept", "desc": "---", "icon": "💡"}, {"title": "数据能动性", "type": "concept", "desc": "---", "icon": "💡"}, {"title": "信息化、数字化、智能化的秩", "type": "concept", "desc": "---", "icon": "💡"}, {"title": "数字化管理的权力重构", "type": "concept", "desc": "---", "icon": "💡"}, {"title": "可计算化扩张", "type": "concept", "desc": "---", "icon": "💡"}, {"title": "三根线框架", "type": "concept", "desc": "---", "icon": "💡"}, {"title": "LLM Wiki", "type": "concept", "desc": "---", "icon": "💡"}, {"title": "RAG对比Wiki", "type": "concept", "desc": "---", "icon": "💡"}], "preview": 6}, {"id": "topics", "icon": "🏷️", "title": "主题面板", "accent": "accent-green", "items": [{"text": "20260409--睡眠的底层逻辑：不是技巧，是系统", "icon": "📁", "tag": "topic-health", "tagBg": "rgba(78,205,196,0.2)", "tagColor": "#4ecdc4"}, {"text": "note-longevity-5-pillars", "icon": "📁", "tag": "topic-health", "tagBg": "rgba(78,205,196,0.2)", "tagColor": "#4ecdc4"}, {"text": "note-last-4-jobs-in-tech", "icon": "📁", "tag": "topic-growth", "tagBg": "rgba(78,205,196,0.2)", "tagColor": "#4ecdc4"}], "preview": 5}]};
+  <!-- ════ COLUMN 1: 记忆系统 + 任务层 ════ -->
+  <div class="span-3">
+    <div class="section">
+      <div class="sec-title">// 01 · 记忆系统</div>
 
-// ── RENDER ──
-const grid = document.getElementById('grid');
-document.getElementById('lastUpdated').textContent = DATA.generated_at || new Date().toLocaleString('zh-CN');
-
-function card(panel) {
-  const items = panel.items || [];
-  const display = items.slice(0, panel.preview || 4);
-  const hasMore = items.length > display.length;
-
-  let listHtml = '';
-  if (display.length === 0) {
-    listHtml = '<div class="empty">暂无内容</div>';
-  } else {
-    listHtml = display.map(item => {
-      let badge = '';
-      if (item.prio) badge = `<span class="prio ${item.prio}">${item.prio === 'high' ? '高' : item.prio === 'medium' ? '中' : '低'}</span>`;
-      if (item.status) badge = `<span class="status ${item.status}">${item.status === 'pending' ? '待办' : item.status === 'done' ? '完成' : '失败'}</span>`;
-      if (item.tag) badge = `<span class="tag" style="background:${item.tagBg || 'rgba(91,159,255,0.2)'};color:${item.tagColor || '#5b9fff'}">${item.tag}</span>`;
-
-      return `<li>
-        ${badge}
-        <span class="item-text">${item.name || item.title || item.text}${item.desc || item.sub ? `<br><span style="font-size:11px;color:var(--text-muted)">${item.desc || item.sub}</span>` : ''}</span>
-      </li>`;
-    }).join('');
-  }
-
-  return `
-  <div class="panel ${panel.accent}" onclick="openPanel('${panel.id}')">
-    <div class="panel-header">
-      <div class="panel-title">
-        <span class="panel-icon">${panel.icon}</span>
-        ${panel.title}
-        <span class="panel-count ${items.length > 0 ? 'has-items' : ''}">${items.length}</span>
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon" style="background:rgba(167,139,250,0.15)">🧠</div>
+          <span class="module-name">三层记忆架构</span>
+        </div>
+        <div class="module-desc">会话 / 持久 / Skill，三层分工，按需检索</div>
+        <ul class="module-items">
+          <li><span>会话记忆</span> — 情景记忆，SQLite + FTS5 索引</li>
+          <li><span>持久记忆</span> — 语义记忆，MEMORY.md + USER.md</li>
+          <li><span>Skill 记忆</span> — 程序性记忆，~/.hermes/skills/</li>
+        </ul>
       </div>
-      ${panel.updated ? `<div class="panel-meta">${panel.updated}</div>` : ''}
+
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon" style="background:rgba(255,159,67,0.12)">🌙</div>
+          <span class="module-name">Night Routine</span>
+          <span class="module-tag">cron 01:30</span>
+        </div>
+        <div class="module-desc">自动读取想法 → 写作 → 发布到 Seed 博客</div>
+        <ul class="module-items">
+          <li>Writing-Thoughts.md → 文章初稿</li>
+          <li>future.md / seed.md → Night 分析</li>
+          <li>发布 → jeekeagle/Seed</li>
+        </ul>
+      </div>
     </div>
-    <div class="panel-body">
-      <ul class="panel-list">${listHtml}</ul>
-      ${hasMore ? `<div class="more-hint">↑ 点击查看全部 ${items.length} 项</div>` : ''}
+  </div>
+
+  <!-- ════ COLUMN 2: 笔记系统 ════ -->
+  <div class="span-5">
+    <div class="section">
+      <div class="sec-title">// 02 · 笔记系统</div>
+
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon" style="background:rgba(91,159,255,0.12)">📒</div>
+          <span class="module-name">笔记库 note-topic/</span>
+          <span class="module-tag">主题分类</span>
+        </div>
+        <div class="module-desc">按主题领域分类的核心笔记资产</div>
+        <ul class="module-items">
+          <li><span>topic-health</span> — 健康 · 睡眠 · 长寿</li>
+          <li><span>topic-happy</span> — 幸福 · 快乐 · 心态</li>
+          <li><span>topic-growth</span> — 成长 · 职场 · 技术</li>
+          <li><span>topic-education</span> — AI时代儿童教育（规划中）</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon" style="background:rgba(78,205,196,0.12)">🌱</div>
+          <span class="module-name">沉淀库 seed.md</span>
+          <span class="module-tag">高价值</span>
+        </div>
+        <div class="module-desc">带时间戳的高价值内容沉淀，标记来源/类型</div>
+        <ul class="module-items">
+          <li>框架 · 洞察 · 工作空间结构</li>
+          <li>Session 技巧 · AI 工具分析</li>
+          <li>Hermes 架构 · Skill 系统</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon" style="background:rgba(255,217,61,0.1)">✍️</div>
+          <span class="module-name">写作想法 Writing-Thoughts.md</span>
+          <span class="module-tag">Night 输入</span>
+        </div>
+        <div class="module-desc">想写的主题随手记，时间 + 来源，Night Routine 消费</div>
+        <ul class="module-items">
+          <li>想法 → 立刻记录，不等待</li>
+          <li>包含核心框架初稿</li>
+        </ul>
+      </div>
     </div>
-  </div>`;
-}
+  </div>
 
-grid.innerHTML = DATA.panels.map(card).join('');
+  <!-- ════ COLUMN 3: 探索 + 任务 ════ -->
+  <div class="span-4">
+    <div class="section">
+      <div class="sec-title">// 03 · 探索实验室</div>
 
-// ── MODAL ──
-function openPanel(id) {
-  const panel = DATA.panels.find(p => p.id === id);
-  if (!panel) return;
-
-  document.getElementById('modalTitle').innerHTML = `<span style="font-size:24px">${panel.icon}</span> ${panel.title}`;
-  document.getElementById('modalBody').innerHTML = renderModal(panel);
-  document.getElementById('modalOverlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-function renderModal(panel) {
-  const items = panel.items || [];
-  if (items.length === 0) return '<div class="empty">暂无内容</div>';
-
-  if (panel.id === 'diary') {
-    return items.map(entry => `
-      <div class="modal-section">
-        <div class="modal-section-title">${entry.date}</div>
-        <div class="diary-themes">
-          ${entry.themes.map(t => `<div class="diary-theme">${t.icon} ${t.name}</div>`).join('')}
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon" style="background:rgba(255,79,109,0.1)">🧪</div>
+          <span class="module-name">theo-lab/</span>
+          <span class="module-tag">实验性</span>
         </div>
-      </div>`).join('');
-  }
-
-  if (panel.id === 'skills') {
-    const cats = {};
-    items.forEach(s => { if (!cats[s.category]) cats[s.category] = []; cats[s.category].push(s); });
-    return Object.entries(cats).map(([cat, skills]) => `
-      <div class="modal-section">
-        <div class="modal-section-title">${cat}</div>
-        <div class="modal-items">
-          ${skills.map(s => `
-            <div class="modal-item">
-              <div class="modal-item-icon">${s.icon || '◆'}</div>
-              <div class="modal-item-content">
-                <div class="modal-item-title">${s.name}</div>
-                <div class="modal-item-desc">${s.desc}</div>
-              </div>
-            </div>`).join('')}
-        </div>
-      </div>`).join('');
-  }
-
-  if (panel.id === 'wiki') {
-    return `
-      <div class="modal-section">
-        <div class="modal-section-title">概念 (${items.filter(i=>i.type==='concept').length})</div>
-        <div class="modal-items">
-          ${items.filter(i=>i.type==='concept').map(i=>`<div class="modal-item"><div class="modal-item-icon">💡</div><div class="modal-item-content"><div class="modal-item-title">${i.title}</div><div class="modal-item-desc">${i.desc || ''}</div></div></div>`).join('')}
-        </div>
+        <div class="module-desc">新项目孵化地，实验性质的探索</div>
+        <ul class="module-items">
+          <li><span>005-ai-kid</span> — AI 幼儿融合教育工具</li>
+          <li>正在发芽的想法在此验证</li>
+        </ul>
       </div>
-      <div class="modal-section">
-        <div class="modal-section-title">人物/实体 (${items.filter(i=>i.type==='entity').length})</div>
-        <div class="modal-items">
-          ${items.filter(i=>i.type==='entity').map(i=>`<div class="modal-item"><div class="modal-item-icon">👤</div><div class="modal-item-content"><div class="modal-item-title">${i.title}</div><div class="modal-item-desc">${i.desc || ''}</div></div></div>`).join('')}
-        </div>
-      </div>`;
-  }
 
-  // Default: list all items
-  return `
-    <div class="modal-section">
-      <div class="modal-section-title">全部 ${items.length} 项</div>
-      <div class="modal-items">
-        ${items.map(item => {
-          let badges = '';
-          if (item.prio) badges += `<span class="prio ${item.prio}">${item.prio === 'high' ? '高' : item.prio === 'medium' ? '中' : '低'}优先级</span>`;
-          if (item.status) badges += `<span class="status ${item.status}">${item.status === 'pending' ? '待办' : item.status === 'done' ? '完成' : '失败'}</span>`;
-          if (item.tag) badges += `<span class="tag" style="background:${item.tagBg||'rgba(91,159,255,0.2)'};color:${item.tagColor||'#5b9fff'}">${item.tag}</span>`;
-          return `<div class="modal-item">
-            <div class="modal-item-icon">${item.icon || panel.icon}</div>
-            <div class="modal-item-content">
-              <div class="modal-item-title">${item.text}</div>
-              ${item.sub ? `<div class="modal-item-desc">${item.sub}</div>` : ''}
-              ${badges ? `<div class="modal-item-meta">${badges}</div>` : ''}
-            </div>
-          </div>`;
-        }).join('')}
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon" style="background:rgba(255,79,109,0.1)">🔴</div>
+          <span class="module-name">任务调度</span>
+          <span class="module-tag">优先级</span>
+        </div>
+        <div class="module-desc">基于重要性的任务调度，高 / 中 / 低优先级</div>
+        <ul class="module-items">
+          <li><span style="color:#ff4f6d">🔴 高</span> — 立刻处理</li>
+          <li><span style="color:#ff9f43">🟠 中</span> — 高峰期处理</li>
+          <li><span style="color:#ffd93d">🟡 低</span> — 队列处理</li>
+        </ul>
       </div>
-    </div>`;
-}
-</script>
+
+      <div class="module">
+        <div class="module-header">
+          <div class="module-icon" style="background:rgba(167,139,250,0.1)">🔮</div>
+          <span class="module-name">想法种子 future.md</span>
+          <span class="module-tag">胚芽</span>
+        </div>
+        <div class="module-desc">还没开始但值得关注的想法，等待发芽</div>
+        <ul class="module-items">
+          <li><span>胚芽</span> — 刚冒出的想法</li>
+          <li><span>发芽中</span> — 正在探索</li>
+          <li><span>已行动</span> — 已启动的项目</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ FULL WIDTH: 输出铸造 ════ -->
+  <div class="span-12">
+    <div class="section">
+      <div class="sec-title">// 04 · 输出铸造</div>
+      <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:16px;">
+
+        <div class="module">
+          <div class="module-header">
+            <div class="module-icon" style="background:rgba(78,205,196,0.12)">🌿</div>
+            <span class="module-name">Seed 博客</span>
+          </div>
+          <div class="module-desc">技术思考与文章发布，GitHub Pages 托管</div>
+          <ul class="module-items">
+            <li>jeekeagle/Seed 仓库</li>
+            <li>HTML 信息卡 + Markdown</li>
+            <li>Night Routine 自动发布</li>
+          </ul>
+        </div>
+
+        <div class="module">
+          <div class="module-header">
+            <div class="module-icon" style="background:rgba(255,217,61,0.1)">💬</div>
+            <span class="module-name">微信公众号</span>
+          </div>
+          <div class="module-desc">图片版长文，高信息密度视觉表达</div>
+          <ul class="module-items">
+            <li>图片化排版 · 视觉层次</li>
+            <li>Mac 风格 / NYT 风格</li>
+            <li>官方 API 草稿发布</li>
+          </ul>
+        </div>
+
+        <div class="module">
+          <div class="module-header">
+            <div class="module-icon" style="background:rgba(255,159,67,0.12)">📊</div>
+            <span class="module-name">Lark 知识库</span>
+          </div>
+          <div class="module-desc">飞书文档与知识管理集成</div>
+          <ul class="module-items">
+            <li>飞书 CLI 工具集成</li>
+            <li>文档管理 · 消息推送</li>
+            <li>知识库同步</li>
+          </ul>
+        </div>
+
+        <div class="module">
+          <div class="module-header">
+            <div class="module-icon" style="background:rgba(167,139,250,0.12)">⚡</div>
+            <span class="module-name">技能系统</span>
+          </div>
+          <div class="module-desc">20 个定制工具，按类型分类，实时调用</div>
+          <ul class="module-items">
+            <li><span>认知原子</span> — 写作 · 圆桌 · 单词</li>
+            <li><span>输出铸造</span> — 发布 · 翻译 · 润色</li>
+            <li><span>系统运维</span> — Night Routine</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ FULL WIDTH: 工具生态 ════ -->
+  <div class="span-12">
+    <div class="section">
+      <div class="sec-title">// 05 · 工具生态</div>
+      <div style="display:grid; grid-template-columns: repeat(6,1fr); gap:12px;">
+
+        <div class="module">
+          <div class="module-header">
+            <div class="module-icon" style="background:rgba(91,159,255,0.1);font-size:12px">🧠</div>
+            <span class="module-name">AI 工具</span>
+          </div>
+          <ul class="module-items">
+            <li><span>Claude Code</span> — 结对工程师</li>
+            <li><span>OpenClaw</span> — 配置即行为</li>
+            <li><span>Hermes</span> — 自主分身</li>
+          </ul>
+        </div>
+
+        <div class="module">
+          <div class="module-header">
+            <div class="module-icon" style="background:rgba(78,205,196,0.1);font-size:12px">📡</div>
+            <span class="module-name">信息获取</span>
+          </div>
+          <ul class="module-items">
+            <li><span>Semantic Scholar</span> — 科研</li>
+            <li><span>NotebookLM</span> — 课题 RAG</li>
+            <li><span>arXiv</span> — 论文</li>
+          </ul>
+        </div>
+
+        <div class="module">
+          <div class="module-header">
+            <div class="module-icon" style="background:rgba(255,159,67,0.1);font-size:12px">🎨</div>
+            <span class="module-name">演示工具</span>
+          </div>
+          <ul class="module-items">
+            <li><span>codeck</span> — HTML PPT</li>
+            <li><span>PPT-as-code</span> — 演示技能</li>
+            <li><span>ai-website-cloner</span></li>
+          </ul>
+        </div>
+
+        <div class="module">
+          <div class="module-header">
+            <div class="module-icon" style="background:rgba(255,79,109,0.08);font-size:12px">🔧</div>
+            <span class="module-name">开发工具</span>
+          </div>
+          <ul class="module-items">
+            <li><span>GitHub CLI</span> — 仓库管理</li>
+            <li><span>GitHub Pages</span> — 托管</li>
+            <li><span>Webhooks</span> — 事件驱动</li>
+          </ul>
+        </div>
+
+        <div class="module">
+          <div class="module-header">
+            <div class="module-icon" style="background:rgba(167,139,250,0.1);font-size:12px">📚</div>
+            <span class="module-name">知识管理</span>
+          </div>
+          <ul class="module-items">
+            <li><span>Karpathy LLM Wiki</span></li>
+            <li><span>QA 记录</span> — 常见问答</li>
+            <li><span>Session 管理</span></li>
+          </ul>
+        </div>
+
+        <div class="module">
+          <div class="module-header">
+            <div class="module-icon" style="background:rgba(255,217,61,0.08);font-size:12px">⚡</div>
+            <span class="module-name">Agent 能力</span>
+          </div>
+          <ul class="module-items">
+            <li><span>Skill 系统</span> — 自改进</li>
+            <li><span>40+ 工具</span> — 内置</li>
+            <li><span>MCP</span> — 6000+ 集成</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span class="version">theo-hub v2.0 · 2026-04-09</span>
+  <span class="status">
+    <span class="status-dot"></span>
+    所有系统正常 · Hermes 24/7 在线
+  </span>
+</footer>
+
 </body>
 </html>
