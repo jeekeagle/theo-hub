@@ -665,13 +665,7 @@ footer {
   }
   function closeOverlay() { overlay.classList.remove('open'); }
 
-  var cards = document.querySelectorAll('.card, .style-card, .node-item');
-  cards.forEach(function(card){
-    card.style.cursor = 'pointer';
-    card.addEventListener('click', function(e){
-      if (e.target.closest('a, button')) return;
-      openCard(card);
-    });
+  var cards = 
   });
 
   closeBtn.addEventListener('click', closeOverlay);
