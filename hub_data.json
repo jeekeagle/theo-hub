@@ -1,0 +1,320 @@
+{
+  "generated_at": "2026-04-10 11:52",
+  "panels": [
+    {
+      "id": "tasks",
+      "icon": "🔴",
+      "title": "任务面板",
+      "accent": "accent-red",
+      "items": [],
+      "preview": 5
+    },
+    {
+      "id": "writing",
+      "icon": "✍️",
+      "title": "写作面板",
+      "accent": "accent-orange",
+      "items": [],
+      "preview": 5
+    },
+    {
+      "id": "research",
+      "icon": "🔬",
+      "title": "研究面板",
+      "accent": "accent-yellow",
+      "items": [],
+      "preview": 5
+    },
+    {
+      "id": "diary",
+      "icon": "📅",
+      "title": "日记面板",
+      "accent": "accent-green",
+      "items": [
+        {
+          "date": "2026-04-09",
+          "themes": [
+            {
+              "name": "default-innovation",
+              "icon": "📝"
+            },
+            {
+              "name": "appearance-evaluation-essence",
+              "icon": "📝"
+            },
+            {
+              "name": "ai-tools-trinity",
+              "icon": "📝"
+            }
+          ]
+        }
+      ],
+      "preview": 3
+    },
+    {
+      "id": "qa",
+      "icon": "❓",
+      "title": "问答面板",
+      "accent": "accent-cyan",
+      "items": [],
+      "preview": 4
+    },
+    {
+      "id": "lab",
+      "icon": "🧪",
+      "title": "实验面板",
+      "accent": "accent-blue",
+      "items": [
+        {
+          "text": "添加时间**: 2026-04-09",
+          "icon": "🧪"
+        }
+      ],
+      "preview": 4
+    },
+    {
+      "id": "skills",
+      "icon": "⚡",
+      "title": "技能面板",
+      "accent": "accent-purple",
+      "items": [
+        {
+          "name": "theo-night-routine",
+          "desc": "夜间 Routine — 从想法到发布的完整管道",
+          "category": "系统运维",
+          "icon": "🌙"
+        },
+        {
+          "name": "theo-post",
+          "desc": "文章发布到 Seed 博客",
+          "category": "输出铸造",
+          "icon": "▲"
+        },
+        {
+          "name": "theo-post-to-wechat",
+          "desc": "微信公众号 HTML 发布",
+          "category": "输出铸造",
+          "icon": "▲"
+        },
+        {
+          "name": "theo-note-writes",
+          "desc": "写作引擎 — 带着观点出发，在写的过程中把它想透",
+          "category": "认知原子",
+          "icon": "◆"
+        },
+        {
+          "name": "theo-note-rank",
+          "desc": "领域降秩 — 找不可再少的生成器",
+          "category": "认知原子",
+          "icon": "◆"
+        },
+        {
+          "name": "theo-note-roundtable",
+          "desc": "结构化圆桌讨论",
+          "category": "认知原子",
+          "icon": "◆"
+        },
+        {
+          "name": "theo-note-word",
+          "desc": "英文单词深度拆解",
+          "category": "认知原子",
+          "icon": "◆"
+        },
+        {
+          "name": "theo-paper",
+          "desc": "Paper 阅读器",
+          "category": "认知原子",
+          "icon": "◆"
+        },
+        {
+          "name": "theo-paper-flow",
+          "desc": "Paper 工作流",
+          "category": "认知原子",
+          "icon": "◆"
+        },
+        {
+          "name": "theo-infocard",
+          "desc": "高级信息卡视觉设计",
+          "category": "输出铸造",
+          "icon": "▲"
+        },
+        {
+          "name": "theo-note-card",
+          "desc": "内容转 PNG 可视化",
+          "category": "输出铸造",
+          "icon": "▲"
+        },
+        {
+          "name": "theo-style-polish",
+          "desc": "语言风格润色 — 让人话说得更顺滑",
+          "category": "输出铸造",
+          "icon": "▲"
+        },
+        {
+          "name": "theo-translate",
+          "desc": "翻译引擎",
+          "category": "输出铸造",
+          "icon": "▲"
+        },
+        {
+          "name": "theo-supercourse",
+          "desc": "超级备课工具",
+          "category": "认知原子",
+          "icon": "◆"
+        },
+        {
+          "name": "theo-report",
+          "desc": "汇报词汇优化助手",
+          "category": "输出铸造",
+          "icon": "▲"
+        },
+        {
+          "name": "theo-nuwa-course",
+          "desc": "从0到1打造一门好课",
+          "category": "认知原子",
+          "icon": "◆"
+        },
+        {
+          "name": "theo-write-tech",
+          "desc": "技术博客写作",
+          "category": "认知原子",
+          "icon": "◆"
+        },
+        {
+          "name": "theo-write-tech-flow",
+          "desc": "技术博客写作工作流",
+          "category": "认知原子",
+          "icon": "◆"
+        },
+        {
+          "name": "web-shader-extractor",
+          "desc": "WebGL/Shader 效果提取",
+          "category": "实验",
+          "icon": "★"
+        },
+        {
+          "name": "llm-wiki",
+          "desc": "Karpathy LLM Wiki 构建",
+          "category": "知识管理",
+          "icon": "📚"
+        }
+      ],
+      "preview": 6
+    },
+    {
+      "id": "seed",
+      "icon": "🌱",
+      "title": "沉淀面板",
+      "accent": "accent-pink",
+      "items": [
+        {
+          "text": "[2026-04-08] 来源：session/skill-setup",
+          "icon": "🌱"
+        },
+        {
+          "text": "[2026-04-08] 来源：session/skill-setup",
+          "icon": "🌱"
+        },
+        {
+          "text": "[2026-04-08] 来源：session/操作指南",
+          "icon": "🌱"
+        },
+        {
+          "text": "[2026-04-08] 来源：Theo 分享（外网分析）",
+          "icon": "🌱"
+        },
+        {
+          "text": "[2026-04-08] 来源：Theo 分享",
+          "icon": "🌱"
+        },
+        {
+          "text": "[2026-04-08] 来源：Theo 分享",
+          "icon": "🌱"
+        },
+        {
+          "text": "[2026-04-08] 来源：Theo 告知",
+          "icon": "🌱"
+        },
+        {
+          "text": "[2026-04-08] 来源：Theo 分享",
+          "icon": "🌱"
+        },
+        {
+          "text": "[2026-04-08] 来源：Theo 告知 + 实操验证",
+          "icon": "🌱"
+        },
+        {
+          "text": "[2026-04-08] 来源：教训记录",
+          "icon": "🌱"
+        }
+      ],
+      "preview": 5
+    },
+    {
+      "id": "wiki",
+      "icon": "📚",
+      "title": "知识面板",
+      "accent": "accent-cyan",
+      "items": [],
+      "preview": 6
+    },
+    {
+      "id": "topics",
+      "icon": "🏷️",
+      "title": "主题面板",
+      "accent": "accent-green",
+      "items": [
+        {
+          "text": "20260409--睡眠的底层逻辑：不是技巧，是系统",
+          "icon": "📁",
+          "tag": "topic-health",
+          "tagBg": "rgba(78,205,196,0.2)",
+          "tagColor": "#4ecdc4"
+        },
+        {
+          "text": "note-longevity-5-pillars",
+          "icon": "📁",
+          "tag": "topic-health",
+          "tagBg": "rgba(78,205,196,0.2)",
+          "tagColor": "#4ecdc4"
+        },
+        {
+          "text": "note-last-4-jobs-in-tech",
+          "icon": "📁",
+          "tag": "topic-growth",
+          "tagBg": "rgba(78,205,196,0.2)",
+          "tagColor": "#4ecdc4"
+        },
+        {
+          "text": "note-young-people-advice",
+          "icon": "📁",
+          "tag": "topic-growth",
+          "tagBg": "rgba(78,205,196,0.2)",
+          "tagColor": "#4ecdc4"
+        },
+        {
+          "text": "karpathy-autoresearch",
+          "icon": "📁",
+          "tag": "topic-ai-research",
+          "tagBg": "rgba(78,205,196,0.2)",
+          "tagColor": "#4ecdc4"
+        },
+        {
+          "text": "topic-ui",
+          "icon": "📁",
+          "tag": "topic-ui",
+          "tagBg": "rgba(78,205,196,0.2)",
+          "tagColor": "#4ecdc4"
+        },
+        {
+          "text": "K-Dense-AI-scientific-agent-skills",
+          "icon": "📁",
+          "tag": "Resources",
+          "tagBg": "rgba(78,205,196,0.2)",
+          "tagColor": "#4ecdc4"
+        }
+      ],
+      "preview": 5
+    }
+  ]
+}
