@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Theo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;510;590&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* === TOKENS === */
+    :root {
+      --bg:           #08090a;
+      --bg-panel:     #0f1011;
+      --bg-surface:   #191a1b;
+      --bg-elevated:  #28282c;
+      --border:       rgba(255,255,255,0.05);
+      --border-std:   rgba(255,255,255,0.08);
+      --border-muted: rgba(255,255,255,0.04);
+      --text:         #f7f8f8;
+      --text-body:   #d0d6e0;
+      --text-dim:     #8a8f98;
+      --text-muted:   #62666d;
+      --accent:       #5e6ad2;
+      --accent-glow:  #7170ff;
+      --accent-hover: #828fff;
+      --green:        #27a644;
+      --green-dim:    rgba(39,166,68,0.15);
+      --font:         'Inter', system-ui, -apple-system, sans-serif;
+      --mono:         'JetBrains Mono', ui-monospace, monospace;
+      --r-sm:   4px;
+      --r-md:   6px;
+      --r-lg:   8px;
+    }
+
+    /* === RESET === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: 'cv01', 'ss03';
+    }
+
+    /* === LAYOUT === */
+    .app {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* === TOPBAR === */
+    .topbar {
+      height: 52px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+    .topbar-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-body);
+      letter-spacing: -0.2px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .topbar-logo .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+    }
+    .topbar-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .topbar-breadcrumb .sep { color: var(--text-muted); opacity: 0.4; }
+    .topbar-breadcrumb .current { color: var(--text-body); }
+    .topbar-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-icon {
+      width: 30px; height: 30px;
+      border-radius: var(--r-md);
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      font-size: 14px;
+    }
+    .btn-icon:hover {
+      background: var(--bg-surface);
+      border-color: var(--border-std);
+      color: var(--text-body);
+    }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--r-md);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-std);
+      color: var(--text-body);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 510;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    /* === MAIN CONTENT === */
+    .main {
+      flex: 1;
+      padding: 40px 24px 80px;
+    }
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    /* === PAGE HEADER === */
+    .page-header {
+      margin-bottom: 40px;
+    }
+    .page-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .page-title {
+      font-size: 28px;
+      font-weight: 510;
+      color: var(--text);
+      letter-spacing: -0.7px;
+      margin-bottom: 6px;
+    }
+    .page-sub {
+      font-size: 14px;
+      color: var(--text-dim);
+      font-weight: 300;
+    }
+
+    /* === STATS ROW === */
+    .stats-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+    .stat-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 120px;
+    }
+    .stat-num {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 510;
+      color: var(--text);
+      line-height: 1;
+    }
+    .stat-info { display: flex; flex-direction: column; gap: 2px; }
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    .stat-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* === PIPELINE === */
+    .pipeline-wrap {
+      overflow-x: auto;
+      padding-bottom: 16px;
+    }
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(200px, 1fr));
+      gap: 10px;
+      min-width: 1400px;
+    }
+
+    /* === COLUMN === */
+    .col { display: flex; flex-direction: column; gap: 8px; }
+    .col-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: var(--r-md);
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      position: sticky;
+      top: 52px;
+      z-index: 10;
+    }
+    .col-header-left {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .col-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .col-name {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 510;
+      color: var(--text-body);
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .col-count {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 510;
+      color: var(--text-muted);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-muted);
+      border-radius: 10px;
+      padding: 0 6px;
+      min-width: 20px;
+      text-align: center;
+      line-height: 18px;
+    }
+
+    /* === CARD === */
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 14px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+      color: inherit;
+    }
+    .card:hover {
+      border-color: var(--border-std);
+      background: var(--bg-elevated);
+      transform: translateY(-1px);
+    }
+    .card::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: transparent;
+      transition: background 0.15s;
+    }
+    /* status accent */
+    .card[data-status="received"]::after    { background: var(--text-muted); }
+    .card[data-status="analysis-confirmed"]::after { background: #3498db; }
+    .card[data-status="outline-delivered"]::after  { background: #9b59b6; }
+    .card[data-status="materials-delivered"]::after{ background: var(--accent); }
+    .card[data-status="ready"]::after             { background: #f39c12; }
+    .card[data-status="delivering"]::after        { background: var(--green); }
+    .card[data-status="done"]::after               { background: var(--accent3, #10b981); }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 590;
+      color: var(--text);
+      line-height: 1.35;
+      letter-spacing: -0.1px;
+    }
+    .card-school {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 510;
+      color: var(--accent-glow);
+      background: rgba(113,112,255,0.1);
+      border: 1px solid rgba(113,112,255,0.2);
+      border-radius: 3px;
+      padding: 1px 6px;
+      white-space: nowrap;
+    }
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .card-meta .sep { opacity: 0.4; }
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: var(--text-dim);
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-muted);
+    }
+    .card-date {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+    .card-cta {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 510;
+      color: var(--accent-glow);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .card:hover .card-cta { opacity: 1; }
+
+    /* === EMPTY STATE === */
+    .col-empty {
+      border: 1px dashed rgba(255,255,255,0.06);
+      border-radius: var(--r-lg);
+      padding: 20px 14px;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.01);
+    }
+
+    /* === FOOTER === */
+    .footer {
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .topbar { padding: 0 16px; gap: 12px; }
+      .topbar-breadcrumb { display: none; }
+      .main { padding: 24px 16px 60px; }
+      .stats-row { gap: 8px; }
+      .stat-card { padding: 10px 14px; }
+      .page-title { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <a href="https://jeekeagle.github.io/theo-hub/" class="topbar-logo">
+      <span class="dot"></span>
+      Theo
+    </a>
+    <nav class="topbar-breadcrumb">
+      <span>Hub</span>
+      <span class="sep">/</span>
+      <span class="current">Projects</span>
+    </nav>
+    <div class="topbar-right">
+      <a href="https://jeekeagle.github.io/theo-hub/" class="btn-ghost">
+        &#8592; Hub
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="container">
+
+      <div class="page-header">
+        <div class="page-label">Overview</div>
+        <h1 class="page-title">Project Pipeline</h1>
+        <p class="page-sub">AI+ 教育教学实践 — 所有项目实时状态追踪</p>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-num" id="stat-total">—</span>
+          <div class="stat-info">
+            <span class="stat-label">Total</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-dot" style="background:#9b59b6"></span>
+          <span class="stat-num" id="stat-outline">—</span>
+          <div class="stat-info">
+            <span class="stat-label">Outline</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-dot" style="background:var(--accent)"></span>
+          <span class="stat-num" id="stat-materials">—</span>
+          <div class="stat-info">
+            <span class="stat-label">Materials</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-dot" style="background:#f39c12"></span>
+          <span class="stat-num" id="stat-ready">—</span>
+          <div class="stat-info">
+            <span class="stat-label">Ready</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-dot" style="background:var(--green)"></span>
+          <span class="stat-num" id="stat-active">—</span>
+          <div class="stat-info">
+            <span class="stat-label">Active</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-dot" style="background:#10b981"></span>
+          <span class="stat-num" id="stat-done">—</span>
+          <div class="stat-info">
+            <span class="stat-label">Done</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PIPELINE -->
+      <div class="pipeline-wrap">
+        <div class="pipeline" id="pipeline"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span>Auto-synced from Obsidian</span>
+    <span>Updated: <span id="last-updated">—</span></span>
+  </footer>
+
+</div>
+
+<script>
+  // ─── DATA ────────────────────────────────────────────────────────────────────
+  // Each project lives at: /[slug]/index.html
+  // Frontmatter: title, school, date, status, duration, modules, description, url
+
+  const PROJECTS = [
+    {
+      title: "AI 时代的教学新范式",
+      school: "青岛市明德双语学校",
+      shortSchool: "明德双语",
+      date: "2026-04-17",
+      status: "outline-delivered",
+      duration: "2h",
+      modules: "3 modules",
+      description: "K-12 全学段教师，认知+工具+工作流三分法",
+      url: "../ai-edu-lecture/mingde/",
+      iteration: 1,
+      type: "lecture"
+    }
+  ];
+
+  // ─── STATUS CONFIG ──────────────────────────────────────────────────────────
+  const STAGES = [
+    { id: "received",             label: "Received",           color: "#62666d", accent: "rgba(98,102,109,0.15)" },
+    { id: "analysis-confirmed",    label: "Analysis",            color: "#3498db", accent: "rgba(52,152,219,0.12)" },
+    { id: "outline-delivered",    label: "Outline",            color: "#9b59b6", accent: "rgba(155,89,182,0.12)" },
+    { id: "materials-delivered",  label: "Materials",          color: "#5e6ad2", accent: "rgba(94,106,210,0.12)" },
+    { id: "ready",                label: "Ready",               color: "#f39c12", accent: "rgba(243,156,18,0.12)" },
+    { id: "delivering",           label: "Delivering",          color: "#27a644", accent: "rgba(39,166,68,0.12)" },
+    { id: "done",                 label: "Done",                color: "#10b981", accent: "rgba(16,185,129,0.12)" },
+  ];
+
+  // ─── RENDER ──────────────────────────────────────────────────────────────────
+  function render() {
+    const pipeline = document.getElementById("pipeline");
+    pipeline.innerHTML = "";
+
+    // Stats
+    let total = PROJECTS.length;
+    let outline = 0, materials = 0, ready = 0, active = 0, done = 0;
+
+    STAGES.forEach((stage, colIdx) => {
+      const col = document.createElement("div");
+      col.className = "col";
+
+      // Column header
+      const stageProjects = PROJECTS.filter(p => p.status === stage.id);
+      if (stage.id === "outline-delivered") outline = stageProjects.length;
+      if (stage.id === "materials-delivered") materials = stageProjects.length;
+      if (stage.id === "ready") ready = stageProjects.length;
+      if (stage.id === "delivering") active = stageProjects.length;
+      if (stage.id === "done") done = stageProjects.length;
+
+      const header = document.createElement("div");
+      header.className = "col-header";
+      header.innerHTML = `
+        <div class="col-header-left">
+          <span class="col-dot" style="background:${stage.color}; box-shadow: 0 0 5px ${stage.color}50;"></span>
+          <span class="col-name">${stage.label}</span>
+        </div>
+        <span class="col-count">${stageProjects.length}</span>
+      `;
+      col.appendChild(header);
+
+      // Cards
+      if (stageProjects.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "col-empty";
+        empty.textContent = "No projects";
+        col.appendChild(empty);
+      } else {
+        stageProjects.forEach(p => {
+          const card = document.createElement("a");
+          card.className = "card";
+          card.href = p.url;
+          card.dataset.status = stage.id;
+          card.target = "_blank";
+
+          card.innerHTML = `
+            <div class="card-top">
+              <span class="card-title">${p.title}</span>
+              ${p.iteration > 1 ? `<span class="card-school">#${p.iteration}</span>` : ""}
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span>${p.shortSchool}</span>
+                <span class="sep">·</span>
+                <span>${p.duration}</span>
+              </div>
+              <span class="card-tag">${p.modules}</span>
+            </div>
+            <div class="card-footer">
+              <span class="card-date">${p.date}</span>
+              <span class="card-cta">View →</span>
+            </div>
+          `;
+          col.appendChild(card);
+        });
+      }
+
+      pipeline.appendChild(col);
+    });
+
+    // Update stats
+    document.getElementById("stat-total").textContent = total;
+    document.getElementById("stat-outline").textContent = outline;
+    document.getElementById("stat-materials").textContent = materials;
+    document.getElementById("stat-ready").textContent = ready;
+    document.getElementById("stat-active").textContent = active;
+    document.getElementById("stat-done").textContent = done;
+    document.getElementById("last-updated").textContent = new Date().toLocaleString("zh-CN", {
+      month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"
+    });
+  }
+
+  render();
+</script>
+</body>
+</html>
