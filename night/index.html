@@ -448,7 +448,7 @@ footer {
 <body>
 <div class="container">
 
-<header>
+<header id="siteHeader">
   <div class="header-top">
     <div class="header-left">
       <div class="header-label">// NIGHT ROUTINE · 01:30</div>
@@ -672,6 +672,7 @@ function showDetail(idx) {
   document.getElementById('detailBody').innerHTML = parseMarkdown(post.body);
 
   document.getElementById('listView').classList.add('hidden');
+  document.getElementById('siteHeader').style.display = 'none';
   document.getElementById('detailView').classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -679,6 +680,7 @@ function showDetail(idx) {
 document.getElementById('backBtn').addEventListener('click', () => {
   document.getElementById('detailView').classList.remove('active');
   document.getElementById('listView').classList.remove('hidden');
+  document.getElementById('siteHeader').style.display = '';
 });
 
 // ─── Theme ───
