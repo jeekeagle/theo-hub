@@ -553,6 +553,36 @@ footer {
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && overlay.classList.contains('open')) closeOverlay(); });
 })();
 
+
+(function(){
+  var overlay = document.getElementById('cardPreviewOverlay');
+  var closeBtn = document.getElementById('cardPreviewClose');
+  var titleEl = document.getElementById('cardPreviewTitle');
+  var bodyEl = document.getElementById('cardPreviewBody');
+
+  function openCard(card) {
+    var title = card.querySelector('.card-title, .style-card-name, h3, h2') ||
+                card.querySelector('[class*="title"]') || document.createElement('span');
+    titleEl.textContent = title.textContent || title.innerText || '卡片预览';
+    bodyEl.innerHTML = '<p class="card-preview-placeholder">卡片详情展示区域 · 更多信息待填充</p>';
+    overlay.classList.add('open');
+  }
+  function closeOverlay() { overlay.classList.remove('open'); }
+
+  var cards = document.querySelectorAll('.card, .style-card, .node-item');
+  cards.forEach(function(card){
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function(e){
+      if (e.target.closest('a, button')) return;
+      openCard(card);
+    });
+  });
+
+  closeBtn.addEventListener('click', closeOverlay);
+  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeOverlay(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && overlay.classList.contains('open')) closeOverlay(); });
+})();
+
 </script>
 </body>
 </html>
