@@ -7,139 +7,404 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#050810;--bg-card:#080d1a;--border:#1a2845;--accent:#7dd4ff;--accent2:#9b7dff;--text:#b8cce0;--text-dim:#5a7a9a;--text-muted:#2a4060;--font-mono:'JetBrains Mono',monospace;--font-sans:'Noto Sans SC',sans-serif}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:var(--font-sans);min-height:100vh;padding-top:32px}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(125,212,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(125,212,255,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
-.container{max-width:1100px;margin:0 auto;padding:48px 24px 80px;position:relative;z-index:1}
-header{margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--border)}
-.header-label{font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:3px;margin-bottom:10px}
-header h1{font-family:var(--font-mono);font-size:clamp(28px,5vw,48px);font-weight:600;color:var(--text);margin-bottom:10px;letter-spacing:-0.5px}
-header h1 span{color:var(--accent)}
-
+/*
+  Design: Aurora Glass / Holographic Terminal
+  Distinct from:
+    - Lab (VoltAgent emerald green, radial dots)
+    - Auto (Raycast red, line grid + top bar)
+  Key differentiators:
+    - Electric blue + violet aurora palette
+    - Frosted glass cards with backdrop-blur
+    - 3D perspective flip with spring easing
+    - Subtle shimmer overlay on hover
+    - Dot grid in cold blue tone
+*/
+:root {
+  --bg: #04060d;
+  --bg-card: rgba(255,255,255,0.035);
+  --bg-card-hover: rgba(255,255,255,0.06);
+  --border: rgba(148,163,184,0.12);
+  --border-glow: rgba(56,189,248,0.35);
+  --accent: #38bdf8;
+  --accent-glow: rgba(56,189,248,0.18);
+  --accent2: #a78bfa;
+  --accent2-glow: rgba(167,139,250,0.18);
+  --text: #e2e8f0;
+  --text-dim: #64748b;
+  --text-muted: #1e293b;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-sans: 'Noto Sans SC', sans-serif;
+  --glass-bg: rgba(12,18,30,0.6);
+  --glass-border: rgba(148,163,184,0.1);
+  --flip-duration: 0.55s;
+}
+[data-theme="light"] {
+  --bg: #f0f4f8;
+  --bg-card: rgba(255,255,255,0.7);
+  --bg-card-hover: rgba(255,255,255,0.9);
+  --border: rgba(100,116,139,0.18);
+  --border-glow: rgba(14,165,233,0.4);
+  --accent: #0ea5e9;
+  --accent-glow: rgba(14,165,233,0.14);
+  --accent2: #7c3aed;
+  --accent2-glow: rgba(124,58,237,0.14);
+  --text: #0f172a;
+  --text-dim: #475569;
+  --text-muted: #94a3b8;
+  --glass-bg: rgba(255,255,255,0.5);
+  --glass-border: rgba(148,163,184,0.25);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* Aurora dot grid — cold blue tones, not emerald or red */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(148,163,184,0.08) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  z-index: 0;
+}
+[data-theme="light"] body::before {
+  background-image:
+    radial-gradient(circle, rgba(100,116,139,0.12) 1px, transparent 1px);
+}
+/* Top-right aurora glow — blue/violet, distinct from Lab (emerald) and Auto (red) */
+body::after {
+  content: '';
+  position: fixed;
+  top: -180px;
+  right: -100px;
+  width: 600px;
+  height: 500px;
+  background:
+    radial-gradient(ellipse at 60% 40%, rgba(56,189,248,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 30% 70%, rgba(167,139,250,0.06) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+/* ─── Header ─── */
+header {
+  padding: 52px 0 44px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
 .header-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
 }
-
+.header-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  opacity: 0.85;
+}
+header h1 {
+  font-family: var(--font-mono);
+  font-size: clamp(26px, 4vw, 44px);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+header h1 span { color: var(--accent); }
+.header-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  font-weight: 300;
+  max-width: 500px;
+  line-height: 1.7;
+}
 .header-right {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
-
-header .theme-toggle {
-  position: static;
+.theme-toggle {
   background: transparent;
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 6px 10px;
+  padding: 7px 9px;
   cursor: pointer;
   color: var(--text-dim);
   font-size: 16px;
   line-height: 1;
   transition: border-color 0.2s, color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
 }
-
-header .theme-toggle:hover {
+.theme-toggle:hover {
   border-color: var(--accent);
   color: var(--accent);
-  background: var(--accent-dim);
+  background: var(--accent-glow);
 }
-
-[data-theme="light"] header .theme-toggle {
-  color: #111110;
-}
-
-[data-theme="dark"] header .theme-toggle {
-  color: #dce8f0;
-}
-
-.header-desc{font-size:14px;color:var(--text-dim);font-weight:300;max-width:500px}
-.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-@media(max-width:900px){.skills-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:500px){.skills-grid{grid-template-columns:1fr}}
-/* Flip card */
-.flip-card{height:200px;perspective:1000px;cursor:pointer}
-.flip-inner{position:relative;width:100%;height:100%;transition:transform 0.6s;transform-style:preserve-3d}
-.flip-card:hover .flip-inner{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:8px;padding:20px;display:flex;flex-direction:column}
-.flip-front{background:var(--bg-card);border:1px solid var(--border);transition:border-color 0.2s}
-.flip-front:hover{border-color:var(--accent)}
-.flip-back{background:var(--bg-card);border:1px solid var(--accent);transform:rotateY(180deg)}
-.card-category{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);letter-spacing:2px;margin-bottom:8px}
-.card-name{font-family:var(--font-mono);font-size:16px;font-weight:600;color:var(--text);margin-bottom:auto}
-.card-hint{font-family:var(--font-mono);font-size:9px;color:var(--accent);letter-spacing:1px}
-.back-category{font-family:var(--font-mono);font-size:9px;color:var(--accent);letter-spacing:2px;margin-bottom:8px}
-.back-name{font-family:var(--font-mono);font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px}
-.back-desc{font-size:12px;color:var(--text-dim);line-height:1.6;flex:1}
-footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--border);text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--text-muted)}
-  [data-theme="light"] {
-    --bg: #f5f7fa;
-    --bg-card: #ffffff;
-    --bg-hover: #eef1f5;
-    --border: #d0d8e0;
-    --accent: #3b9acc;
-    --accent2: #7b5acc;
-    --text: #1a2a3a;
-    --text-dim: #5a6a7a;
-    --text-muted: #90a0b0;
-  }
-
-.theme-toggle{background:transparent;border:1px solid var(--border);border-radius:8px;padding:6px 8px;cursor:pointer;color:var(--text);transition:all .2s;flex-shrink:0}
-.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
-[data-theme="light"] .theme-toggle{border-color:#c8beb0;color:#3d2e1e}
-[data-theme="light"] .theme-toggle:hover{border-color:#c47a18;color:#c47a18}
-
-
 #hubLink {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.3px;
   color: var(--text-dim);
   text-decoration: none;
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 6px 10px;
+  padding: 7px 12px;
   display: flex;
   align-items: center;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  color: var(--text-dim);
-  text-decoration: none;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 6px 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  gap: 5px;
   transition: border-color 0.2s, color 0.2s, background 0.2s;
 }
-
 #hubLink:hover {
   border-color: var(--accent2);
   color: var(--accent2);
-  background: rgba(74,158,255,0.08);
+  background: var(--accent2-glow);
+}
+#hubLink svg { transition: transform 0.2s; }
+#hubLink:hover svg { transform: translateX(-2px); }
+
+/* ─── Skills Grid (4-col) ─── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 900px) { .skills-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .skills-grid { grid-template-columns: 1fr; } }
+
+/* ─── Flip Card ─── */
+.flip-card {
+  height: 210px;
+  perspective: 1200px;
+  cursor: pointer;
+}
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform var(--flip-duration) cubic-bezier(0.34, 1.2, 0.64, 1);
+  transform-style: preserve-3d;
+}
+.flip-card:hover .flip-inner {
+  transform: rotateY(180deg);
+}
+.flip-front,
+.flip-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-#hubLink svg {
-  flex-shrink: 0;
-  transition: transform 0.2s;
+/* Frosted glass front */
+.flip-front {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+.flip-card:hover .flip-front {
+  border-color: var(--border-glow);
+  box-shadow:
+    0 0 0 1px var(--border-glow),
+    0 8px 32px rgba(56,189,248,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+[data-theme="light"] .flip-card:hover .flip-front {
+  box-shadow:
+    0 0 0 1px var(--border-glow),
+    0 8px 32px rgba(14,165,233,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.8);
 }
 
-#hubLink:hover svg {
-  transform: translateX(-2px);
+/* Frosted glass back */
+.flip-back {
+  background: linear-gradient(
+    135deg,
+    rgba(56,189,248,0.08) 0%,
+    rgba(167,139,250,0.08) 100%
+  );
+  border: 1px solid rgba(56,189,248,0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transform: rotateY(180deg);
+  box-shadow:
+    0 0 0 1px rgba(56,189,248,0.2),
+    0 12px 40px rgba(56,189,248,0.1);
+}
+[data-theme="light"] .flip-back {
+  background: linear-gradient(
+    135deg,
+    rgba(14,165,233,0.06) 0%,
+    rgba(124,58,237,0.06) 100%
+  );
+  border-color: rgba(14,165,233,0.25);
+  box-shadow:
+    0 0 0 1px rgba(14,165,233,0.15),
+    0 12px 40px rgba(14,165,233,0.08);
 }
 
+/* Aurora shimmer top edge */
+.flip-front::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(56,189,248,0.5) 40%,
+    rgba(167,139,250,0.5) 60%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.flip-card:hover .flip-front::before { opacity: 1; }
+
+/* Shimmer on back */
+.flip-back::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(56,189,248,0.8) 50%,
+    rgba(167,139,250,0.8) 100%
+  );
+}
+
+/* Card content */
+.card-category {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 2.5px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.card-name {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: auto;
+  line-height: 1.3;
+}
+.card-hint {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.25s, transform 0.25s;
+}
+.flip-card:hover .card-hint {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Back content */
+.back-category {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--accent);
+  letter-spacing: 2.5px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.back-name {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.back-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  flex: 1;
+}
+
+/* Category color accents */
+.cat-content .card-category,
+.cat-content .back-category { color: var(--accent); }
+.cat-research .card-category,
+.cat-research .back-category { color: var(--accent2); }
+.cat-system .card-category,
+.cat-system .back-category { color: #5eead4; }
+[data-theme="light"] .cat-system .card-category,
+[data-theme="light"] .cat-system .back-category { color: #0d9488; }
+
+/* Category accent line on front */
+.cat-content .flip-front::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.cat-research .flip-front::after {
+  background: linear-gradient(90deg, var(--accent2), transparent);
+}
+.cat-system .flip-front::after {
+  background: linear-gradient(90deg, #5eead4, transparent);
+}
+[data-theme="light"] .cat-system .flip-front::after {
+  background: linear-gradient(90deg, #0d9488, transparent);
+}
+.flip-card:hover .flip-front::after { opacity: 1; }
+
+/* ─── Footer ─── */
+footer {
+  margin-top: 60px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
 </style>
 </head>
 <body>
-<a href="../" style="color:#888;font-size:0.8rem;text-decoration:none;position:fixed;top:20px;left:20px;">← Hub</a>
+<a href="../" style="color:var(--text-dim);font-size:0.8rem;text-decoration:none;position:fixed;top:20px;left:20px;font-family:var(--font-mono);">← Hub</a>
 <div class="container">
 <header>
   <div class="header-top">
@@ -148,131 +413,176 @@ footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--border);text-
       <h1>Skills <span>技能</span></h1>
       <p class="header-desc">翻转卡片。Hover 展开详情。经验的结晶，遇到任务自动加载。</p>
     </div>
-    <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">
-  <span class="sun-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
-  <span class="moon-icon" style="display:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
-</button></div>
+    <div class="header-right">
+      <a href="https://jeekeagle.github.io/theo-hub/" id="hubLink" aria-label="返回 theo-hub">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        theo-hub
+      </a>
+      <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">
+        <span class="sun-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+        <span class="moon-icon" style="display:none"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+    </div>
   </div>
 </header>
 
 <div class="skills-grid">
-  <div class="flip-card"><div class="flip-inner">
-    <div class="flip-front">
-      <div class="card-category">CONTENT</div>
-      <div class="card-name">写作引擎</div>
-      <div class="card-hint">HOVER →</div>
+  <!-- CONTENT -->
+  <div class="flip-card cat-content">
+    <div class="flip-inner">
+      <div class="flip-front">
+        <div class="card-category">CONTENT</div>
+        <div class="card-name">写作引擎</div>
+        <div class="card-hint">HOVER →</div>
+      </div>
+      <div class="flip-back">
+        <div class="back-category">CONTENT</div>
+        <div class="back-name">写作引擎</div>
+        <div class="back-desc">带着观点出发，在写的过程当中把它想透。触发词：写作、润色、翻译。</div>
+      </div>
     </div>
-    <div class="flip-back">
-      <div class="back-category">CONTENT</div>
-      <div class="back-name">写作引擎</div>
-      <div class="back-desc">带着观点出发，在写的过程中把它想透。触发词：写作、润色、翻译。</div>
-    </div>
-  </div></div>
+  </div>
 
-  <div class="flip-card"><div class="flip-inner">
-    <div class="flip-front">
-      <div class="card-category">CONTENT</div>
-      <div class="card-name">风格润色</div>
-      <div class="card-hint">HOVER →</div>
+  <div class="flip-card cat-content">
+    <div class="flip-inner">
+      <div class="flip-front">
+        <div class="card-category">CONTENT</div>
+        <div class="card-name">风格润色</div>
+        <div class="card-hint">HOVER →</div>
+      </div>
+      <div class="flip-back">
+        <div class="back-category">CONTENT</div>
+        <div class="back-name">风格润色</div>
+        <div class="back-desc">让人读起来更有共鸣。更平和、更顺滑、更有呼吸感。适用于中英文。</div>
+      </div>
     </div>
-    <div class="flip-back">
-      <div class="back-category">CONTENT</div>
-      <div class="back-name">风格润色</div>
-      <div class="back-desc">让人读起来更有共鸣。更平和、更顺滑、更有呼吸感。适用于中英文。</div>
-    </div>
-  </div></div>
+  </div>
 
-  <div class="flip-card"><div class="flip-inner">
-    <div class="flip-front">
-      <div class="card-category">CONTENT</div>
-      <div class="card-name">翻译工具</div>
-      <div class="card-hint">HOVER →</div>
+  <div class="flip-card cat-content">
+    <div class="flip-inner">
+      <div class="flip-front">
+        <div class="card-category">CONTENT</div>
+        <div class="card-name">翻译工具</div>
+        <div class="card-hint">HOVER →</div>
+      </div>
+      <div class="flip-back">
+        <div class="back-category">CONTENT</div>
+        <div class="back-name">翻译工具</div>
+        <div class="back-desc">分析后翻译。术语表自定义，分块处理长文，子代理并行翻译。触发词：翻译、trans</div>
+      </div>
     </div>
-    <div class="flip-back">
-      <div class="back-category">CONTENT</div>
-      <div class="back-name">翻译工具</div>
-      <div class="back-desc">分析后翻译。术语表自定义，分块处理长文，子代理并行翻译。触发词：翻译、trans</div>
-    </div>
-  </div></div>
+  </div>
 
-  <div class="flip-card"><div class="flip-inner">
-    <div class="flip-front">
-      <div class="card-category">CONTENT</div>
-      <div class="card-name">发布技能</div>
-      <div class="card-hint">HOVER →</div>
+  <div class="flip-card cat-content">
+    <div class="flip-inner">
+      <div class="flip-front">
+        <div class="card-category">CONTENT</div>
+        <div class="card-name">发布技能</div>
+        <div class="card-hint">HOVER →</div>
+      </div>
+      <div class="flip-back">
+        <div class="back-category">CONTENT</div>
+        <div class="back-name">发布技能</div>
+        <div class="back-desc">Seed 博客发布、微信公众号草稿、OpenWalk 技术博客。图片处理、内容格式化、GitHub 同步。</div>
+      </div>
     </div>
-    <div class="flip-back">
-      <div class="back-category">CONTENT</div>
-      <div class="back-name">发布技能</div>
-      <div class="back-desc">Seed 博客发布、微信公众号草稿、OpenWalk 技术博客。图片处理、内容格式化、GitHub 同步。</div>
-    </div>
-  </div></div>
+  </div>
 
-  <div class="flip-card"><div class="flip-inner">
-    <div class="flip-front">
-      <div class="card-category">RESEARCH</div>
-      <div class="card-name">论文阅读</div>
-      <div class="card-hint">HOVER →</div>
+  <!-- RESEARCH -->
+  <div class="flip-card cat-research">
+    <div class="flip-inner">
+      <div class="flip-front">
+        <div class="card-category">RESEARCH</div>
+        <div class="card-name">论文阅读</div>
+        <div class="card-hint">HOVER →</div>
+      </div>
+      <div class="flip-back">
+        <div class="back-category">RESEARCH</div>
+        <div class="back-name">论文阅读</div>
+        <div class="back-desc">给非学术人员设计的论文阅读器。提取核心贡献、方法、结论。配合 arXiv 搜索使用。</div>
+      </div>
     </div>
-    <div class="flip-back">
-      <div class="back-category">RESEARCH</div>
-      <div class="back-name">论文阅读</div>
-      <div class="back-desc">给非学术人员设计的论文阅读器。提取核心贡献、方法、结论。配合 arXiv 搜索使用。</div>
-    </div>
-  </div></div>
+  </div>
 
-  <div class="flip-card"><div class="flip-inner">
-    <div class="flip-front">
-      <div class="card-category">RESEARCH</div>
-      <div class="card-name">RSS 监控</div>
-      <div class="card-hint">HOVER →</div>
+  <div class="flip-card cat-research">
+    <div class="flip-inner">
+      <div class="flip-front">
+        <div class="card-category">RESEARCH</div>
+        <div class="card-name">RSS 监控</div>
+        <div class="card-hint">HOVER →</div>
+      </div>
+      <div class="flip-back">
+        <div class="back-category">RESEARCH</div>
+        <div class="back-name">RSS 监控</div>
+        <div class="back-desc">监控博客和 RSS/Atom feeds 更新。触发词：blogwatcher、订阅、monitor。</div>
+      </div>
     </div>
-    <div class="flip-back">
-      <div class="back-category">RESEARCH</div>
-      <div class="back-name">RSS 监控</div>
-      <div class="back-desc">监控博客和 RSS/Atom feeds 更新。触发词：blogwatcher、订阅、monitor。</div>
-    </div>
-  </div></div>
+  </div>
 
-  <div class="flip-card"><div class="flip-inner">
-    <div class="flip-front">
-      <div class="card-category">SYSTEM</div>
-      <div class="card-name">Night Routine</div>
-      <div class="card-hint">HOVER →</div>
+  <!-- SYSTEM -->
+  <div class="flip-card cat-system">
+    <div class="flip-inner">
+      <div class="flip-front">
+        <div class="card-category">SYSTEM</div>
+        <div class="card-name">Night Routine</div>
+        <div class="card-hint">HOVER →</div>
+      </div>
+      <div class="flip-back">
+        <div class="back-category">SYSTEM</div>
+        <div class="back-name">Night Routine</div>
+        <div class="back-desc">01:30 自动运行。从 note-flow/ 到发布的完整管道。整理、写作、发布全自动。</div>
+      </div>
     </div>
-    <div class="flip-back">
-      <div class="back-category">SYSTEM</div>
-      <div class="back-name">Night Routine</div>
-      <div class="back-desc">01:30 自动运行。从 note-flow/ 到发布的完整管道。整理、写作、发布全自动。</div>
-    </div>
-  </div></div>
+  </div>
 
-  <div class="flip-card"><div class="flip-inner">
-    <div class="flip-front">
-      <div class="card-category">SYSTEM</div>
-      <div class="card-name">Skill 管理</div>
-      <div class="card-hint">HOVER →</div>
+  <div class="flip-card cat-system">
+    <div class="flip-inner">
+      <div class="flip-front">
+        <div class="card-category">SYSTEM</div>
+        <div class="card-name">Skill 管理</div>
+        <div class="card-hint">HOVER →</div>
+      </div>
+      <div class="flip-back">
+        <div class="back-category">SYSTEM</div>
+        <div class="back-name">Skill 管理</div>
+        <div class="back-desc">~/.hermes/skills/ 下的所有技能。遇到任务自动加载，无需人主动选择。持续积累迭代。</div>
+      </div>
     </div>
-    <div class="flip-back">
-      <div class="back-category">SYSTEM</div>
-      <div class="back-name">Skill 管理</div>
-      <div class="back-desc">~/.hermes/skills/ 下的所有技能。遇到任务自动加载，无需人主动选择。持续积累迭代。</div>
-    </div>
-  </div></div>
+  </div>
 </div>
 
-<footer>skills v1.0 · 2026-04-09 · Hermes · 按需加载</footer>
+<footer>
+  <span>skills v1.1 · 2026-04-10 · Hermes · 按需加载</span>
+  <span>// AURORA GLASS</span>
+</footer>
 </div>
+
 <script>
 (function(){
-  var saved=localStorage.getItem('theme');
-  var prefersDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
-  var isLight=saved==='light'||(!saved&&!prefersDark);
-  if(isLight){document.documentElement.setAttribute('data-theme','light');var s=document.querySelector('.sun-icon'),m=document.querySelector('.moon-icon');if(s)s.style.display='none';if(m)m.style.display='inline';}
-  window.toggleTheme=function(){
-    var isL=document.documentElement.getAttribute('data-theme')==='light';
-    if(isL){document.documentElement.removeAttribute('data-theme');localStorage.setItem('theme','dark');var s=document.querySelector('.sun-icon'),m=document.querySelector('.moon-icon');if(s)s.style.display='inline';if(m)m.style.display='none';}
-    else{var s=document.querySelector('.sun-icon'),m=document.querySelector('.moon-icon');document.documentElement.setAttribute('data-theme','light');localStorage.setItem('theme','light');if(s)s.style.display='none';if(m)m.style.display='inline';}
+  var saved = localStorage.getItem('theme');
+  var prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var isLight = saved === 'light' || (!saved && !prefersDark);
+  if (isLight) {
+    document.documentElement.setAttribute('data-theme','light');
+    var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
+    if (s) s.style.display = 'none';
+    if (m) m.style.display = 'inline';
+  }
+  window.toggleTheme = function() {
+    var isL = document.documentElement.getAttribute('data-theme') === 'light';
+    if (isL) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme','dark');
+      var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
+      if (s) s.style.display = 'inline';
+      if (m) m.style.display = 'none';
+    } else {
+      var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
+      document.documentElement.setAttribute('data-theme','light');
+      localStorage.setItem('theme','light');
+      if (s) s.style.display = 'none';
+      if (m) m.style.display = 'inline';
+    }
   };
 })();
 </script>
