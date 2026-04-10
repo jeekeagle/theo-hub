@@ -764,7 +764,7 @@ loadPosts();
   }
   function closeOverlay() { overlay.classList.remove('open'); }
 
-  var cards = document.querySelectorAll('.card, .style-card, .node-item');
+  var cards = document.querySelectorAll('.post-card');
   cards.forEach(function(card){
     card.style.cursor = 'pointer';
     card.addEventListener('click', function(e){
