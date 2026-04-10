@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills — 技能翻转卡片</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050810;--bg-card:#080d1a;--border:#1a2845;--accent:#7dd4ff;--accent2:#9b7dff;--text:#b8cce0;--text-dim:#5a7a9a;--text-muted:#2a4060;--font-mono:'JetBrains Mono',monospace;--font-sans:'Noto Sans SC',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);min-height:100vh;padding-top:32px}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(125,212,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(125,212,255,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+.container{max-width:1100px;margin:0 auto;padding:48px 24px 80px;position:relative;z-index:1}
+header{margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--border)}
+.header-label{font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:3px;margin-bottom:10px}
+header h1{font-family:var(--font-mono);font-size:clamp(28px,5vw,48px);font-weight:600;color:var(--text);margin-bottom:10px;letter-spacing:-0.5px}
+header h1 span{color:var(--accent)}
+
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+header .theme-toggle {
+  position: static;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 16px;
+  line-height: 1;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+header .theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+[data-theme="light"] header .theme-toggle {
+  color: #111110;
+}
+
+[data-theme="dark"] header .theme-toggle {
+  color: #dce8f0;
+}
+
+.header-desc{font-size:14px;color:var(--text-dim);font-weight:300;max-width:500px}
+.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:900px){.skills-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.skills-grid{grid-template-columns:1fr}}
+/* Flip card */
+.flip-card{height:200px;perspective:1000px;cursor:pointer}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform 0.6s;transform-style:preserve-3d}
+.flip-card:hover .flip-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:8px;padding:20px;display:flex;flex-direction:column}
+.flip-front{background:var(--bg-card);border:1px solid var(--border);transition:border-color 0.2s}
+.flip-front:hover{border-color:var(--accent)}
+.flip-back{background:var(--bg-card);border:1px solid var(--accent);transform:rotateY(180deg)}
+.card-category{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);letter-spacing:2px;margin-bottom:8px}
+.card-name{font-family:var(--font-mono);font-size:16px;font-weight:600;color:var(--text);margin-bottom:auto}
+.card-hint{font-family:var(--font-mono);font-size:9px;color:var(--accent);letter-spacing:1px}
+.back-category{font-family:var(--font-mono);font-size:9px;color:var(--accent);letter-spacing:2px;margin-bottom:8px}
+.back-name{font-family:var(--font-mono);font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px}
+.back-desc{font-size:12px;color:var(--text-dim);line-height:1.6;flex:1}
+footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--border);text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--text-muted)}
+  [data-theme="light"] {
+    --bg: #f5f7fa;
+    --bg-card: #ffffff;
+    --bg-hover: #eef1f5;
+    --border: #d0d8e0;
+    --accent: #3b9acc;
+    --accent2: #7b5acc;
+    --text: #1a2a3a;
+    --text-dim: #5a6a7a;
+    --text-muted: #90a0b0;
+  }
+
+.theme-toggle{background:transparent;border:1px solid var(--border);border-radius:8px;padding:6px 8px;cursor:pointer;color:var(--text);transition:all .2s;flex-shrink:0}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
+[data-theme="light"] .theme-toggle{border-color:#c8beb0;color:#3d2e1e}
+[data-theme="light"] .theme-toggle:hover{border-color:#c47a18;color:#c47a18}
+
+
+#hubLink {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: var(--text-dim);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: var(--text-dim);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+#hubLink:hover {
+  border-color: var(--accent2);
+  color: var(--accent2);
+  background: rgba(74,158,255,0.08);
+}
+
+#hubLink svg {
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+#hubLink:hover svg {
+  transform: translateX(-2px);
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <div class="header-top">
+    <div class="header-left">
+      <div class="header-label">// THEO-AGENT · SKILLS</div>
+      <h1>Skills <span>技能</span></h1>
+      <p class="header-desc">翻转卡片。Hover 展开详情。经验的结晶，遇到任务自动加载。</p>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">
+  <span class="sun-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+  <span class="moon-icon" style="display:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+</button></div>
+  </div>
+</header>
+
+<div class="skills-grid">
+  <div class="flip-card"><div class="flip-inner">
+    <div class="flip-front">
+      <div class="card-category">CONTENT</div>
+      <div class="card-name">写作引擎</div>
+      <div class="card-hint">HOVER →</div>
+    </div>
+    <div class="flip-back">
+      <div class="back-category">CONTENT</div>
+      <div class="back-name">写作引擎</div>
+      <div class="back-desc">带着观点出发，在写的过程中把它想透。触发词：写作、润色、翻译。</div>
+    </div>
+  </div></div>
+
+  <div class="flip-card"><div class="flip-inner">
+    <div class="flip-front">
+      <div class="card-category">CONTENT</div>
+      <div class="card-name">风格润色</div>
+      <div class="card-hint">HOVER →</div>
+    </div>
+    <div class="flip-back">
+      <div class="back-category">CONTENT</div>
+      <div class="back-name">风格润色</div>
+      <div class="back-desc">让人读起来更有共鸣。更平和、更顺滑、更有呼吸感。适用于中英文。</div>
+    </div>
+  </div></div>
+
+  <div class="flip-card"><div class="flip-inner">
+    <div class="flip-front">
+      <div class="card-category">CONTENT</div>
+      <div class="card-name">翻译工具</div>
+      <div class="card-hint">HOVER →</div>
+    </div>
+    <div class="flip-back">
+      <div class="back-category">CONTENT</div>
+      <div class="back-name">翻译工具</div>
+      <div class="back-desc">分析后翻译。术语表自定义，分块处理长文，子代理并行翻译。触发词：翻译、trans</div>
+    </div>
+  </div></div>
+
+  <div class="flip-card"><div class="flip-inner">
+    <div class="flip-front">
+      <div class="card-category">CONTENT</div>
+      <div class="card-name">发布技能</div>
+      <div class="card-hint">HOVER →</div>
+    </div>
+    <div class="flip-back">
+      <div class="back-category">CONTENT</div>
+      <div class="back-name">发布技能</div>
+      <div class="back-desc">Seed 博客发布、微信公众号草稿、OpenWalk 技术博客。图片处理、内容格式化、GitHub 同步。</div>
+    </div>
+  </div></div>
+
+  <div class="flip-card"><div class="flip-inner">
+    <div class="flip-front">
+      <div class="card-category">RESEARCH</div>
+      <div class="card-name">论文阅读</div>
+      <div class="card-hint">HOVER →</div>
+    </div>
+    <div class="flip-back">
+      <div class="back-category">RESEARCH</div>
+      <div class="back-name">论文阅读</div>
+      <div class="back-desc">给非学术人员设计的论文阅读器。提取核心贡献、方法、结论。配合 arXiv 搜索使用。</div>
+    </div>
+  </div></div>
+
+  <div class="flip-card"><div class="flip-inner">
+    <div class="flip-front">
+      <div class="card-category">RESEARCH</div>
+      <div class="card-name">RSS 监控</div>
+      <div class="card-hint">HOVER →</div>
+    </div>
+    <div class="flip-back">
+      <div class="back-category">RESEARCH</div>
+      <div class="back-name">RSS 监控</div>
+      <div class="back-desc">监控博客和 RSS/Atom feeds 更新。触发词：blogwatcher、订阅、monitor。</div>
+    </div>
+  </div></div>
+
+  <div class="flip-card"><div class="flip-inner">
+    <div class="flip-front">
+      <div class="card-category">SYSTEM</div>
+      <div class="card-name">Night Routine</div>
+      <div class="card-hint">HOVER →</div>
+    </div>
+    <div class="flip-back">
+      <div class="back-category">SYSTEM</div>
+      <div class="back-name">Night Routine</div>
+      <div class="back-desc">01:30 自动运行。从 note-flow/ 到发布的完整管道。整理、写作、发布全自动。</div>
+    </div>
+  </div></div>
+
+  <div class="flip-card"><div class="flip-inner">
+    <div class="flip-front">
+      <div class="card-category">SYSTEM</div>
+      <div class="card-name">Skill 管理</div>
+      <div class="card-hint">HOVER →</div>
+    </div>
+    <div class="flip-back">
+      <div class="back-category">SYSTEM</div>
+      <div class="back-name">Skill 管理</div>
+      <div class="back-desc">~/.hermes/skills/ 下的所有技能。遇到任务自动加载，无需人主动选择。持续积累迭代。</div>
+    </div>
+  </div></div>
+</div>
+
+<footer>skills v1.0 · 2026-04-09 · Hermes · 按需加载</footer>
+</div>
+<script>
+(function(){
+  var saved=localStorage.getItem('theme');
+  var prefersDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var isLight=saved==='light'||(!saved&&!prefersDark);
+  if(isLight){document.documentElement.setAttribute('data-theme','light');var s=document.querySelector('.sun-icon'),m=document.querySelector('.moon-icon');if(s)s.style.display='none';if(m)m.style.display='inline';}
+  window.toggleTheme=function(){
+    var isL=document.documentElement.getAttribute('data-theme')==='light';
+    if(isL){document.documentElement.removeAttribute('data-theme');localStorage.setItem('theme','dark');var s=document.querySelector('.sun-icon'),m=document.querySelector('.moon-icon');if(s)s.style.display='inline';if(m)m.style.display='none';}
+    else{var s=document.querySelector('.sun-icon'),m=document.querySelector('.moon-icon');document.documentElement.setAttribute('data-theme','light');localStorage.setItem('theme','light');if(s)s.style.display='none';if(m)m.style.display='inline';}
+  };
+})();
+</script>
+</body>
+</html>
