@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flow — 灵感流</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080d14;
+  --bg-card: #0c1422;
+  --bg-hover: #101d30;
+  --border: #1a2d45;
+  --accent: #e8a445;
+  --accent2: #4a9eff;
+  --green: #4ae8a4;
+  --text: #dce8f0;
+  --text-dim: #8aacc8;
+  --text-muted: #4a6a8a;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Noto Sans SC', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+;padding-top:32px}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26,45,69,0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,45,69,0.25) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  position: relative;
+  z-index: 1;
+}
+/* Header */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 36px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.header-left { display: flex; align-items: center; gap: 16px; }
+.header-label {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+header h1 {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+}
+header h1 span { color: var(--accent); }
+
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+
+header .theme-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 20px;
+  line-height: 1;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+header .theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+[data-theme="light"] header .theme-toggle {
+  color: #111110;
+}
+
+[data-theme="dark"] header .theme-toggle {
+  color: #dce8f0;
+}
+
+.header-meta {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-muted);
+}
+/* Post form */
+.post-form {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 28px;
+  transition: border-color 0.2s;
+}
+.post-form:focus-within { border-color: var(--accent); }
+.post-form textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.7;
+  resize: none;
+  min-height: 80px;
+}
+.post-form textarea::placeholder { color: var(--text-muted); }
+.post-form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(26,45,69,0.6);
+}
+.post-form-footer .tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.tag-select {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: rgba(74,158,255,0.1);
+  border: 1px solid rgba(74,158,255,0.2);
+  color: var(--accent2);
+  cursor: pointer;
+  outline: none;
+}
+.tag-select option { background: var(--bg-card); }
+.post-btn {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  padding: 5px 14px;
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+.post-btn:hover { opacity: 0.85; }
+.post-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+/* Feed */
+.feed-label {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  margin-bottom: 16px;
+}
+/* Card */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s, transform 0.15s;
+  cursor: default;
+}
+.card:hover {
+  border-color: rgba(232,164,69,0.4);
+  transform: translateY(-1px);
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.card-time {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.card-tag {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 1px 6px;
+  border-radius: 2px;
+  background: rgba(74,158,255,0.1);
+  border: 1px solid rgba(74,158,255,0.2);
+  color: var(--accent2);
+  margin-left: auto;
+}
+.card-body {
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--text);
+  word-break: break-word;
+}
+.card-body .topic { color: var(--accent); font-weight: 500; }
+.card-body .question { color: var(--accent2); }
+.empty-state {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 16px;
+}
+.empty-state .icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+  opacity: 0.3;
+}
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--green);
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 100;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; }
+footer {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-muted);
+}
+  [data-theme="light"] {
+    --bg: #faf8f5;
+    --bg-card: #ffffff;
+    --bg-hover: #f0ede8;
+    --border: #e0dcd4;
+    --accent: #c47a18;
+    --accent2: #3b82f6;
+    --green: #22c55e;
+    --text: #111110;
+    --text-dim: #444440;
+    --text-muted: #888880;
+  }
+
+.theme-toggle{background:transparent;border:1px solid var(--border);border-radius:8px;padding:6px 8px;cursor:pointer;color:var(--text);transition:all .2s;flex-shrink:0}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
+[data-theme="light"] .theme-toggle{border-color:#c8beb0;color:#3d2e1e}
+[data-theme="light"] .theme-toggle:hover{border-color:#c47a18;color:#c47a18}
+
+
+#hubLink {
+  position: absolute;
+  top: 0;
+  right: 80px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: var(--text-dim);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+#hubLink:hover {
+  border-color: var(--accent2);
+  color: var(--accent2);
+  background: rgba(74,158,255,0.08);
+}
+
+#hubLink svg {
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+#hubLink:hover svg {
+  transform: translateX(-2px);
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="header-top">
+    <div class="header-left">
+      <div class="header-label">// theo-note/flow</div>
+      <h1>Flow <span>灵感流</span></h1>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">
+  <span class="sun-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+  <span class="moon-icon" style="display:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+</button><a href="https://jeekeagle.github.io/theo-hub/" id="hubLink" aria-label="返回 theo-hub"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> theo-hub</a>
+  </div>
+  <div class="header-meta">流式输入 · 自动归档</div>
+</header>
+
+<!-- Post form -->
+<form class="post-form" id="postForm">
+  <textarea id="postInput" placeholder="写下一闪而过的想法..." rows="3"></textarea>
+  <div class="post-form-footer">
+    <select class="tag-select" id="tagSelect">
+      <option value="想法">想法</option>
+      <option value="问题">问题</option>
+      <option value="灵感">灵感</option>
+      <option value="TODO">TODO</option>
+      <option value="观察">观察</option>
+    </select>
+    <button type="submit" class="post-btn" id="postBtn">发布</button>
+  </div>
+</form>
+
+<!-- Feed -->
+<div class="feed-label">// RECENT POSTS</div>
+<div id="feed"></div>
+
+<div class="empty-state" id="emptyState" style="display:none">
+  <div class="icon">~</div>
+  <div>还没有内容</div>
+  <div style="margin-top:4px">在上方留下第一个想法吧</div>
+</div>
+
+<footer>
+  flow v1.0 · theo-note/ · Hermes Night Routine
+</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── State ──
+const DATA_URL = 'data.json';
+let posts = [];
+let nextId = 1;
+
+// ── Init ──
+async function init() {
+  try {
+    const r = await fetch(DATA_URL + '?t=' + Date.now());
+    const data = await r.json();
+    posts = data.posts || [];
+    nextId = posts.length > 0 ? Math.max(...posts.map(p => p.id)) + 1 : 1;
+  } catch {
+    posts = [];
+  }
+  render();
+}
+
+// ── Render ──
+function render() {
+  const feed = document.getElementById('feed');
+  const empty = document.getElementById('emptyState');
+  if (posts.length === 0) {
+    feed.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  feed.innerHTML = posts
+    .slice()
+    .reverse()
+    .map(p => `
+    <div class="card">
+      <div class="card-header">
+        <span class="card-time">${formatTime(p.time)}</span>
+        <span class="card-tag">${escHtml(p.tag)}</span>
+      </div>
+      <div class="card-body">${formatBody(p.content)}</div>
+    </div>`)
+    .join('');
+}
+
+function formatTime(iso) {
+  const d = new Date(iso);
+  const pad = n => String(n).padStart(2,'0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function formatBody(text) {
+  // Highlight [[topic]] and ??question??
+  text = escHtml(text);
+  text = text.replace(/\[\[(.*?)\]\]/g, '<span class="topic">[[$1]]</span>');
+  text = text.replace(/\?\?(.*?)\?\?/g, '<span class="question">??$1??</span>');
+  return text;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Post ──
+document.getElementById('postForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const input = document.getElementById('postInput');
+  const btn = document.getElementById('postBtn');
+  const content = input.value.trim();
+  if (!content) return;
+  btn.disabled = true;
+  const post = {
+    id: nextId++,
+    content,
+    tag: document.getElementById('tagSelect').value,
+    time: new Date().toISOString()
+  };
+  posts.push(post);
+  // Save to GitHub via API (handled by Hermes in production)
+  // For local demo, just render
+  render();
+  input.value = '';
+  btn.disabled = false;
+  showToast('已发布');
+});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+init();
+</script>
+<script>
+
+(function(){
+  var saved=localStorage.getItem('theme');
+  var prefersDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var isLight=saved==='light'||(!saved&&!prefersDark);
+  if(isLight){document.documentElement.setAttribute('data-theme','light');var s=document.querySelector('.sun-icon'),m=document.querySelector('.moon-icon');if(s)s.style.display='none';if(m)m.style.display='inline';}
+  window.toggleTheme=function(){
+    var isL=document.documentElement.getAttribute('data-theme')==='light';
+    if(isL){document.documentElement.removeAttribute('data-theme');localStorage.setItem('theme','dark');var s=document.querySelector('.sun-icon'),m=document.querySelector('.moon-icon');if(s)s.style.display='inline';if(m)m.style.display='none';}
+    else{var s=document.querySelector('.sun-icon'),m=document.querySelector('.moon-icon');document.documentElement.setAttribute('data-theme','light');localStorage.setItem('theme','light');if(s)s.style.display='none';if(m)m.style.display='inline';}
+  };
+})();
+
+</script>
+
+</body>
+</html>
