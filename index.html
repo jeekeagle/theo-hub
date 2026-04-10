@@ -426,6 +426,34 @@ button.theme-toggle:hover {
   .output-grid { grid-template-columns: 1fr; }
   .status-bar { flex-wrap: wrap; gap: 12px; }
 }
+
+/* Card Preview Overlay */
+.card-preview-overlay {
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(0,0,0,.82);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .25s ease;
+}
+.card-preview-overlay.open{opacity:1;pointer-events:all}
+.card-preview-wrap{
+  background:var(--bg-card,#13131a);border:1px solid var(--border,#2a2a35);
+  border-radius:12px;width:92%;max-width:680px;max-height:86vh;
+  overflow-y:auto;position:relative;
+  transform:scale(.94);transition:transform .25s ease;
+}
+.card-preview-overlay.open .card-preview-wrap{transform:scale(1)}
+.card-preview-close{
+  position:absolute;top:14px;right:18px;background:none;border:none;
+  color:var(--text-dim,#71717a);font-size:20px;cursor:pointer;
+}
+.card-preview-close:hover{color:var(--text,#e4e4e7)}
+.card-preview-title{
+  font-family:var(--font-mono,ui-monospace);font-size:20px;font-weight:600;
+  color:var(--accent,#00d992);padding:28px 32px 0;
+}
+.card-preview-body{padding:16px 32px 32px;color:var(--text-dim,#71717a);font-size:14px;line-height:1.8}
+.card-preview-placeholder{color:var(--text-muted,#3f3f46);font-style:italic}
+
 </style>
 </head>
 <body>
@@ -632,7 +660,7 @@ button.theme-toggle:hover {
     <ul class="node-list">
       <li class="node-item">
         <span class="node-arrow">-&gt;</span>
-        <a class="node-link" href="https://jeekeagle.github.io/theo-style/" target="_blank">theo-style</a>
+        <span class="node-link" style="cursor:pointer" onclick="openCardPreview('theo-style · 风格库','<p>VoltAgent · Raycast · Linear · Apple · Stripe · Vercel</p><p>Emerald · Indigo 八种风格系统</p>')">theo-style</span>
         <span>风格库</span>
         <span class="node-tag">Live</span>
       </li>
@@ -724,6 +752,30 @@ button.theme-toggle:hover {
   else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) { setTheme('light'); }
   btn.addEventListener('click', toggleTheme);
 })();
+
+(function(){
+  var overlay=document.getElementById('cardPreviewOverlay');
+  var closeBtn=document.getElementById('cardPreviewClose');
+  var titleEl=document.getElementById('cardPreviewTitle');
+  function openPreview(title,body){titleEl.textContent=title||'预览';overlay.classList.add('open');document.body.style.overflow='hidden'}
+  function closePreview(){overlay.classList.remove('open');document.body.style.overflow=''}
+  closeBtn.addEventListener('click',closePreview);
+  overlay.addEventListener('click',function(e){if(e.target===overlay)closePreview()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('open'))closePreview()});
+  window.openCardPreview=openPreview;
+})();
+
 </script>
+
+<!-- Card Preview Overlay -->
+<div class="card-preview-overlay" id="cardPreviewOverlay" role="dialog" aria-modal="true">
+  <div class="card-preview-wrap">
+    <button class="card-preview-close" id="cardPreviewClose" aria-label="关闭">&#x2715;</button>
+    <div class="card-preview-title" id="cardPreviewTitle"></div>
+    <div class="card-preview-body">
+      <p class="card-preview-placeholder">更多信息待填充</p>
+    </div>
+  </div>
+</div>
 </body>
 </html>
