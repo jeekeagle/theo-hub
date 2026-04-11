@@ -321,27 +321,9 @@ body {
 }
 .img-card.hidden { display: none; }
 
-.card-thumb {
-  width: 100%;
-  aspect-ratio: 16/9;
-  background: var(--surface-2);
-  overflow: hidden;
-  position: relative;
-}
-.card-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.4s var(--ease-out);
-}
-.img-card:hover .card-thumb img { transform: scale(1.04); }
-
 /* Category pill */
 .cat-pill {
-  position: absolute;
-  top: 10px;
-  left: 10px;
+  position: static;
   font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 500;
@@ -357,37 +339,66 @@ body {
 .cat-pill.infocard{color: var(--cat-info);   background: var(--cat-info-bg);   border: 1px solid rgba(175,82,222,0.2); }
 .cat-pill.tech   { color: var(--cat-tech);   background: var(--cat-tech-bg);   border: 1px solid rgba(255,149,0,0.2); }
 
-.card-meta { padding: 16px 20px 18px; }
+/* ─── Diagram Card (HTML redirect) ─── */
+.card-body-wrap {
+  padding: 22px 24px 20px;
+}
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.card-date {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-3);
+  letter-spacing: 0.3px;
+}
 .card-title {
   font-family: var(--font-ui);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 600;
   color: var(--text);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  letter-spacing: -0.2px;
   line-height: 1.4;
-  letter-spacing: -0.1px;
 }
 .card-desc {
   font-family: var(--font-ui);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-2);
-  line-height: 1.6;
-  margin-bottom: 12px;
+  line-height: 1.65;
+  margin-bottom: 14px;
 }
 .card-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 5px;
+  margin-bottom: 18px;
 }
 .card-tag {
   font-family: var(--font-mono);
-  font-size: 9px;
-  padding: 2px 7px;
-  border-radius: 4px;
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: 20px;
   background: var(--surface-2);
   border: 1px solid var(--border);
   color: var(--text-3);
 }
+.card-cta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent);
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  transition: gap 0.15s var(--ease);
+}
+.img-card:hover .card-cta { gap: 8px; }
 
 /* ─── Empty State ─── */
 .empty-state {
@@ -569,20 +580,23 @@ function renderImages(filter) {
     const card = document.createElement('div');
     card.className = 'img-card';
     card.innerHTML = `
-      <div class="card-thumb">
-        <img src="${img.src}" alt="${img.title}" loading="lazy"
-             onerror="this.style.display='none';this.parentElement.style.background='var(--surface-2)';this.parentElement.innerHTML+='<span style=\'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--text-3)\'>No Preview</span>'">
-        <span class="cat-pill ${img.category}">${getCatLabel(img.category)}</span>
-      </div>
-      <div class="card-meta">
+      <div class="card-body-wrap">
+        <div class="card-top">
+          <span class="cat-pill ${img.category}">${getCatLabel(img.category)}</span>
+          <span class="card-date">${img.date}</span>
+        </div>
         <div class="card-title">${img.title}</div>
         <div class="card-desc">${img.desc}</div>
         <div class="card-tags">
           ${img.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
         </div>
+        <div class="card-cta">
+          <span>View Diagram</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
       </div>
     `;
-    card.addEventListener('click', () => openLightbox(img.src));
+    card.addEventListener('click', () => { window.location.href = img.src; });
     gallery.appendChild(card);
   });
 
