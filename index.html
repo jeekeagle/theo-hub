@@ -454,7 +454,6 @@ button.theme-toggle:hover {
 .card-preview-body{padding:16px 32px 32px;color:var(--text-dim,#71717a);font-size:14px;line-height:1.8}
 .card-preview-placeholder{color:var(--text-muted,#3f3f46);font-style:italic}
 
-
 /* Card Preview Overlay */.card-preview-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.82);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s ease}.card-preview-overlay.open{opacity:1;pointer-events:all}.card-preview-wrap{background:var(--bg-card,#13131a);border:1px solid var(--border,#2a2a35);border-radius:12px;width:92%;max-width:680px;max-height:86vh;overflow-y:auto;position:relative;transform:scale(.94);transition:transform .25s ease}.card-preview-overlay.open .card-preview-wrap{transform:scale(1)}.card-preview-close{position:absolute;top:14px;right:18px;background:none;border:none;color:var(--text-dim,#71717a);font-size:20px;cursor:pointer}.card-preview-close:hover{color:var(--text,#e4e4e7)}.card-preview-title{font-family:var(--font-mono,ui-monospace);font-size:20px;font-weight:600;color:var(--accent,#00d992);padding:28px 32px 0}.card-preview-body{padding:16px 32px 32px;color:var(--text-dim,#71717a);font-size:14px;line-height:1.8}.card-preview-placeholder{color:var(--text-muted,#3f3f46);font-style:italic}</style>
 </head>
 <body>
@@ -483,7 +482,7 @@ button.theme-toggle:hover {
 <div class="systems">
 
   <!-- NOTE -->
-  <div class="card note-card">
+  <div class="card note-card" style="cursor:pointer" onclick="openCardPreview('Note','<p>输入：笔记、想法、素材来源。Theo 的笔记系统核心目录。</p>')">
     <div class="card-header">
       <div class="card-icon">N</div>
       <div>
@@ -545,7 +544,7 @@ button.theme-toggle:hover {
   </div>
 
   <!-- OUTPUT -->
-  <div class="card output-card">
+  <div class="card output-card" style="cursor:pointer" onclick="openCardPreview('Output','<p>输出：发布到公网的内容。Theo 写作成果的展示窗口。</p>')">
     <div class="card-header">
       <div class="card-icon" style="background:rgba(74,232,164,0.1);border-color:rgba(74,232,164,0.3)">O</div>
       <div>
@@ -580,7 +579,7 @@ button.theme-toggle:hover {
   </div>
 
   <!-- LAB -->
-  <div class="card lab-card">
+  <div class="card lab-card" style="cursor:pointer" onclick="openCardPreview('Lab','<p>探索：实验性、低成本试错。项目化管理的实验场。</p>')">
     <div class="card-header">
       <div class="card-icon" style="background:rgba(155,125,255,0.1);border-color:rgba(155,125,255,0.3)">L</div>
       <div>
@@ -612,7 +611,7 @@ button.theme-toggle:hover {
   </div>
 
   <!-- AUTO -->
-  <div class="card auto-card">
+  <div class="card auto-card" style="cursor:pointer" onclick="openCardPreview('Auto','<p>自动化：AI 驱动的工作流。让重复性工作自动化执行。</p>')">
     <div class="card-header">
       <div class="card-icon" style="background:rgba(255,125,125,0.1);border-color:rgba(255,125,125,0.3)">A</div>
       <div>
@@ -648,7 +647,7 @@ button.theme-toggle:hover {
   </div>
 
   <!-- TOOL -->
-  <div class="card tool-card">
+  <div class="card tool-card" style="cursor:pointer" onclick="openCardPreview('Tool','<p>工具：提效工具收藏。常用的开发、设计、效率工具。</p>')">
     <div class="card-header">
       <div class="card-icon" style="background:rgba(125,212,255,0.1);border-color:rgba(125,212,255,0.3)">T</div>
       <div>
@@ -667,7 +666,7 @@ button.theme-toggle:hover {
       </li>
       <li class="node-item">
         <span class="node-arrow">-&gt;</span>
-        <span class="node-link" style="cursor:pointer" onclick="openCardPreview('theo-style · 风格库', '<p><strong>VoltAgent</strong> · 深空黑 + 翡翠绿，圆点网格背景，科技感</p><p><strong>Raycast</strong> · macOS 双层阴影，Raycast 红/蓝/绿流向标注</p><p><strong>Linear</strong> · 紫调暗色，几何精准感，适合工具类产品</p><p><strong>Apple</strong> · 大面积留白，Helvetica Neue，极简克制</p><p><strong>Stripe</strong> · 标志性紫调渐变，金融/开发者工具</p><p><strong>Vercel</strong> · 超高饱和度绿色，技术感和速度感</p><p><strong>Emerald / Indigo</strong> · 翡翠绿 / 靛蓝强调色系统</p><p style=&quot;margin-top:12px&quot;><a href=&quot;https://jeekeagle.github.io/theo-style/&quot; target=&quot;_blank&quot;>→ 打开完整风格库</a></p>')">theo-style</span>
+        <span class="node-link" style="cursor:pointer" onclick="openCardPreview('theo-style · 风格库','<p><strong>VoltAgent</strong> · 深空黑 + 翡翠绿，圆点网格背景，科技感</p><p><strong>Raycast</strong> · macOS 双层阴影，Raycast 红/蓝/绿流向标注</p><p><strong>Linear</strong> · 紫调暗色，几何精准感，适合工具类产品</p><p><strong>Apple</strong> · 大面积留白，Helvetica Neue，极简克制</p><p><strong>Stripe</strong> · 标志性紫调渐变，金融/开发者工具</p><p><strong>Vercel</strong> · 超高饱和度绿色，技术感和速度感</p><p><strong>Emerald / Indigo</strong> · 翡翠绿 / 靛蓝强调色系统</p><p style=&quot;margin-top:12px&quot;><a href=&quot;https://jeekeagle.github.io/theo-style/&quot; target=&quot;_blank&quot;>→ 打开完整风格库</a></p>')">theo-style</span>
         <span>风格库</span>
         <span class="node-tag">Live</span>
       </li>
@@ -685,7 +684,7 @@ button.theme-toggle:hover {
   </div>
 
   <!-- FILE -->
-  <div class="card file-card">
+  <div class="card file-card" style="cursor:pointer" onclick="openCardPreview('File','<p>文件：临时文件暂存。中转性质的临时存储。</p>')">
     <div class="card-header">
       <div class="card-icon" style="background:rgba(192,192,192,0.1);border-color:rgba(192,192,192,0.3)">F</div>
       <div>
@@ -766,8 +765,7 @@ button.theme-toggle:hover {
   window.openCardPreview=openPreview;
 })();
 
-
-(function(){var overlay=document.getElementById("cardPreviewOverlay");var closeBtn=document.getElementById("cardPreviewClose");var titleEl=document.getElementById("cardPreviewTitle");var bodyEl=document.getElementById("cardPreviewBody");function openCardPreview(title,body){titleEl.textContent=title||"";bodyEl.innerHTML=body||'<p class="card-preview-placeholder">更多信息待填充</p>';overlay.classList.add("open");document.body.style.overflow="hidden";}function closePreview(){overlay.classList.remove("open");document.body.style.overflow="";}closeBtn.addEventListener("click",closePreview);overlay.addEventListener("click",function(e){if(e.target===overlay)closePreview()});document.addEventListener("keydown",function(e){if(e.key==="Escape"&&overlay.classList.contains("open"))closePreview()});window.openCardPreview=openCardPreview;})();</script>
+(function(){var o=document.getElementById("cardPreviewOverlay"),c=document.getElementById("cardPreviewClose"),t=document.getElementById("cardPreviewTitle"),b=document.getElementById("cardPreviewBody");function p(ti,bo){t.textContent=ti||"";b.innerHTML=bo||'<p class="card-preview-placeholder">更多信息待填充</p>';o.classList.add("open");document.body.style.overflow="hidden";}function q(){o.classList.remove("open");document.body.style.overflow="";}c.addEventListener("click",q);o.addEventListener("click",function(e){if(e.target===o)q()});document.addEventListener("keydown",function(e){if(e.key==="Escape"&&o.classList.contains("open"))q()});window.openCardPreview=p;})();</script>
 
 <!-- Card Preview Overlay -->
 <div class="card-preview-overlay" id="cardPreviewOverlay" role="dialog" aria-modal="true">
@@ -779,6 +777,5 @@ button.theme-toggle:hover {
     </div>
   </div>
 </div>
-
 <div class="card-preview-overlay" id="cardPreviewOverlay" role="dialog" aria-modal="true"><div class="card-preview-wrap"><button class="card-preview-close" id="cardPreviewClose" aria-label="关闭">&#x2715;</button><div class="card-preview-title" id="cardPreviewTitle"></div><div class="card-preview-body" id="cardPreviewBody"><p class="card-preview-placeholder">更多信息待填充</p></div></div></div></body>
 </html>
