@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI工具三分法——规划层、执行层与自主层</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700&family=Inter:wght@400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  background: #f5f3ed;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.card {
+  width: 900px;
+  max-width: 95vw;
+  background: #f5f3ed;
+  padding: 50px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+}
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 35px;
+  position: relative;
+  z-index: 1;
+}
+.meta {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 12px;
+}
+.main-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 1.1;
+  color: #0a0a0a;
+  max-width: 700px;
+}
+.accent-bar {
+  width: 60px;
+  height: 6px;
+  background: #7c3aed;
+  margin-top: 20px;
+}
+.content { position: relative; z-index: 1; }
+.intro {
+  font-size: 17px;
+  line-height: 1.7;
+  color: #333;
+  margin-bottom: 30px;
+}
+.three-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  margin: 25px 0;
+}
+.col-item {
+  padding: 22px 18px;
+  position: relative;
+}
+.col-item:nth-child(1) { background: rgba(245, 158, 11, 0.1); border-top: 4px solid #f59e0b; }
+.col-item:nth-child(2) { background: rgba(37, 99, 235, 0.1); border-top: 4px solid #2563eb; }
+.col-item:nth-child(3) { background: rgba(124, 58, 237, 0.1); border-top: 4px solid #7c3aed; }
+.col-layer {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 8px;
+}
+.col-name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0a0a0a;
+  margin-bottom: 6px;
+}
+.col-question {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+  font-style: italic;
+}
+.col-product {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+}
+.col-desc {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.55;
+}
+.quote-block {
+  background: rgba(124, 58, 237, 0.08);
+  border-left: 4px solid #7c3aed;
+  padding: 22px 28px;
+  margin: 30px 0;
+  font-size: 18px;
+  line-height: 1.65;
+  color: #1a1a1a;
+}
+.divider {
+  width: 100%;
+  height: 2px;
+  background: rgba(0,0,0,0.08);
+  margin: 30px 0;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #666;
+  background: rgba(0,0,0,0.06);
+  padding: 6px 12px;
+}
+.source {
+  font-size: 12px;
+  color: #999;
+}
+@media (max-width: 600px) {
+  .card { padding: 30px 25px; }
+  .main-title { font-size: 34px; }
+  .three-columns { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <div>
+      <div class="meta">Night Routine · 2026-04-09</div>
+      <h1 class="main-title">AI工具三分法——<br>规划层、执行层<br>与自主层</h1>
+      <div class="accent-bar"></div>
+    </div>
+  </div>
+  <div class="content">
+    <p class="intro">
+      当Claude Code、OpenClaw和Hermes同处一个坐标系，我们终于可以给AI工具的演进画出一条清晰的经纬线。不是选择最强的工具，而是选择最适合自己的认知和工作模式的工具。
+    </p>
+    <div class="three-columns">
+      <div class="col-item">
+        <div class="col-layer">Layer 01</div>
+        <div class="col-name">规划层</div>
+        <div class="col-question">我要做什么？</div>
+        <div class="col-product">OpenClaw</div>
+        <div class="col-desc">理解意图，建构蓝图。需求分析、任务拆解、技术选型、风险评估。给你地图，但不替你走路。</div>
+      </div>
+      <div class="col-item">
+        <div class="col-layer">Layer 02</div>
+        <div class="col-name">执行层</div>
+        <div class="col-question">让我帮你做完？</div>
+        <div class="col-product">Claude Code</div>
+        <div class="col-desc">接过蓝图，完成闭环。多步骤自动串联、文件系统自主操作、测试驱动验证与错误自修复。</div>
+      </div>
+      <div class="col-item">
+        <div class="col-layer">Layer 03</div>
+        <div class="col-name">自主层</div>
+        <div class="col-question">决定并主动执行？</div>
+        <div class="col-product">Hermes</div>
+        <div class="col-desc">24/7 自我进化分身。不等你发指令，主动发现、主动规划、主动执行、主动学习。</div>
+      </div>
+    </div>
+    <div class="quote-block">
+      最可靠的AI开发范式是人机协同的分工模式——用规划层定义路径，用执行层攻克难题，用自主层持续进化。
+    </div>
+    <div class="divider"></div>
+  </div>
+  <div class="footer">
+    <div class="tags">
+      <span class="tag">AI工具</span>
+      <span class="tag">Claude Code</span>
+      <span class="tag">OpenClaw</span>
+      <span class="tag">Hermes</span>
+    </div>
+    <div class="source">Seed · jeekeagle.github.io</div>
+  </div>
+</div>
+</body>
+</html>
