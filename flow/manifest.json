@@ -1,11 +1,11 @@
 {
   "version": "1.0",
-  "updated": "2026-04-11T09:09:09+08:00",
+  "updated": "2026-04-11T09:09:43+08:00",
   "posts": [
     {
       "id": "age-world-smhc",
       "content": "二十岁以为自己看懂世界，三十岁发现只是皮毛，四十岁才懂那些规则。\n\n<strong>阅历不是用来指导别人的，是用来理解自己的。</strong>\n\n每个年龄段有各自该走的路。二十岁狂，三十岁惑，四十岁才敢说自己活着。",
-      "category": "成长",
+      "category": "翻转",
       "contentTags": [
         "人生",
         "阅历",
@@ -18,7 +18,7 @@
     {
       "id": "age-regret-ysbd",
       "content": "幸福时感受不到幸福，青春时感受不到青春。\n\n<strong>感受是当下，反思是事后。两者之间隔着一段失去。</strong>\n\n三十五岁认知最成熟，身体却走下坡。最清楚的事，恰恰关于年轻时怎么度过——时间回不来了。不是悲观，是时间的结构。",
-      "category": "成长",
+      "category": "翻转",
       "contentTags": [
         "幸福",
         "青春",
@@ -32,7 +32,7 @@
     {
       "id": "beach-presence-kszr",
       "content": "什么成就了人生？\n\n<strong>人无法同时经历这一刻，又标记这一刻很重要。</strong>\n\n海边帐篷里，没有待办，没有目的地，没有截止日期。孩子挖沙，太太吃水果，我在聊无关紧要的事。什么产出都没有。但这就是想要的人生质地。",
-      "category": "日常",
+      "category": "放大",
       "contentTags": [
         "当下",
         "幸福",
@@ -46,7 +46,7 @@
     {
       "id": "stimulus-choice-ngbe",
       "content": "在刺激和回应之间，有一段空间。\n\n<strong>事情不决定情绪，对事情的解读才决定情绪。</strong>\n\n同样的事情，框架不同，感受就不同。这不是心灵鸡汤。这是认知科学。人唯一真实的自由，是在解释层面重构自己。",
-      "category": "成长",
+      "category": "翻转",
       "contentTags": [
         "心智重构",
         "选择",
@@ -59,7 +59,7 @@
     {
       "id": "life-dimension-d6nn",
       "content": "人生好坏，从来没有对齐的标尺。\n\n<strong>情绪和关系是基数。这个基数崩了，其他成就都在还债。</strong>\n\n时间换钱是加法，有天花板。认知影响力一次生产无限分发，是乘法，没有上限。框架变了，世界重量就变了。看清三维，评价才准。",
-      "category": "成长",
+      "category": "翻转",
       "contentTags": [
         "基数",
         "乘法",
@@ -72,7 +72,7 @@
     {
       "id": "beach-change-77rz",
       "content": "海边，风吹散计划。抱怨无用——<strong>主观能动性是分清边界</strong>。能改的，重构；不能改的，不消耗。<strong>抱怨不可改变的事物，是用情绪替现实交税</strong>。能改快速行动，不能改快速放手。",
-      "category": "成长",
+      "category": "翻转",
       "contentTags": [
         "主观能动性",
         "重构",
@@ -150,7 +150,7 @@
     {
       "id": "35-self-awareness-xxxx",
       "content": "<strong>35岁，身体早已不是20岁的身体。</strong>照片陌生、膝盖酸、AI形象——三个瞬间叠加才让你接受：你变了。<strong>真正让你接受事实的，从来不是道理。</strong>接受自己不是认输，是减少内耗的开始。",
-      "category": "成长",
+      "category": "翻转",
       "contentTags": [
         "自我认知",
         "年龄",
@@ -189,7 +189,7 @@
     {
       "id": "stimulus-response-freedom-ffmt",
       "content": "你被人一说就炸，看到打折就想买——说明你不在控制自己的人生。\n\n<strong>在刺激与反应之间，我们还有自由选择的空间。</strong>\n\n<strong>自由就是分清楚什么是被创造出来的欲望，什么是你真正的愿望。</strong>",
-      "category": "成长",
+      "category": "翻转",
       "contentTags": [
         "自由",
         "认知",
@@ -202,7 +202,7 @@
     {
       "id": "cognition-is-barrier-inav",
       "content": "很多事情不是被事难倒的，是被你想象的理解难倒的。<strong>认知是做事最大的障碍。</strong>把挑战当项目管，先启动，迭代，用AI做杠杆。<strong>机器擅长执行，人擅长理解二阶思维</strong>——这才是人和AI的区别。",
-      "category": "成长",
+      "category": "翻转",
       "contentTags": [
         "行动",
         "认知",
