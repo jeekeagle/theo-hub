@@ -394,7 +394,7 @@ let loading = false;
 let allLoaded = false;
 
 async function loadManifest() {
-  const r = await fetch(MANIFEST + '?t=' + Date.now());
+  const r = await fetch('https://raw.githubusercontent.com/jeekeagle/theo-hub/main/flow/manifest.json?t=' + Date.now());
   const data = await r.json();
   return data.posts || [];
 }
