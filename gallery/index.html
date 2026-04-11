@@ -1,666 +1,272 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gallery — Theo</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-/* ═══════════════════════════════════════════
-   Apple Design System — Gallery v2
-   ═══════════════════════════════════════════ */
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Theo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --text: #1d1d1f;
+      --text-2: #86868b;
+      --text-3: #acacb0;
+      --border: rgba(0,0,0,0.08);
+      --shadow: 0 2px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-hover: 0 8px 30px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06);
+      --accent: #0071e3;
+      --radius: 12px;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+      --cat-arch-bg: rgba(0,113,227,0.08);
+      --cat-arch: #0071e3;
+      --cat-infocard-bg: rgba(175,82,222,0.08);
+      --cat-infocard: #af52de;
+    }
+    [data-theme="dark"] {
+      --bg: #000;
+      --surface: #1c1c1e;
+      --text: #f5f5f7;
+      --text-2: #98989d;
+      --text-3: #636366;
+      --border: rgba(255,255,255,0.1);
+      --shadow: 0 2px 12px rgba(0,0,0,0.4);
+      --shadow-hover: 0 8px 30px rgba(0,0,0,0.5);
+      --accent: #0a84ff;
+    }
 
-:root {
-  --bg:          #faf9f7;
-  --surface:     #ffffff;
-  --surface-2:   #f5f4f2;
-  --border:      rgba(0,0,0,0.07);
-  --border-2:    rgba(0,0,0,0.12);
-  --text:        #1d1d1f;
-  --text-2:      #6e6e73;
-  --text-3:      #aeaeb2;
-  --accent:      #0071e3;
-  --accent-bg:   rgba(0,113,227,0.06);
-  --cat-arch:    #0071e3;
-  --cat-arch-bg: rgba(0,113,227,0.07);
-  --cat-diagram: #34c759;
-  --cat-diagram-bg: rgba(52,199,89,0.07);
-  --cat-info:    #af52de;
-  --cat-info-bg: rgba(175,82,222,0.07);
-  --cat-tech:    #ff9500;
-  --cat-tech-bg: rgba(255,149,0,0.07);
-  --shadow-sm:   0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
-  --shadow-md:   0 4px 16px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03);
-  --shadow-lg:   0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
-  --radius-sm:   10px;
-  --radius-md:   14px;
-  --radius-lg:   20px;
-  --font-ui:     'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  --font-mono:   'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
-  --ease:        cubic-bezier(0.25, 0.1, 0.25, 1);
-  --ease-out:    cubic-bezier(0, 0, 0.2, 1);
-}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-[data-theme="dark"] {
-  --bg:          #0d0d0f;
-  --surface:     #161618;
-  --surface-2:   #1c1c1f;
-  --border:      rgba(255,255,255,0.07);
-  --border-2:    rgba(255,255,255,0.14);
-  --text:        #f5f5f7;
-  --text-2:      #a1a1a6;
-  --text-3:      #5a5a5e;
-  --accent:      #0a84ff;
-  --accent-bg:   rgba(10,132,255,0.1);
-  --cat-arch:    #0a84ff;
-  --cat-arch-bg: rgba(10,132,255,0.1);
-  --cat-diagram: #30d158;
-  --cat-diagram-bg: rgba(48,209,88,0.1);
-  --cat-info:    #bf5af2;
-  --cat-info-bg: rgba(191,90,242,0.1);
-  --cat-tech:    #ff9f0a;
-  --cat-tech-bg: rgba(255,159,10,0.1);
-  --shadow-sm:   0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
-  --shadow-md:   0 4px 16px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.25);
-  --shadow-lg:   0 12px 40px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3);
-}
+    body {
+      font-family: var(--font-ui);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ── Nav ── */
+    .nav-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(245,245,247,0.8);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    [data-theme="dark"] .nav-bar { background: rgba(0,0,0,0.8); }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 24px;
+      height: 44px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 8px; }
+    .nav-label {
+      font-family: var(--font-mono); font-size: 12px; color: var(--text-3);
+    }
+    .nav-title {
+      font-family: var(--font-ui); font-size: 13px; font-weight: 500; color: var(--text);
+    }
+    .nav-actions { display: flex; align-items: center; gap: 8px; }
+    .nav-btn {
+      display: flex; align-items: center; gap: 5px;
+      padding: 5px 12px; border-radius: 8px;
+      font-size: 12px; font-weight: 500; color: var(--text-2);
+      text-decoration: none; border: 1px solid var(--border);
+      background: var(--surface); transition: all 0.15s;
+    }
+    .nav-btn:hover { color: var(--text); border-color: var(--text-3); }
+    .nav-icon-btn {
+      width: 32px; height: 32px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text-2); transition: all 0.15s;
+    }
+    .nav-icon-btn:hover { color: var(--text); }
+    .sun-icon, .moon-icon { display: block; }
 
-html {
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
+    /* ── Layout ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 28px 24px 60px; }
 
-body {
-  font-family: var(--font-ui);
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  transition: background 0.3s var(--ease), color 0.3s var(--ease);
-}
+    /* ── Filter ── */
+    .filter-bar {
+      display: flex; align-items: center; gap: 6px; margin-bottom: 24px;
+    }
+    .filter-label {
+      font-family: var(--font-mono); font-size: 11px; color: var(--text-3);
+      margin-right: 4px;
+    }
+    .filter-btn {
+      font-family: var(--font-ui); font-size: 12px; font-weight: 500;
+      padding: 5px 14px; border-radius: 20px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-2); cursor: pointer; transition: all 0.15s;
+    }
+    .filter-btn:hover { color: var(--text); border-color: var(--text-3); }
+    .filter-btn.active {
+      background: var(--text); color: var(--bg);
+      border-color: var(--text);
+    }
 
-/* ─── Nav Bar ─── */
-.nav-bar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(250,249,247,0.8);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid var(--border);
-}
-[data-theme="dark"] .nav-bar { background: rgba(13,13,15,0.8); }
+    /* ── Gallery Grid ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
 
-.nav-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 28px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.nav-brand { display: flex; align-items: baseline; gap: 10px; }
-.nav-label { font-family: var(--font-mono); font-size: 11px; color: var(--text-3); letter-spacing: 0.5px; }
-.nav-title { font-family: var(--font-ui); font-size: 17px; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
-.nav-actions { display: flex; align-items: center; gap: 6px; }
-.nav-btn {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-2);
-  background: rgba(0,0,0,0.04);
-  border: none;
-  border-radius: 8px;
-  padding: 5px 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  transition: background 0.15s var(--ease), color 0.15s var(--ease);
-  text-decoration: none;
-}
-[data-theme="dark"] .nav-btn { background: rgba(255,255,255,0.06); }
-.nav-btn:hover { background: rgba(0,0,0,0.08); color: var(--text); }
-[data-theme="dark"] .nav-btn:hover { background: rgba(255,255,255,0.1); }
-.nav-icon-btn {
-  width: 32px; height: 32px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 8px; background: transparent; border: none;
-  cursor: pointer; color: var(--text-2);
-  transition: background 0.15s var(--ease), color 0.15s var(--ease);
-}
-.nav-icon-btn:hover { background: rgba(0,0,0,0.06); color: var(--text); }
-[data-theme="dark"] .nav-icon-btn:hover { background: rgba(255,255,255,0.08); }
+    /* ── Card ── */
+    .img-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+      display: flex; flex-direction: column;
+    }
+    .img-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
 
-/* ─── Main ─── */
-.main {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 56px 28px 96px;
-}
+    .card-thumb {
+      width: 100%; aspect-ratio: 4/3;
+      overflow: hidden; position: relative;
+      background: var(--bg);
+    }
+    .card-thumb img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; transition: transform 0.3s var(--ease-out);
+    }
+    .img-card:hover .card-thumb img { transform: scale(1.03); }
 
-/* ─── Page Header ─── */
-.page-header {
-  text-align: center;
-  margin-bottom: 52px;
-  padding-top: 16px;
-}
-.page-header-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-3);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-.page-header-title {
-  font-family: var(--font-ui);
-  font-size: 38px;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: -1px;
-  line-height: 1.1;
-  margin-bottom: 12px;
-}
-[data-theme="dark"] .page-header-title { font-weight: 500; }
-.page-header-sub {
-  font-family: var(--font-ui);
-  font-size: 15px;
-  color: var(--text-2);
-  line-height: 1.5;
-  max-width: 360px;
-  margin: 0 auto;
-}
+    .card-body { padding: 12px 14px 14px; flex: 1; }
+    .card-title {
+      font-family: var(--font-ui); font-size: 13px; font-weight: 500;
+      color: var(--text); line-height: 1.4; margin-bottom: 8px;
+      letter-spacing: -0.1px;
+    }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .card-tag {
+      font-family: var(--font-mono); font-size: 9px;
+      padding: 2px 7px; border-radius: 4px;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--text-3);
+    }
 
-/* ─── Filter Bar ─── */
-.filter-bar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 32px;
-  flex-wrap: wrap;
-}
-.filter-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text-3);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-right: 4px;
-}
-.filter-btn {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-2);
-  background: transparent;
-  border: 1px solid var(--border);
-  padding: 5px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.15s var(--ease);
-}
-.filter-btn:hover {
-  border-color: var(--border-2);
-  color: var(--text);
-  background: rgba(0,0,0,0.03);
-}
-[data-theme="dark"] .filter-btn:hover { background: rgba(255,255,255,0.05); }
-.filter-btn.active {
-  background: var(--accent-bg);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-/* ─── Stats Row ─── */
-.stats-row {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 28px;
-}
-.stat {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-3);
-}
-.stat strong { color: var(--text-2); font-weight: 500; }
-
-/* ─── Gallery Grid ─── */
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 18px;
-}
-
-/* ─── Diagram Card (HTML redirect) ─── */
-.card-body-wrap {
-  padding: 22px 24px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-.card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-.card-date {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-3);
-  letter-spacing: 0.3px;
-}
-.card-title {
-  font-family: var(--font-ui);
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 8px;
-  letter-spacing: -0.2px;
-  line-height: 1.4;
-}
-.card-desc {
-  font-family: var(--font-ui);
-  font-size: 13px;
-  color: var(--text-2);
-  line-height: 1.65;
-  margin-bottom: 14px;
-}
-.card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 18px;
-}
-.card-tag {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  padding: 3px 9px;
-  border-radius: 20px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  color: var(--text-3);
-}
-.card-cta {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--accent);
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-  transition: gap 0.15s var(--ease);
-}
-.img-card:hover .card-cta { gap: 8px; }
-
-
-.img-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition:
-    transform 0.25s var(--ease-out),
-    box-shadow 0.25s var(--ease-out),
-    border-color 0.2s var(--ease);
-}
-.img-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--border-2);
-}
-.img-card.hidden { display: none; }
-
-/* Category pill */
-.cat-pill {
-  position: static;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 500;
-  padding: 3px 9px;
-  border-radius: 20px;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-.cat-pill.arch   { color: var(--cat-arch);   background: var(--cat-arch-bg);   border: 1px solid rgba(0,113,227,0.2); }
-.cat-pill.diagram{ color: var(--cat-diagram); background: var(--cat-diagram-bg); border: 1px solid rgba(52,199,89,0.2); }
-.cat-pill.infocard{color: var(--cat-info);   background: var(--cat-info-bg);   border: 1px solid rgba(175,82,222,0.2); }
-.cat-pill.tech   { color: var(--cat-tech);   background: var(--cat-tech-bg);   border: 1px solid rgba(255,149,0,0.2); }
-
-/* ─── Diagram Card (HTML redirect) ─── */
-.card-body-wrap {
-  padding: 22px 24px 20px;
-}
-.card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-.card-date {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-3);
-  letter-spacing: 0.3px;
-}
-.card-title {
-  font-family: var(--font-ui);
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 8px;
-  letter-spacing: -0.2px;
-  line-height: 1.4;
-}
-.card-desc {
-  font-family: var(--font-ui);
-  font-size: 13px;
-  color: var(--text-2);
-  line-height: 1.65;
-  margin-bottom: 14px;
-}
-.card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 18px;
-}
-.card-tag {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  padding: 3px 9px;
-  border-radius: 20px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  color: var(--text-3);
-}
-.card-cta {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--accent);
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-  transition: gap 0.15s var(--ease);
-}
-.img-card:hover .card-cta { gap: 8px; }
-
-/* ─── Empty State ─── */
-.empty-state {
-  text-align: center;
-  padding: 80px 0;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-3);
-  letter-spacing: 0.5px;
-}
-
-/* ─── Lightbox ─── */
-#lightbox {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.92);
-  z-index: 1000;
-  align-items: center;
-  justify-content: center;
-  padding: 32px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-#lightbox.open { display: flex; }
-#lightbox img {
-  max-width: 100%;
-  max-height: 90vh;
-  object-fit: contain;
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-lg);
-}
-#lightboxClose {
-  position: absolute;
-  top: 20px;
-  right: 24px;
-  font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.7);
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.15);
-  padding: 7px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-}
-#lightboxClose:hover { background: rgba(255,255,255,0.18); color: #fff; }
-
-/* ─── Footer ─── */
-footer {
-  margin-top: 64px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-footer span {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text-3);
-  letter-spacing: 0.5px;
-}
-
-/* ─── Responsive ─── */
-@media (max-width: 640px) {
-  .page-header-title { font-size: 28px; }
-  .gallery-grid { grid-template-columns: 1fr; }
-  .main { padding: 40px 16px 80px; }
-  .nav-inner { padding: 0 16px; }
-}
-</style>
+    /* ── Empty ── */
+    .empty-state {
+      display: none; text-align: center; padding: 60px 0;
+      font-size: 14px; color: var(--text-3);
+      font-family: var(--font-mono);
+    }
+    .empty-state.visible { display: block; }
+  </style>
 </head>
 <body>
 
-<!-- Nav Bar -->
 <nav class="nav-bar">
   <div class="nav-inner">
     <div class="nav-brand">
       <span class="nav-label">// Gallery</span>
-      <span class="nav-title">Theo</span>
+      <span class="nav-title">结构图库</span>
     </div>
     <div class="nav-actions">
       <a href="https://jeekeagle.github.io/theo-hub/" class="nav-btn">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         Hub
       </a>
       <button class="nav-icon-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
-        <svg class="sun-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-        <svg class="moon-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
+        <svg class="sun-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
     </div>
   </div>
 </nav>
 
-<!-- Main -->
-<main class="main">
-
-  <!-- Page Header -->
-  <div class="page-header">
-    <div class="page-header-eyebrow">Visual Archive</div>
-    <h1 class="page-header-title">结构图库</h1>
-    <p class="page-header-sub">架构图 · 结构图 · 信息卡 — 可视化每一层思考</p>
-  </div>
-
-  <!-- Filter -->
+<div class="container">
   <div class="filter-bar">
     <span class="filter-label">Type</span>
     <button class="filter-btn active" data-filter="all">All</button>
     <button class="filter-btn" data-filter="arch">架构图</button>
-    <button class="filter-btn" data-filter="diagram">结构图</button>
     <button class="filter-btn" data-filter="infocard">信息卡</button>
-    <button class="filter-btn" data-filter="tech">技术图</button>
   </div>
 
-  <!-- Stats -->
-  <div class="stats-row">
-    <div class="stat">Total <strong id="stat-total">0</strong></div>
-    <div class="stat">架构图 <strong id="stat-arch">0</strong></div>
-    <div class="stat">结构图 <strong id="stat-diagram">0</strong></div>
-    <div class="stat">信息卡 <strong id="stat-infocard">0</strong></div>
-    <div class="stat">技术图 <strong id="stat-tech">0</strong></div>
-  </div>
-
-  <!-- Gallery Grid -->
   <div class="gallery-grid" id="gallery"></div>
-
-  <!-- Empty -->
-  <div class="empty-state" id="emptyState" style="display:none">
-    No images in this category yet.
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <span>THEO GALLERY / v2.0</span>
-    <span>Apple Design — Visual Thinking Archive</span>
-  </footer>
-
-</main>
-
-<!-- Lightbox -->
-<div id="lightbox">
-  <button id="lightboxClose">Close</button>
-  <img id="lightboxImg" src="" alt="">
+  <div class="empty-state" id="emptyState">— nothing here —</div>
 </div>
 
 <script>
-const IMAGES = [
-  {
-    id: "theo-architecture",
-    title: "Theo — Hermes Personal AI System",
-    desc: "整体体系架构图：Input → Hermes Agent → Output，包含 Obsidian Vault、Publication Channels、Skill System",
-    category: "arch",
-    tags: ["Hermes", "Theo", "AI-System"],
-    src: "theo-architecture.html",
-    date: "2026-04-11"
-  }
-];
-
-function getCatLabel(cat) {
-  return { arch:'架构图', diagram:'结构图', infocard:'信息卡', tech:'技术图' }[cat] || cat;
-}
-
-function renderImages(filter) {
-  const filtered = filter === 'all' ? IMAGES : IMAGES.filter(i => i.category === filter);
-  const gallery = document.getElementById('gallery');
-  const emptyState = document.getElementById('emptyState');
-  gallery.innerHTML = '';
-  emptyState.style.display = filtered.length ? 'none' : 'block';
-
-  filtered.forEach(img => {
-    const card = document.createElement('div');
-    card.className = 'img-card';
-    card.innerHTML = `
-      <div class="card-body-wrap">
-        <div class="card-top">
-          <span class="cat-pill ${img.category}">${getCatLabel(img.category)}</span>
-          <span class="card-date">${img.date}</span>
-        </div>
-        <div class="card-title">${img.title}</div>
-        <div class="card-desc">${img.desc}</div>
-        <div class="card-tags">
-          ${img.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
-        </div>
-        <div class="card-cta">
-          <span>View Diagram</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </div>
-      </div>
-    `;
-    card.addEventListener('click', () => { window.location.href = img.src; });
-    gallery.appendChild(card);
-  });
-
-  updateStats();
-}
-
-function updateStats() {
-  document.getElementById('stat-total').textContent = IMAGES.length;
-  ['arch','diagram','infocard','tech'].forEach(cat => {
-    document.getElementById('stat-' + cat).textContent = IMAGES.filter(i => i.category === cat).length;
-  });
-}
-
-// Filter
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderImages(btn.dataset.filter);
-  });
-});
-
-// Lightbox
-const lightbox = document.getElementById('lightbox');
-const lightboxImg = document.getElementById('lightboxImg');
-function openLightbox(src) {
-  lightboxImg.src = src;
-  lightbox.classList.add('open');
-}
-document.getElementById('lightboxClose').addEventListener('click', () => lightbox.classList.remove('open'));
-lightbox.addEventListener('click', e => { if (e.target === lightbox) lightbox.classList.remove('open'); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
-
-// Theme Toggle
-(function() {
-  var saved = localStorage.getItem('theme');
-  var prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
-  var isDark = saved === 'dark' || (!saved && prefersDark);
-  if (isDark) document.documentElement.setAttribute('data-theme','dark');
-  applyIcon(isDark);
-
-  window.toggleTheme = function() {
-    var isD = document.documentElement.getAttribute('data-theme') === 'dark';
-    if (isD) {
-      document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('theme','light');
-      applyIcon(false);
-    } else {
-      document.documentElement.setAttribute('data-theme','dark');
-      localStorage.setItem('theme','dark');
-      applyIcon(true);
+  const IMAGES = [
+    {
+      id: "theo-architecture",
+      title: "Theo — Hermes Personal AI System",
+      category: "arch",
+      tags: ["Hermes", "Theo", "AI-System"],
+      src: "theo-architecture.html",
+      thumb: "theo-architecture.png"
     }
-  };
+  ];
 
-  function applyIcon(isDark) {
-    var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
-    if (s) s.style.display = isDark ? 'none' : 'inline';
-    if (m) m.style.display = isDark ? 'inline' : 'none';
+  const getCatLabel = (cat) => ({ arch: '架构图', infocard: '信息卡' }[cat] || cat);
+
+  function renderImages(filter) {
+    const filtered = filter === 'all' ? IMAGES : IMAGES.filter(i => i.category === filter);
+    const gallery = document.getElementById('gallery');
+    const emptyState = document.getElementById('emptyState');
+    gallery.innerHTML = '';
+    emptyState.classList.toggle('visible', filtered.length === 0);
+
+    filtered.forEach(img => {
+      const card = document.createElement('div');
+      card.className = 'img-card';
+      card.innerHTML = `
+        <div class="card-thumb">
+          <img src="${img.thumb}" alt="${img.title}" loading="lazy"
+               onerror="this.style.display='none'">
+        </div>
+        <div class="card-body">
+          <div class="card-title">${img.title}</div>
+          <div class="card-tags">
+            ${img.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+          </div>
+        </div>
+      `;
+      card.addEventListener('click', () => { window.location.href = img.src; });
+      gallery.appendChild(card);
+    });
   }
-})();
 
-// Init
-renderImages('all');
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderImages(btn.dataset.filter);
+    });
+  });
+
+  function toggleTheme() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    updateThemeIcon(!isDark);
+  }
+  function updateThemeIcon(isDark) {
+    document.querySelectorAll('.sun-icon').forEach(el => el.style.display = isDark ? 'none' : 'block');
+    document.querySelectorAll('.moon-icon').forEach(el => el.style.display = isDark ? 'block' : 'none');
+  }
+  function initTheme() {
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = saved ? saved === 'dark' : prefersDark;
+    if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
+    updateThemeIcon(isDark);
+  }
+
+  initTheme();
+  renderImages('all');
 </script>
 </body>
 </html>
-<!-- v2.0 -->
