@@ -266,378 +266,58 @@ header h1 span { color: var(--text-muted); }
   border: 1px solid var(--tag-content-border);
   padding: 1px 8px;
   border-radius: 3px;
-  letter-spacing: 0.4px;
+  letter-spacing: 
+/* 精修/原始标签：inline放在日期左侧，高级感 */
+.tag-pair {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  margin-left: 10px;
+  position: relative;
 }
-/* 版本标签 */
-.card-version-badge {
-  position: absolute;
-  top: 16px;
-  right: 16px;
+.tag-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.tag-label {
   font-family: var(--font-mono);
   font-size: 9px;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: 3px;
-  opacity: 0.7;
+  margin-left: 5px;
+  opacity: 0.6;
 }
-.badge-refined {
-  background: var(--accent-bg);
-  color: var(--accent);
-  border: 1px solid var(--tag-content-border);
+/* 精修：琥珀色圆点 + 淡文字 */
+.tag-refined .tag-dot {
+  background: #c4780a;
+  box-shadow: 0 0 4px rgba(196,120,10,0.5);
 }
-.badge-original {
-  background: var(--tag-cat-bg);
-  color: var(--tag-cat-text);
-  border: 1px solid var(--tag-cat-border);
+.tag-refined .tag-label {
+  color: #9a7030;
 }
-
-.card-body {
-  font-size: 21px;
-  line-height: 1.85;
-  color: var(--text);
-  letter-spacing: 0.3px;
-  word-break: break-word;
+/* 原始：灰紫圆点 + 淡文字 */
+.tag-original .tag-dot {
+  background: #8b7ab8;
+  box-shadow: 0 0 4px rgba(139,122,184,0.4);
 }
-.card-body strong {
-  font-weight: 600;
-  color: var(--text);
+.tag-original .tag-label {
+  color: #7a6a98;
 }
-.card-body .kw { color: var(--accent); font-weight: 600; }
-.card-body .en { color: var(--text-dim); font-style: italic; }
-
-/* Flip hint */
-.card-flip-hint {
-  position: absolute;
-  bottom: 14px;
-  right: 16px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 0.5px;
-  opacity: 0;
-  transition: opacity 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+[data-theme="dark"] .tag-refined .tag-dot {
+  background: #e8a445;
+  box-shadow: 0 0 5px rgba(232,164,69,0.6);
 }
-.card:hover .card-flip-hint {
-  opacity: 0.8;
+[data-theme="dark"] .tag-refined .tag-label {
+  color: #c09050;
 }
-.card.flipped .card-flip-hint {
-  opacity: 0;
+[data-theme="dark"] .tag-original .tag-dot {
+  background: #a090e0;
+  box-shadow: 0 0 5px rgba(160,144,224,0.5);
+}
+[data-theme="dark"] .tag-original .tag-label {
+  color: #9080b8;
 }
 
-/* ─── Question section ─── */
-.card-question {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-top: 20px;
-  padding: 14px 16px;
-  background: var(--q-bg, #f5f0fa);
-  border: 1px solid var(--q-border, #d8c8f0);
-  border-radius: 6px;
-}
-.question-mark {
-  color: var(--q-icon, #8060c0);
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-.question-text {
-  font-family: var(--font-serif);
-  font-size: 14px;
-  color: var(--q-text, #5a4880);
-  line-height: 1.6;
-  font-style: italic;
-}
-.question-text strong {
-  font-weight: 600;
-  color: var(--q-text, #5a4880);
-}
-
-/* ─── Loading states ─── */
-.skeleton {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 28px 32px;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow);
-}
-.skeleton-line {
-  height: 14px;
-  background: linear-gradient(90deg, var(--border) 25%, var(--bg-card-h) 50%, var(--border) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s ease-in-out infinite;
-  border-radius: 3px;
-  margin-bottom: 10px;
-}
-.skeleton-line:last-child { margin-bottom: 0; width: 70%; }
-.skeleton-line.lg { height: 18px; margin-bottom: 14px; }
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-.end-marker {
-  text-align: center;
-  padding: 32px 0;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 1.5px;
-}
-.end-marker::before, .end-marker::after {
-  content: '—';
-  margin: 0 8px;
-  opacity: 0.4;
-}
-
-/* ─── Toast ─── */
-.toast {
-  position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--text);
-  color: var(--bg);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  padding: 8px 18px;
-  border-radius: 20px;
-  opacity: 0;
-  transition: opacity 0.25s, transform 0.25s;
-  z-index: 200;
-  pointer-events: none;
-  white-space: nowrap;
-}
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-@media (max-width: 600px) {
-  .card-front, .card-back { padding: 22px 20px; }
-  .container { padding: 28px 16px 80px; }
-  body { font-size: 18px; }
-  .card-body { font-size: 18px; }
-}
-</style>
-</head>
-<body>
-
-<header>
-  <div class="header-inner">
-    <div class="header-left">
-      <div class="header-label">// Flow</div>
-      <h1><span>灵感流</span></h1>
-    </div>
-    <div class="header-right">
-      <a href="https://jeekeagle.github.io/theo-hub/" id="hubLink" aria-label="返回 theo-hub">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        theo-hub
-      </a>
-      <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">
-        <span class="sun-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
-        <span class="moon-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<div class="container">
-  <div id="feed"></div>
-  <div id="endMarker" class="end-marker" style="display:none">ALL CAUGHT UP</div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-const MANIFEST = 'manifest.json';
-const RAW_BASE = 'https://raw.githubusercontent.com/jeekeagle/theo-hub/main/flow/';
-let posts = [];
-let loading = false;
-let allLoaded = false;
-
-async function loadManifest() {
-  const r = await fetch('manifest.json?t=' + Date.now() + '&r=' + Math.random());
-  const data = await r.json();
-  return data.posts || [];
-}
-
-function formatDate(iso) {
-  const d = new Date(iso);
-  const pad = n => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-}
-
-function formatBody(text) {
-  text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  text = text.replace(/`(.*?)`/g, '<code style="font-family:var(--font-mono);font-size:0.85em;color:var(--accent2)">$1</code>');
-  text = text.replace(/\[\[(.*?)\]\]/g, '<span class="kw">[[$1]]</span>');
-  // 换行分段：双换行 → 段落，单换行 → <br>
-  const paragraphs = text.split(/\n\n+/);
-  if (paragraphs.length > 1) {
-    text = paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
-  } else {
-    text = text.replace(/\n/g, '<br>');
-  }
-  return text;
-}
-
-function renderCard(post) {
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.addEventListener('click', () => {
-    card.classList.toggle('flipped');
-  });
-
-  const hasOriginal = !!(post.originalContent && post.originalContent.trim());
-  // 旧 post 没有 originalContent 时，复制正面内容到背面，保证翻转功能可用
-  const originalContent = hasOriginal ? post.originalContent : post.content;
-
-  // 分类标签
-  const catTags = (Array.isArray(post.category) ? post.category : [post.category || '想法']).map(t =>
-    `<span class="tag-cat">${t}</span>`
-  ).join('');
-
-  // 内容标签
-  const contentTags = (post.contentTags || post.tags || []).map(t =>
-    `<span class="tag-content">${t}</span>`
-  ).join('');
-
-  // Flip icon SVG
-  const flipIcon = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`;
-
-  // Refined 标签（放在日期旁边）
-  const refinedBadge = hasOriginal ? `<span class="card-version-tag tag-refined">Refined</span>` : '';
-  // Original 标签（放在日期旁边）
-  const originalBadge = hasOriginal ? `<span class="card-version-tag tag-original">Original</span>` : '';
-  // 翻转提示
-  const flipHintFront = hasOriginal ? `<div class="card-flip-hint">${flipIcon} 查看原文</div>` : '';
-  const flipHintBack = hasOriginal ? `<div class="card-flip-hint" style="opacity:0.8">${flipIcon} 返回</div>` : '';
-
-  card.innerHTML = `
-  <div class="card-front">
-    <div class="card-meta">
-      <div class="card-meta-left">
-        <span class="card-date">${formatDate(post.created)}</span>
-        ${refinedBadge}
-      </div>
-      <div class="card-tags">
-        ${catTags}
-        ${contentTags}
-      </div>
-    </div>
-    <div class="card-body">${formatBody(post.content)}</div>
-    ${post.question ? `
-    <div class="card-question">
-      <div class="question-mark">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      </div>
-      <span class="question-text">${formatBody(post.question)}</span>
-    </div>` : ''}
-    ${flipHintFront}
-  </div>
-  <div class="card-back">
-    <div class="card-meta">
-      <div class="card-meta-left">
-        <span class="card-date">${formatDate(post.created)}</span>
-        ${originalBadge}
-      </div>
-      <div class="card-tags">
-        ${catTags}
-        ${contentTags}
-      </div>
-    </div>
-    <div class="card-body">${formatBody(originalContent)}</div>
-    ${flipHintBack}
-  </div>`;
-
-  return card;
-}
-
-function showSkeletons(n) {
-  const feed = document.getElementById('feed');
-  for (let i = 0; i < n; i++) {
-    const s = document.createElement('div');
-    s.className = 'skeleton';
-    s.innerHTML = '<div class="skeleton-line lg"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line" style="width:55%"></div>';
-    feed.appendChild(s);
-  }
-}
-
-function clearSkeletons() {
-  document.querySelectorAll('.skeleton').forEach(s => s.remove());
-}
-
-async function loadPosts() {
-  if (loading || allLoaded) return;
-  loading = true;
-  showSkeletons(3);
-  try {
-    const manifest = await loadManifest();
-    clearSkeletons();
-    if (manifest.length === 0) {
-      allLoaded = true;
-      document.getElementById('endMarker').style.display = 'block';
-      document.getElementById('endMarker').textContent = 'NO POSTS YET';
-      return;
-    }
-    const sorted = manifest.slice().reverse();
-    const feed = document.getElementById('feed');
-    for (const post of sorted) {
-      feed.appendChild(renderCard(post));
-    }
-    allLoaded = true;
-    document.getElementById('endMarker').style.display = 'block';
-  } catch (e) {
-    clearSkeletons();
-    console.error(e);
-  }
-  loading = false;
-}
-
-// Theme
-(function() {
-  var saved = localStorage.getItem('theme');
-  var prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
-  var isDark = saved === 'dark' || (!saved && prefersDark);
-  if (isDark) {
-    document.documentElement.setAttribute('data-theme','dark');
-    var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
-    if (s) s.style.display = 'none';
-    if (m) m.style.display = 'inline';
-  }
-  window.toggleTheme = function() {
-    var isD = document.documentElement.getAttribute('data-theme') === 'dark';
-    if (isD) {
-      document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('theme','light');
-      var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
-      if (s) s.style.display = 'inline';
-      if (m) m.style.display = 'none';
-    } else {
-      document.documentElement.setAttribute('data-theme','dark');
-      localStorage.setItem('theme','dark');
-      var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
-      if (s) s.style.display = 'none';
-      if (m) m.style.display = 'inline';
-    }
-  };
-})();
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
-}
-
-loadPosts();
-</script>
-</body>
-</html>
