@@ -569,7 +569,13 @@ footer {
   }
   function closeOverlay() { overlay.classList.remove('open'); }
 
-  var cards = 
+  var cards = document.querySelectorAll('.card, .style-card, .node-item');
+  cards.forEach(function(card){
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function(e){
+      if (e.target.closest('a, button')) return;
+      openCard(card);
+    });
   });
 
   closeBtn.addEventListener('click', closeOverlay);
@@ -577,6 +583,6 @@ footer {
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && overlay.classList.contains('open')) closeOverlay(); });
 })();
 
-(function(){var o=document.getElementById("cardPreviewOverlay"),c=document.getElementById("cardPreviewClose"),t=document.getElementById("cardPreviewTitle"),b=document.getElementById("cardPreviewBody");function p(card){var ti=card.querySelector(".card-title")||card.querySelector("h3")||document.createElement("span");t.textContent=ti.textContent||ti.innerText||"卡片预览";var de=card.querySelector(".card-desc"),me=card.querySelector(".card-meta"),ba=card.querySelector(".card-badge");var bo="<p>"+(de?de.innerHTML:"")+"</p>";if(me)bo+="<p style='margin-top:8px;color:#888;font-size:12px'>"+me.innerHTML+"</p>";if(ba)bo+="<p style='margin-top:8px'>"+ba.outerHTML+"</p>";b.innerHTML=bo||'<p class="card-preview-placeholder">更多信息待填充</p>';o.classList.add("open");document.body.style.overflow="hidden";}function q(){o.classList.remove("open");document.body.style.overflow="";}c.addEventListener("click",q);o.addEventListener("click",function(e){if(e.target===o)q()});document.addEventListener("keydown",function(e){if(e.key==="Escape"&&o.classList.contains("open"))q()});document.querySelectorAll(".engine-card").forEach(function(card){card.style.cursor="pointer";card.addEventListener("click",function(){p(card);});});})();</script>
+</script>
 </body>
 </html>
