@@ -19,7 +19,7 @@
   --accent-bg:   #fdf3e3;
   --text:        #2a2420;
   --text-dim:    #7a6e65;
-  --text-muted:  #b0a498;
+  --text-muted:  #b0a98a;
   --font-serif:  'Noto Serif SC', Georgia, serif;
   --font-mono:   'JetBrains Mono', monospace;
   --shadow:      0 1px 3px rgba(80,60,30,0.06), 0 4px 12px rgba(80,60,30,0.04);
@@ -171,24 +171,46 @@ header h1 span { color: var(--text-muted); }
   z-index: 1;
 }
 
-/* ─── Card ─── */
+/* ─── Flip Card ─── */
 .card {
+  perspective: 1200px;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+.card-inner {
+  position: relative;
+  width: 100%;
+  transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+.card-front,
+.card-back {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 4px;
   padding: 28px 32px;
-  margin-bottom: 16px;
   box-shadow: var(--shadow);
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
-  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
-.card:hover {
+.card:hover .card-front,
+.card:hover .card-back {
   border-color: var(--border-h);
   box-shadow: var(--shadow-h);
-  transform: translateY(-1px);
+}
+.card-back {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  transform: rotateY(180deg);
+  background: var(--bg-card-h);
 }
 /* left accent bar */
-.card::before {
+.card-front::before,
+.card-back::before {
   content: '';
   position: absolute;
   left: -1px;
@@ -200,7 +222,10 @@ header h1 span { color: var(--text-muted); }
   opacity: 0;
   transition: opacity 0.2s;
 }
-.card:hover::before { opacity: 0.5; }
+.card:hover .card-front::before,
+.card:hover .card-back::before {
+  opacity: 0.5;
+}
 
 /* Card header: date left, tags right */
 .card-header {
@@ -246,6 +271,29 @@ header h1 span { color: var(--text-muted); }
   border-radius: 3px;
   letter-spacing: 0.4px;
 }
+/* 版本标签 */
+.card-version-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 3px;
+  opacity: 0.7;
+}
+.badge-refined {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid var(--tag-content-border);
+}
+.badge-original {
+  background: var(--tag-cat-bg);
+  color: var(--tag-cat-text);
+  border: 1px solid var(--tag-cat-border);
+}
 
 .card-body {
   font-size: 21px;
@@ -260,6 +308,28 @@ header h1 span { color: var(--text-muted); }
 }
 .card-body .kw { color: var(--accent); font-weight: 600; }
 .card-body .en { color: var(--text-dim); font-style: italic; }
+
+/* Flip hint */
+.card-flip-hint {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.card:hover .card-flip-hint {
+  opacity: 0.8;
+}
+.card.flipped .card-flip-hint {
+  opacity: 0;
+}
 
 /* ─── Question section ─── */
 .card-question {
@@ -351,7 +421,7 @@ header h1 span { color: var(--text-muted); }
 }
 
 @media (max-width: 600px) {
-  .card { padding: 22px 20px; }
+  .card-front, .card-back { padding: 22px 20px; }
   .container { padding: 28px 16px 80px; }
   body { font-size: 18px; }
   .card-body { font-size: 18px; }
@@ -424,6 +494,9 @@ function formatBody(text) {
 function renderCard(post) {
   const card = document.createElement('div');
   card.className = 'card';
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+
+  const hasOriginal = !!(post.originalContent && post.originalContent.trim());
 
   // 分类标签
   const catTags = (Array.isArray(post.category) ? post.category : [post.category || '想法']).map(t =>
@@ -435,23 +508,69 @@ function renderCard(post) {
     `<span class="tag-content">${t}</span>`
   ).join('');
 
-  card.innerHTML = `
-    <div class="card-header">
-      <span class="card-date">${formatDate(post.created)}</span>
-      <div class="card-tags">
-        ${catTags}
-        ${contentTags}
+  // Flip icon SVG
+  const flipIcon = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`;
+
+  if (hasOriginal) {
+    // 有原始版本 → 正面（精炼）+ 背面（原始）
+    card.innerHTML = `
+    <div class="card-inner">
+      <div class="card-front">
+        <span class="card-version-badge badge-refined">Refined</span>
+        <div class="card-header">
+          <span class="card-date">${formatDate(post.created)}</span>
+          <div class="card-tags">
+            ${catTags}
+            ${contentTags}
+          </div>
+        </div>
+        <div class="card-body">${formatBody(post.content)}</div>
+        ${post.question ? `
+        <div class="card-question">
+          <div class="question-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <span class="question-text">${formatBody(post.question)}</span>
+        </div>` : ''}
+        <div class="card-flip-hint">${flipIcon} 点击查看原文</div>
       </div>
-    </div>
-    <div class="card-body">${formatBody(post.content)}</div>
-    ${post.question ? `
-    <div class="card-question">
-      <div class="question-mark">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div class="card-back">
+        <span class="card-version-badge badge-original">Original</span>
+        <div class="card-header">
+          <span class="card-date">${formatDate(post.created)}</span>
+          <div class="card-tags">
+            ${catTags}
+            ${contentTags}
+          </div>
+        </div>
+        <div class="card-body">${formatBody(post.originalContent)}</div>
+        <div class="card-flip-hint" style="opacity:0.8">${flipIcon} 点击返回精炼版</div>
       </div>
-      <span class="question-text">${formatBody(post.question)}</span>
-    </div>` : ''}
-  `;
+    </div>`;
+  } else {
+    // 无原始版本 → 正常显示正面（单面卡）
+    card.innerHTML = `
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-header">
+          <span class="card-date">${formatDate(post.created)}</span>
+          <div class="card-tags">
+            ${catTags}
+            ${contentTags}
+          </div>
+        </div>
+        <div class="card-body">${formatBody(post.content)}</div>
+        ${post.question ? `
+        <div class="card-question">
+          <div class="question-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <span class="question-text">${formatBody(post.question)}</span>
+        </div>` : ''}
+      </div>
+    </div>`;
+  }
+
   return card;
 }
 
