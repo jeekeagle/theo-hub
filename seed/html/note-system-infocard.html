@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的数字花园</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700&family=Oswald:wght@500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 100%; min-height: 100vh; background: #f5f3ed; display: flex; align-items: center; justify-content: center; padding: 40px 20px; font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+    .card { width: 900px; max-width: 100%; background: #f5f3ed; padding: 50px; position: relative; overflow: hidden; }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+    .content { position: relative; z-index: 1; }
+    .tag-row { display: flex; gap: 12px; margin-bottom: 28px; align-items: center; }
+    .tag { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #888; }
+    .tag-dot { width: 4px; height: 4px; background: #ccc; border-radius: 50%; }
+    .tag-main { background: #1a1a1a; color: #f5f3ed; padding: 4px 10px; border-radius: 2px; }
+    .title { font-family: 'Noto Serif SC', serif; font-size: 64px; font-weight: 900; line-height: 1.05; color: #0a0a0a; margin-bottom: 10px; letter-spacing: -0.02em; }
+    .subtitle { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 36px; font-weight: 400; }
+    .divider { height: 5px; background: #0a0a0a; width: 80px; margin-bottom: 36px; }
+    .body-text { font-size: 18px; line-height: 1.7; color: #1a1a1a; margin-bottom: 20px; }
+    .body-text strong { font-weight: 700; color: #0a0a0a; }
+    .principles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
+    .principle { background: rgba(0,0,0,0.03); padding: 22px 24px; border-left: 4px solid #0a0a0a; }
+    .principle-num { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; color: #888; text-transform: uppercase; margin-bottom: 8px; }
+    .principle-title { font-size: 15px; font-weight: 700; color: #0a0a0a; margin-bottom: 6px; }
+    .principle-desc { font-size: 14px; color: #555; line-height: 1.5; }
+    .components-row { display: flex; gap: 0; margin: 30px 0; }
+    .component { flex: 1; padding: 18px 20px; border: 1px solid #d0d0d0; margin-right: -1px; }
+    .component:first-child { border-radius: 4px 0 0 4px; }
+    .component:last-child { border-radius: 0 4px 4px 0; }
+    .component-name { font-size: 12px; font-weight: 700; color: #0a0a0a; margin-bottom: 4px; }
+    .component-desc { font-size: 13px; color: #666; line-height: 1.4; }
+    .bottom-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 36px; padding-top: 20px; border-top: 1px solid #d0d0d0; }
+    .author { font-size: 13px; color: #888; }
+    .url { font-size: 12px; color: #888; font-family: 'Inter', monospace; }
+    @media (max-width: 600px) { .card { padding: 30px 24px; } .title { font-size: 42px; } .principles-grid { grid-template-columns: 1fr; } .components-row { flex-direction: column; } .component { margin-right: 0; margin-bottom: -1px; } .component:first-child { border-radius: 4px 4px 0 0; } .component:last-child { border-radius: 0 0 4px 4px; } }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="content">
+      <div class="tag-row">
+        <span class="tag tag-main">知识管理</span>
+        <span class="tag-dot"></span>
+        <span class="tag">笔记系统</span>
+        <span class="tag-dot"></span>
+        <span class="tag">2026-04-09</span>
+      </div>
+      <h1 class="title">我的数字花园</h1>
+      <p class="subtitle">笔记与知识管理体系 / 两个月迭代，四个核心组件，自动化的夜间管道</p>
+      <div class="divider"></div>
+      <p class="body-text">整套系统的核心感受只有一条：<strong>我需要一个思考伙伴，不是一个书童。</strong></p>
+      <p class="body-text">书童会帮你存东西，但不会提醒你「这个信息和那个有关」。思考伙伴会帮你存东西，同时帮你看到连接、推进想法、生成内容。</p>
+      <div class="principles-grid">
+        <div class="principle"><div class="principle-num">原则 01</div><div class="principle-title">连接比存储更重要</div><div class="principle-desc">记一百条不如用好一条。存不是价值，连接才是。</div></div>
+        <div class="principle"><div class="principle-num">原则 02</div><div class="principle-title">让触发变得自然</div><div class="principle-desc">最好的系统不是「我需要记得去用它」，而是「我自然会用它」。</div></div>
+        <div class="principle"><div class="principle-num">原则 03</div><div class="principle-title">分层而不是堆叠</div><div class="principle-desc">不同阶段的内容放在不同地方，不混在一起。</div></div>
+        <div class="principle"><div class="principle-num">原则 04</div><div class="principle-title">自动化执行</div><div class="principle-desc">Night Routine 是引擎。白天正常对话，凌晨自动处理。</div></div>
+      </div>
+      <div class="components-row">
+        <div class="component"><div class="component-name">seed.md</div><div class="component-desc">高价值内容沉淀地</div></div>
+        <div class="component"><div class="component-name">future.md</div><div class="component-desc">想法种子库</div></div>
+        <div class="component"><div class="component-name">Writing-Thoughts</div><div class="component-desc">写作主题库</div></div>
+        <div class="component"><div class="component-name">Night Routine</div><div class="component-desc">01:30 自动执行</div></div>
+      </div>
+      <div class="bottom-bar"><span class="author">Theo · Hermes Agent</span><span class="url">jeekeagle.github.io/Seed</span></div>
+    </div>
+  </div>
+</body>
+</html>
