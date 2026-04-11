@@ -227,13 +227,18 @@ header h1 span { color: var(--text-muted); }
   opacity: 0.5;
 }
 
-/* Card header: date left, tags right */
-.card-header {
+/* Card meta: left=date+version, right=tags */
+.card-meta {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 16px;
+}
+.card-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 0;
 }
 .card-date {
   font-family: var(--font-mono);
@@ -513,19 +518,19 @@ function renderCard(post) {
   // Flip icon SVG
   const flipIcon = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`;
 
-  // Refined 标签（有精炼内容才显示）
-  const refinedBadge = hasOriginal ? `<span class="card-version-badge badge-refined">Refined</span>` : '';
-  // Original 标签（有原始内容才显示）
-  const originalBadge = hasOriginal ? `<span class="card-version-badge badge-original">Original</span>` : '';
-  // 翻转提示（有原始内容才显示）
-  const flipHintFront = hasOriginal ? `<div class="card-flip-hint">${flipIcon} 点击查看原文</div>` : '';
-  const flipHintBack = hasOriginal ? `<div class="card-flip-hint" style="opacity:0.8">${flipIcon} 点击返回</div>` : '';
+  // Refined 标签（放在日期旁边）
+  const refinedBadge = hasOriginal ? `<span class="card-version-tag tag-refined">Refined</span>` : '';
+  // Original 标签（放在日期旁边）
+  const originalBadge = hasOriginal ? `<span class="card-version-tag tag-original">Original</span>` : '';
+  // 翻转提示
+  const flipHintFront = hasOriginal ? `<div class="card-flip-hint">${flipIcon} 查看原文</div>` : '';
+  const flipHintBack = hasOriginal ? `<div class="card-flip-hint" style="opacity:0.8">${flipIcon} 返回</div>` : '';
 
   card.innerHTML = `
   <div class="card-inner">
     <div class="card-front">
       ${refinedBadge}
-      <div class="card-header">
+      <div class="card-meta">
         <span class="card-date">${formatDate(post.created)}</span>
         <div class="card-tags">
           ${catTags}
@@ -544,7 +549,7 @@ function renderCard(post) {
     </div>
     <div class="card-back">
       ${originalBadge}
-      <div class="card-header">
+      <div class="card-meta">
         <span class="card-date">${formatDate(post.created)}</span>
         <div class="card-tags">
           ${catTags}
