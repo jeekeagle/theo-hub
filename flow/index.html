@@ -5,366 +5,436 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flow — 灵感流</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════
+   Apple Design System — Flow
+   ═══════════════════════════════════════════ */
+
 :root {
-  --bg:          #faf8f5;
-  --bg-card:     #ffffff;
-  --bg-card-h:   #f8f5f0;
-  --text:        #2c2825;
-  --text-muted:  #9a9590;
-  --text-dim:    #6a6560;
-  --border:      #e8e4df;
-  --border-h:    #d4cec7;
-  --shadow:      0 1px 3px rgba(0,0,0,0.04);
-  --shadow-h:    0 4px 12px rgba(0,0,0,0.07);
-  --accent:      #c4780a;
-  --accent-bg:   #fef6e6;
-  --accent2:     #7a6a58;
-  --tag-cat-text:    #6040c0;
-  --tag-cat-bg:      #f2eefa;
-  --tag-cat-border:  #d4c8f4;
-  --tag-content-text:  #c0600a;
-  --tag-content-bg:    #fef3e6;
-  --tag-content-border:#f4d8bc;
+  /* Light — warm parchment */
+  --bg:          #faf9f7;
+  --surface:     #ffffff;
+  --surface-2:   #f5f4f2;
+  --border:      rgba(0,0,0,0.07);
+  --border-2:    rgba(0,0,0,0.12);
+  --text:        #1d1d1f;
+  --text-2:      #6e6e73;
+  --text-3:      #aeaeb2;
+  --accent:      #0071e3;
+  --accent-bg:   rgba(0,113,227,0.06);
+  --tag-cat-txt:  #5e5ce6;
+  --tag-cat-bg:   rgba(94,92,230,0.08);
+  --tag-cat-bd:   rgba(94,92,230,0.2);
+  --tag-cnt-txt:  #bf5a00;
+  --tag-cnt-bg:   rgba(191,90,0,0.07);
+  --tag-cnt-bd:   rgba(191,90,0,0.18);
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03);
+  --shadow-lg:   0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+  --radius-sm:   10px;
+  --radius-md:   14px;
+  --radius-lg:   20px;
+  --font-ui:     'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  --font-mono:   'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+  --ease:        cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out:    cubic-bezier(0, 0, 0.2, 1);
 }
+
 [data-theme="dark"] {
-  --bg:          #111118;
-  --bg-card:     #1a1a22;
-  --bg-card-h:   #20202a;
-  --text:        #e8e4ef;
-  --text-muted:  #6a6580;
-  --text-dim:    #908090;
-  --border:      #2a2a38;
-  --border-h:    #3a3a50;
-  --shadow:      0 1px 3px rgba(0,0,0,0.3);
-  --shadow-h:    0 4px 12px rgba(0,0,0,0.4);
-  --tag-cat-text:    #b090f0;
-  --tag-cat-bg:      #1e1830;
-  --tag-cat-border:  #3a2860;
-  --tag-content-text:#e09050;
-  --tag-content-bg:  #201810;
-  --tag-content-border:#4a3020;
+  --bg:          #0d0d0f;
+  --surface:     #161618;
+  --surface-2:   #1c1c1f;
+  --border:      rgba(255,255,255,0.07);
+  --border-2:    rgba(255,255,255,0.14);
+  --text:        #f5f5f7;
+  --text-2:      #a1a1a6;
+  --text-3:      #5a5a5e;
+  --accent:      #0a84ff;
+  --accent-bg:   rgba(10,132,255,0.1);
+  --tag-cat-txt:  #7d7aff;
+  --tag-cat-bg:   rgba(125,122,255,0.1);
+  --tag-cat-bd:   rgba(125,122,255,0.25);
+  --tag-cnt-txt:  #ff9f0a;
+  --tag-cnt-bg:   rgba(255,159,10,0.1);
+  --tag-cnt-bd:   rgba(255,159,10,0.25);
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.25);
+  --shadow-lg:   0 12px 40px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3);
 }
 
-/* 精修/原始标签：发光圆点 + 淡文字，放在日期左侧 */
-.tag-pair {
-  display: inline-flex;
-  align-items: center;
-  margin-left: 10px;
-}
-/* 极简发光点，无文字 */
-.tag-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  display: inline-block;
-  flex-shrink: 0;
-}
-/* 精修：琥珀色发光点 */
-.tag-refined .tag-dot {
-  background: #c4780a;
-  box-shadow: 0 0 5px rgba(196,120,10,0.6), 0 0 10px rgba(196,120,10,0.2);
-}
-/* 原文：灰紫发光点 */
-.tag-original .tag-dot {
-  background: #8b7ab8;
-  box-shadow: 0 0 5px rgba(139,122,184,0.5), 0 0 10px rgba(139,122,184,0.2);
-}
-[data-theme="dark"] .tag-refined .tag-dot {
-  background: #e8a445;
-  box-shadow: 0 0 6px rgba(232,164,69,0.7), 0 0 12px rgba(232,164,69,0.3);
-}
-[data-theme="dark"] .tag-original .tag-dot {
-  background: #a090e0;
-  box-shadow: 0 0 6px rgba(160,144,224,0.6), 0 0 12px rgba(160,144,224,0.25);
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* Layout */
 body {
-  font-family: 'Noto Serif SC', serif;
+  font-family: var(--font-ui);
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  transition: background 0.3s, color 0.3s;
-  margin: 0;
-}
-.container {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 48px 24px 80px;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
 }
 
-/* Header */
-header { margin-bottom: 48px; }
-.header-inner {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px;
+/* ─── Navigation Bar ─── */
+.nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250,249,247,0.8);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
 }
-.header-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 1.5px;
-  margin-bottom: 6px;
+[data-theme="dark"] .nav-bar {
+  background: rgba(13,13,15,0.8);
 }
-h1 {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: 4px;
-  margin: 0;
-}
-.header-right {
+.nav-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 52px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: space-between;
 }
-#hubLink {
-  font-family: 'JetBrains Mono', monospace;
+.nav-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.nav-label {
+  font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--text-muted);
-  text-decoration: none;
+  color: var(--text-3);
   letter-spacing: 0.5px;
+}
+.nav-title {
+  font-family: var(--font-ui);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav-btn {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+  background: rgba(0,0,0,0.04);
+  border: none;
+  border-radius: 8px;
+  padding: 5px 12px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 4px;
-  transition: color 0.2s;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+  text-decoration: none;
 }
-#hubLink:hover { color: var(--accent); }
-.theme-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--text-muted);
-  padding: 4px;
+[data-theme="dark"] .nav-btn {
+  background: rgba(255,255,255,0.06);
+  color: var(--text-2);
+}
+.nav-btn:hover {
+  background: rgba(0,0,0,0.08);
+  color: var(--text);
+}
+[data-theme="dark"] .nav-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+.nav-icon-btn {
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
-  transition: color 0.2s;
+  justify-content: center;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-2);
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
 }
-.theme-toggle:hover { color: var(--accent); }
-.sun-icon, .moon-icon { display: inline; }
+.nav-icon-btn:hover {
+  background: rgba(0,0,0,0.06);
+  color: var(--text);
+}
+[data-theme="dark"] .nav-icon-btn:hover {
+  background: rgba(255,255,255,0.08);
+}
 
-/* Card */
-.card { margin-bottom: 16px; cursor: pointer; }
-.card-front, .card-back {
-  background: var(--bg-card);
+/* ─── Main Content ─── */
+.main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 48px 24px 96px;
+}
+
+/* ─── Hero Header ─── */
+.page-header {
+  text-align: center;
+  margin-bottom: 56px;
+  padding-top: 24px;
+}
+.page-header-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.page-header-title {
+  font-family: var(--font-ui);
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+[data-theme="dark"] .page-header-title {
+  font-weight: 500;
+}
+.page-header-sub {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  color: var(--text-2);
+  line-height: 1.5;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+/* ─── Card ─── */
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 28px 32px;
-  box-shadow: var(--shadow);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out),
+    border-color 0.2s var(--ease);
 }
-.card:hover .card-front,
-.card:hover .card-back {
-  border-color: var(--border-h);
-  box-shadow: var(--shadow-h);
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-2);
 }
-.card-back { background: var(--bg-card-h); margin-top: 8px; }
 .card.flipped .card-front { display: none; }
 .card:not(.flipped) .card-back { display: none; }
 
-/* Card meta */
+/* Card Front */
+.card-front {
+  padding: 28px 32px 24px;
+}
 .card-meta {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-.card-meta-left {
-  display: flex;
   align-items: center;
-  gap: 0;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  gap: 12px;
 }
 .card-date {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 0.8px;
-  padding-top: 2px;
-  white-space: nowrap;
+  color: var(--text-3);
+  letter-spacing: 0.3px;
 }
 .card-tags {
   display: flex;
+  align-items: center;
+  gap: 6px;
   flex-wrap: wrap;
-  gap: 5px;
   justify-content: flex-end;
 }
-
-/* 标签 */
-.tag-cat {
-  font-family: 'JetBrains Mono', monospace;
+.tag {
+  font-family: var(--font-mono);
   font-size: 10px;
-  color: var(--tag-cat-text);
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 20px;
+  letter-spacing: 0.2px;
+}
+.tag-cat {
+  color: var(--tag-cat-txt);
   background: var(--tag-cat-bg);
-  border: 1px solid var(--tag-cat-border);
-  padding: 1px 7px;
-  border-radius: 3px;
-  letter-spacing: 0.3px;
+  border: 1px solid var(--tag-cat-bd);
 }
 .tag-content {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--tag-content-text);
-  background: var(--tag-content-bg);
-  border: 1px solid var(--tag-content-border);
-  padding: 1px 7px;
-  border-radius: 3px;
-  letter-spacing: 0.3px;
+  color: var(--tag-cnt-txt);
+  background: var(--tag-cnt-bg);
+  border: 1px solid var(--tag-cnt-bd);
 }
 
-/* Card body */
 .card-body {
-  font-size: 21px;
-  line-height: 1.85;
+  font-family: var(--font-ui);
+  font-size: 19px;
+  line-height: 1.75;
   color: var(--text);
-  letter-spacing: 0.3px;
+  letter-spacing: -0.1px;
   word-break: break-word;
 }
-.card-body p { margin: 0 0 12px; }
+.card-body p { margin: 0 0 10px; }
 .card-body p:last-child { margin-bottom: 0; }
 .card-body strong { font-weight: 600; }
-.card-body .kw { color: var(--accent); font-weight: 600; }
-.card-body .en { color: var(--text-dim); font-style: italic; }
+.card-body .kw { color: var(--accent); font-weight: 500; }
 
-/* Flip hint */
 .card-flip-hint {
-  margin-top: 14px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 0.5px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 4px;
-  opacity: 0;
-  transition: opacity 0.2s;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 0.3px;
 }
-.card:hover .card-flip-hint { opacity: 0.8; }
+.flip-icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.5;
+}
 
-/* Question */
-.card-question {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-top: 20px;
-  padding: 14px 16px;
-  background: var(--q-bg, #f5f0fa);
-  border: 1px solid var(--q-border, #d8c8f0);
-  border-radius: 6px;
+/* Card Back */
+.card-back {
+  background: var(--surface-2);
+  padding: 28px 32px;
 }
-.question-mark {
-  color: var(--q-icon, #8060c0);
-  flex-shrink: 0;
-  margin-top: 1px;
+.card-back-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
 }
-.question-text {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 14px;
-  color: var(--q-text, #5a4880);
+.card-back-body {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+.card-back-body p { margin: 0 0 10px; }
+.card-back-body p:last-child { margin-bottom: 0; }
+.card-back-question {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-3);
   line-height: 1.6;
-  font-style: italic;
 }
-[data-theme="dark"] .card-question { background: #1e1830; border-color: #3a2860; }
-[data-theme="dark"] .question-text { color: #9080b8; }
-[data-theme="dark"] .question-mark { color: #a090e0; }
+.card-back-question strong {
+  color: var(--text-2);
+  font-weight: 500;
+}
 
-/* Skeleton */
-.skeleton {
-  background: var(--bg-card);
+/* ─── End Marker ─── */
+#endMarker {
+  display: none;
+  text-align: center;
+  padding: 40px 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-3);
+  letter-spacing: 1px;
+}
+
+/* ─── Skeleton ─── */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.skeleton-card {
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   padding: 28px 32px;
   margin-bottom: 16px;
-  box-shadow: var(--shadow);
 }
 .skeleton-line {
-  height: 14px;
-  background: linear-gradient(90deg, var(--border) 25%, var(--bg-card-h) 50%, var(--border) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s ease-in-out infinite;
-  border-radius: 3px;
-  margin-bottom: 10px;
+  background: var(--surface-2);
+  border-radius: 4px;
+  animation: skeleton-pulse 1.8s ease-in-out infinite;
 }
-.skeleton-line:last-child { margin-bottom: 0; width: 70%; }
-.skeleton-line.lg { height: 18px; margin-bottom: 14px; }
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
+.skeleton-line.short { height: 12px; width: 40%; margin-bottom: 12px; }
+.skeleton-line.long  { height: 20px; width: 100%; margin-bottom: 8px; }
+.skeleton-line.med  { height: 20px; width: 75%; }
 
-/* End marker */
-.end-marker {
-  text-align: center;
-  padding: 32px 0;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 1.5px;
-}
-.end-marker::before, .end-marker::after { content: '—'; margin: 0 8px; opacity: 0.4; }
-
-/* Toast */
-.toast {
-  position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--text);
-  color: var(--bg);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  padding: 8px 18px;
-  border-radius: 20px;
-  opacity: 0;
-  transition: opacity 0.25s, transform 0.25s;
-  z-index: 200;
-  pointer-events: none;
-  white-space: nowrap;
-}
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-@media (max-width: 600px) {
-  .card-front, .card-back { padding: 22px 20px; }
-  .container { padding: 28px 16px 80px; }
-  .card-body { font-size: 18px; }
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+  .page-header-title { font-size: 32px; }
+  .card-front, .card-back { padding: 22px 20px 20px; }
+  .card-body { font-size: 17px; }
 }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div>
-      <div class="header-label">// Flow</div>
-      <h1>灵感流</h1>
+<!-- Navigation Bar -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="nav-label">// Flow</span>
+      <span class="nav-title">灵感流</span>
     </div>
-    <div class="header-right">
-      <a href="https://jeekeagle.github.io/theo-hub/" id="hubLink" aria-label="返回 theo-hub">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        theo-hub
+    <div class="nav-actions">
+      <a href="https://jeekeagle.github.io/theo-hub/" class="nav-btn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Hub
       </a>
-      <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">
-        <span class="sun-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
-        <span class="moon-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      <button class="nav-icon-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+        <svg class="sun-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="moon-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
       </button>
     </div>
   </div>
-</header>
+</nav>
 
-<div class="container">
-  <div id="feed"></div>
-  <div id="endMarker" class="end-marker" style="display:none">ALL CAUGHT UP</div>
-</div>
+<!-- Main -->
+<main class="main">
 
-<div class="toast" id="toast"></div>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header-eyebrow">Inspiration in Motion</div>
+    <h1 class="page-header-title">灵感流</h1>
+    <p class="page-header-sub">捕捉每一个闪过的想法，将它们变成可触摸的洞察</p>
+  </div>
+
+  <!-- Feed -->
+  <div class="feed" id="feed"></div>
+  <div id="endMarker">— 已加载全部 —</div>
+
+</main>
 
 <script>
 const MANIFEST = 'manifest.json';
@@ -385,15 +455,12 @@ function formatDate(iso) {
 }
 
 function formatBody(text) {
-  // 先把已有 HTML 标签转为 markdown 符号，防止后续转义损坏
   text = text.replace(/<strong>(.*?)<\/strong>/g, '**$1**');
   text = text.replace(/<em>(.*?)<\/em>/g, '*$1*');
-  // HTML 转义
   text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  // markdown 渲染
   text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  text = text.replace(/`(.*?)`/g, '<code style="font-family:\'JetBrains Mono\',monospace;font-size:0.85em;color:var(--accent2)">$1</code>');
+  text = text.replace(/`(.*?)`/g, '<code style="font-family:var(\'--font-mono\'),monospace;font-size:0.85em;color:var(--accent)">$1</code>');
   text = text.replace(/\[\[(.*?)\]\]/g, '<span class="kw">[[$1]]</span>');
   const paragraphs = text.split(/\n\n+/);
   if (paragraphs.length > 1) {
@@ -404,72 +471,51 @@ function formatBody(text) {
   return text;
 }
 
+function flipCard(card, post) {
+  card.classList.toggle('flipped');
+}
+
 function renderCard(post) {
   var card = document.createElement('div');
   card.className = 'card';
-  card.addEventListener('click', function() {
-    card.classList.toggle('flipped');
-  });
 
-  var hasOriginal = !!(post.originalContent && post.originalContent.trim());
-  var originalContent = hasOriginal ? post.originalContent : post.content;
+  var front = document.createElement('div');
+  front.className = 'card-front';
 
-  var catTags = (Array.isArray(post.category) ? post.category : [post.category || '想法']).map(function(t) {
-    return '<span class="tag-cat">' + t + '</span>';
+  var dateStr = formatDate(post.created);
+
+  var catTag = post.category
+    ? '<span class="tag tag-cat">' + post.category + '</span>'
+    : '';
+  var contentTags = (post.contentTags || []).slice(0,2).map(function(t){
+    return '<span class="tag tag-content">' + t + '</span>';
   }).join('');
 
-  var contentTags = (post.contentTags || post.tags || []).map(function(t) {
-    return '<span class="tag-content">' + t + '</span>';
-  }).join('');
+  front.innerHTML =
+    '<div class="card-meta">' +
+      '<span class="card-date">' + dateStr + '</span>' +
+      '<div class="card-tags">' + catTag + contentTags + '</div>' +
+    '</div>' +
+    '<div class="card-body">' + formatBody(post.content) + '</div>' +
+    '<div class="card-flip-hint">' +
+      '<svg class="flip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>' +
+        '<polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>' +
+      '</svg>' +
+      'Tap to see original' +
+    '</div>';
 
-  var flipIcon = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>';
+  var back = document.createElement('div');
+  back.className = 'card-back';
+  var originalContent = post.originalContent || post.content;
+  back.innerHTML =
+    '<div class="card-back-label">Original</div>' +
+    '<div class="card-back-body">' + formatBody(originalContent) + '</div>' +
+    (post.question ? '<div class="card-back-question"><strong>Question:</strong> ' + post.question + '</div>' : '');
 
-  var refinedBadge = hasOriginal
-    ? '<span class="tag-pair tag-refined"><span class="tag-dot"></span></span>'
-    : '';
-  var originalBadge = hasOriginal
-    ? '<span class="tag-pair tag-original"><span class="tag-dot"></span></span>'
-    : '';
-  var flipHintFront = hasOriginal ? '<div class="card-flip-hint">' + flipIcon + ' 查看原文</div>' : '';
-  var flipHintBack = hasOriginal ? '<div class="card-flip-hint" style="opacity:0.8">' + flipIcon + ' 返回</div>' : '';
-
-  card.innerHTML = '\
-  <div class="card-front">\
-    <div class="card-meta">\
-      <div class="card-meta-left">\
-        <span class="card-date">' + formatDate(post.created) + '</span>\
-        ' + refinedBadge + '\
-      </div>\
-      <div class="card-tags">\
-        ' + catTags + '\
-        ' + contentTags + '\
-      </div>\
-    </div>\
-    <div class="card-body">' + formatBody(post.content) + '</div>\
-    ' + (post.question ? '\
-    <div class="card-question">\
-      <div class="question-mark">\
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>\
-      </div>\
-      <span class="question-text">' + formatBody(post.question) + '</span>\
-    </div>' : '') + '\
-    ' + flipHintFront + '\
-  </div>\
-  <div class="card-back">\
-    <div class="card-meta">\
-      <div class="card-meta-left">\
-        <span class="card-date">' + formatDate(post.created) + '</span>\
-        ' + originalBadge + '\
-      </div>\
-      <div class="card-tags">\
-        ' + catTags + '\
-        ' + contentTags + '\
-      </div>\
-    </div>\
-    <div class="card-body">' + formatBody(originalContent) + '</div>\
-    ' + flipHintBack + '\
-  </div>';
-
+  card.appendChild(front);
+  card.appendChild(back);
+  card.addEventListener('click', function(){ flipCard(card, post); });
   return card;
 }
 
@@ -477,14 +523,18 @@ function showSkeletons(n) {
   var feed = document.getElementById('feed');
   for (var i = 0; i < n; i++) {
     var s = document.createElement('div');
-    s.className = 'skeleton';
-    s.innerHTML = '<div class="skeleton-line lg"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line" style="width:55%"></div>';
+    s.className = 'skeleton-card';
+    s.innerHTML =
+      '<div class="skeleton-line short"></div>' +
+      '<div class="skeleton-line long"></div>' +
+      '<div class="skeleton-line med"></div>' +
+      '<div class="skeleton-line long"></div>';
     feed.appendChild(s);
   }
 }
 
 function clearSkeletons() {
-  var els = document.querySelectorAll('.skeleton');
+  var els = document.querySelectorAll('.skeleton-card');
   for (var i = 0; i < els.length; i++) els[i].remove();
 }
 
