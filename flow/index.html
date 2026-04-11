@@ -176,6 +176,7 @@ header h1 span { color: var(--text-muted); }
   perspective: 1200px;
   margin-bottom: 16px;
   cursor: pointer;
+  /* 高度由内容撑开，翻转时通过JS设置min-height */
 }
 .card-inner {
   position: relative;
@@ -207,6 +208,9 @@ header h1 span { color: var(--text-muted); }
   top: 0; left: 0; right: 0;
   transform: rotateY(180deg);
   background: var(--bg-card-h);
+}
+.card.flipped {
+  min-height: 300px;  /* JS会动态精确设置 */
 }
 /* left accent bar */
 .card-front::before,
@@ -499,7 +503,16 @@ function formatBody(text) {
 function renderCard(post) {
   const card = document.createElement('div');
   card.className = 'card';
-  card.addEventListener('click', () => card.classList.toggle('flipped'));
+  card.addEventListener('click', () => {
+    const isFlipped = card.classList.toggle('flipped');
+    if (isFlipped) {
+      // 翻转后：card-back朝前，内容高度可能更大
+      // 设一个足够大的min-height，让背面完全展示
+      card.style.minHeight = card.offsetHeight + 'px';
+    } else {
+      card.style.minHeight = '';
+    }
+  });
 
   const hasOriginal = !!(post.originalContent && post.originalContent.trim());
   // 旧 post 没有 originalContent 时，复制正面内容到背面，保证翻转功能可用
