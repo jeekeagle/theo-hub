@@ -401,40 +401,6 @@ footer {
   color: var(--text-muted);
   letter-spacing: 0.5px;
 }
-
-/* Card Preview Overlay */
-.card-preview-overlay {
-  position: fixed; inset: 0; z-index: 9999;
-  background: rgba(0,0,0,0.8); backdrop-filter: blur(12px);
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none;
-  transition: opacity .25s ease;
-}
-.card-preview-overlay.open { opacity: 1; pointer-events: all; }
-.card-preview-content {
-  background: var(--bg-card, #13131a); border: 1px solid var(--border, #2a2a35);
-  border-radius: 12px; width: 92%; max-width: 720px; max-height: 88vh;
-  overflow-y: auto; position: relative;
-  transform: scale(.94); transition: transform .25s ease;
-  padding: 36px;
-}
-.card-preview-overlay.open .card-preview-content { transform: scale(1); }
-.card-preview-close {
-  position: absolute; top: 14px; right: 18px; background: none;
-  border: none; color: var(--text-dim, #71717a); font-size: 22px;
-  cursor: pointer; padding: 4px; line-height: 1;
-}
-.card-preview-close:hover { color: var(--text, #e4e4e7); }
-.card-preview-title {
-  font-family: var(--font-mono, ui-monospace); font-size: 22px;
-  font-weight: 600; color: var(--accent, #00d992); margin-bottom: 20px;
-}
-.card-preview-body { color: var(--text-dim, #71717a); font-size: 14px; line-height: 1.8; }
-.card-preview-placeholder {
-  color: var(--text-muted, #3f3f46); font-style: italic; font-size: 13px;
-  padding: 20px 0;
-}
-
 </style>
 </head>
 <body>
@@ -619,66 +585,6 @@ footer {
     }
   };
 })();
-
-(function(){
-  var overlay = document.getElementById('cardPreviewOverlay');
-  var closeBtn = document.getElementById('cardPreviewClose');
-  var titleEl = document.getElementById('cardPreviewTitle');
-  var bodyEl = document.getElementById('cardPreviewBody');
-
-  function openCard(card) {
-    var title = card.querySelector('.card-title, .style-card-name, h3, h2') ||
-                card.querySelector('[class*="title"]') || document.createElement('span');
-    titleEl.textContent = title.textContent || title.innerText || '卡片预览';
-    bodyEl.innerHTML = '<p class="card-preview-placeholder">卡片详情展示区域 · 更多信息待填充</p>';
-    overlay.classList.add('open');
-  }
-  function closeOverlay() { overlay.classList.remove('open'); }
-
-  var cards = document.querySelectorAll('.flip-card');
-  cards.forEach(function(card){
-    card.style.cursor = 'pointer';
-    card.addEventListener('click', function(e){
-      if (e.target.closest('a, button')) return;
-      openCard(card);
-    });
-  });
-
-  closeBtn.addEventListener('click', closeOverlay);
-  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeOverlay(); });
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && overlay.classList.contains('open')) closeOverlay(); });
-})();
-
-
-(function(){
-  var overlay = document.getElementById('cardPreviewOverlay');
-  var closeBtn = document.getElementById('cardPreviewClose');
-  var titleEl = document.getElementById('cardPreviewTitle');
-  var bodyEl = document.getElementById('cardPreviewBody');
-
-  function openCard(card) {
-    var title = card.querySelector('.card-title, .style-card-name, h3, h2') ||
-                card.querySelector('[class*="title"]') || document.createElement('span');
-    titleEl.textContent = title.textContent || title.innerText || '卡片预览';
-    bodyEl.innerHTML = '<p class="card-preview-placeholder">卡片详情展示区域 · 更多信息待填充</p>';
-    overlay.classList.add('open');
-  }
-  function closeOverlay() { overlay.classList.remove('open'); }
-
-  var cards = document.querySelectorAll('.card, .style-card, .node-item');
-  cards.forEach(function(card){
-    card.style.cursor = 'pointer';
-    card.addEventListener('click', function(e){
-      if (e.target.closest('a, button')) return;
-      openCard(card);
-    });
-  });
-
-  closeBtn.addEventListener('click', closeOverlay);
-  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeOverlay(); });
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && overlay.classList.contains('open')) closeOverlay(); });
-})();
-
 </script>
 </body>
 </html>
