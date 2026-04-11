@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seed — Theo 的数字花园</title>
+  <meta name="description" content="种下一颗种子，等待长成。">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:           #faf8f5;
+      --bg-card:      #ffffff;
+      --text:         #2c2825;
+      --mid:          #8a7f75;
+      --line:         #e8e2da;
+      --accent:       #c17f4a;
+      --surface:      #f3efe9;
+      --surface-dark: #1a1612;
+      --ease:         cubic-bezier(0.23, 1, 0.32, 1);
+      --ease-slow:    cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Noto Sans SC", "Inter", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.8;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .noise {
+      position: fixed; inset: 0; z-index: 1000; pointer-events: none;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat; background-size: 256px 256px;
+    }
+
+    #leaves-overlay {
+      position: fixed; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: top;
+      mix-blend-mode: multiply; pointer-events: none; z-index: 999;
+      opacity: 0.22;
+    }
+
+    .sun-glow {
+      position: fixed; top: -25%; right: -5%;
+      width: 65%; height: 65%; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 210, 100, 0.22) 0%, rgba(255, 170, 60, 0.08) 40%, transparent 70%);
+      pointer-events: none; z-index: 998;
+      animation: sunBreathe 7s ease-in-out infinite;
+    }
+    @keyframes sunBreathe {
+      0%, 100% { transform: scale(1); opacity: 0.85; }
+      50%       { transform: scale(1.1); opacity: 1; }
+    }
+
+    .light-shaft {
+      position: fixed; pointer-events: none; z-index: 997; opacity: 0.28;
+    }
+    .shaft-1 {
+      top: -10%; right: 8%; width: 180px; height: 120vh;
+      background: linear-gradient(180deg, rgba(255, 200, 80, 0.14) 0%, rgba(255, 200, 80, 0.03) 60%, transparent 100%);
+      transform: rotate(-7deg); animation: shaftSway 9s ease-in-out infinite;
+    }
+    .shaft-2 {
+      top: -5%; right: 18%; width: 120px; height: 100vh;
+      background: linear-gradient(180deg, rgba(255, 190, 60, 0.09) 0%, transparent 50%);
+      transform: rotate(-14deg); animation: shaftSway 11s ease-in-out infinite 3s;
+    }
+    .shaft-3 {
+      top: 0%; right: 28%; width: 80px; height: 90vh;
+      background: linear-gradient(180deg, rgba(255, 220, 100, 0.07) 0%, transparent 60%);
+      transform: rotate(-3deg); animation: shaftSway 13s ease-in-out infinite 5s;
+    }
+    @keyframes shaftSway {
+      0%, 100% { transform: rotate(-7deg) translateX(0); }
+      50%       { transform: rotate(-4deg) translateX(18px); }
+    }
+
+    .page { position: relative; z-index: 1; padding-bottom: 160px; }
+
+    .page-card {
+      width: 70%; max-width: 860px; margin: 48px auto 0;
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 64px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 12px 60px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+    }
+    @media (max-width: 768px) {
+      .page-card { width: 100%; border-radius: 16px; padding: 40px 28px; margin-top: 24px; }
+    }
+
+    .hero-title {
+      font-family: "Noto Serif SC", Georgia, serif;
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight: 900; line-height: 1;
+      letter-spacing: -0.02em; color: var(--text); margin-bottom: 16px;
+    }
+    .hero-title span {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent) 0%, #e8a86a 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-subtitle { font-size: 1rem; color: var(--mid); letter-spacing: 0.04em; margin-bottom: 8px; }
+    .hero-tagline { font-size: 0.88rem; color: var(--accent); letter-spacing: 0.06em; font-family: "Inter", sans-serif; }
+    .hero-date { margin-top: 32px; font-family: "Inter", sans-serif; font-size: 0.78rem; color: var(--mid); letter-spacing: 0.04em; }
+
+    .section-label {
+      font-family: "Inter", sans-serif; font-size: 0.72rem; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--mid); margin-bottom: 32px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+    .articles { display: flex; flex-direction: column; gap: 0; }
+
+    .article-card {
+      display: block; padding: 32px 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none; color: inherit;
+      transition: padding-left 300ms var(--ease); cursor: pointer;
+    }
+    .article-card:first-child { border-top: 1px solid var(--line); }
+    .article-card:hover { padding-left: 16px; }
+    .article-card:hover .article-title { color: var(--accent); }
+
+    .article-meta {
+      font-family: "Inter", sans-serif; font-size: 0.75rem; color: var(--mid);
+      margin-bottom: 10px; letter-spacing: 0.03em;
+    }
+    .article-title {
+      font-family: "Noto Serif SC", Georgia, serif;
+      font-size: 1.35rem; font-weight: 700;
+      color: var(--text); line-height: 1.4; margin-bottom: 10px;
+      transition: color 250ms var(--ease);
+    }
+    .article-excerpt { display: none; }
+
+    .empty-state { text-align: center; padding: 80px 0; color: var(--mid); font-size: 0.95rem; letter-spacing: 0.04em; }
+
+    #article-view .page-card { margin-top: 48px; }
+
+    #markdown-content { display: none; }
+    #markdown-content h1 {
+      font-family: "Noto Serif SC", Georgia, serif;
+      font-size: 2.2rem; padding-top: 16px; font-weight: 900;
+      color: var(--text); line-height: 1.2; margin-bottom: 8px;
+    }
+    #markdown-content .article-meta {
+      font-family: "Inter", sans-serif; font-size: 0.82rem;
+      color: var(--mid); margin-bottom: 36px;
+      padding-bottom: 24px; border-bottom: 1px solid var(--line);
+    }
+    #markdown-content h2 {
+      font-family: "Noto Serif SC", Georgia, serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--text); margin: 44px 0 16px;
+      padding-bottom: 10px; border-bottom: 2px solid var(--text);
+    }
+    #markdown-content h3 {
+      font-family: "Noto Sans SC", sans-serif;
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--text); margin: 32px 0 12px;
+    }
+    #markdown-content p { font-size: 1rem; line-height: 1.9; color: #3a3530; margin-bottom: 20px; }
+    #markdown-content strong { font-weight: 700; color: var(--text); }
+    #markdown-content em { font-style: italic; color: #5a5048; }
+    #markdown-content a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+    #markdown-content a:hover { color: #a06830; }
+    #markdown-content blockquote {
+      border-left: 3px solid var(--accent); padding: 4px 0 4px 20px;
+      margin: 24px 0; color: var(--mid); font-style: italic;
+    }
+    #markdown-content ul, #markdown-content ol { padding-left: 24px; margin-bottom: 20px; color: #3a3530; }
+    #markdown-content li { margin-bottom: 8px; line-height: 1.8; }
+    #markdown-content code {
+      background: var(--surface); padding: 2px 6px; border-radius: 3px;
+      font-family: "Inter", monospace; font-size: 0.88em;
+    }
+    #markdown-content pre {
+      background: var(--surface-dark); color: #e8e2da;
+      padding: 24px; border-radius: 4px; overflow-x: auto; margin-bottom: 20px;
+    }
+    #markdown-content pre code { background: none; padding: 0; color: inherit; }
+    #markdown-content hr { border: none; border-top: 1px solid var(--line); margin: 36px 0; }
+    #markdown-content img { max-width: 100%; border-radius: 4px; }
+
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: "Inter", sans-serif; font-size: 0.8rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--mid); text-decoration: none; margin-bottom: 40px;
+      transition: color 200ms;
+    }
+    .back-btn:hover { color: var(--accent); }
+    .back-btn svg { width: 14px; height: 14px; }
+
+    .back-btn-fixed {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: "Inter", sans-serif; font-size: 0.75rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--mid); text-decoration: none;
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      transition: color 200ms, border-color 200ms;
+      cursor: pointer;
+    }
+    .back-btn-fixed:hover { color: var(--accent); border-color: var(--accent); }
+    .back-btn-fixed svg { width: 12px; height: 12px; }
+    .back-btn-fixed.hidden { display: none; }
+
+    .site-footer {
+      margin-top: 96px; padding-top: 32px;
+      border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-family: "Inter", sans-serif; font-size: 0.78rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--mid); text-decoration: none; transition: color 200ms;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy { font-family: "Inter", sans-serif; font-size: 0.75rem; color: var(--mid); letter-spacing: 0.03em; }
+
+    @media (max-width: 640px) {
+      .page { padding: 32px 20px 120px; }
+      .article-title { font-size: 1.15rem; }
+      .site-footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+
+    .mode-bar {
+      position: fixed; top: 20px; right: 24px;
+      z-index: 999; display: flex; gap: 6px;
+      font-family: "Inter", sans-serif; font-size: 0.7rem; letter-spacing: 0.1em;
+    }
+    .mode-btn {
+      padding: 4px 10px; border-radius: 20px;
+      border: 1px solid rgba(140,130,120,0.3);
+      background: rgba(250,248,245,0.7); color: var(--mid);
+      cursor: pointer; transition: all 200ms; backdrop-filter: blur(4px);
+    }
+    .mode-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .mode-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    body.mode-day   { --bg:#faf8f5; --bg-card:#fff; --text:#2c2825; --mid:#8a7f75; --line:#e8e2da; --accent:#c17f4a; --surface:#f3efe9; }
+    body.mode-night { --bg:#1a1814; --bg-card:#242019; --text:#d4cec6; --mid:#7a726a; --line:#2e2a24; --accent:#e8a86a; --surface:#2a2520; }
+    body.mode-night .noise { opacity: 0.06; }
+    body.mode-night #markdown-content h1, body.mode-night #markdown-content h2, body.mode-night #markdown-content h3 { color: #e8e0d5; }
+    body.mode-night #markdown-content p, body.mode-night #markdown-content li { color: #c8c0b5; }
+    body.mode-night #markdown-content strong { color: #e8e0d5; }
+    body.mode-night #markdown-content em { color: #b8b0a5; }
+    body.mode-night #markdown-content a { color: #e8a86a; }
+    body.mode-night #markdown-content blockquote { color: #8a8278; border-color: #e8a86a; }
+    body.mode-night #markdown-content ul, body.mode-night #markdown-content ol { color: #c8c0b5; }
+    body.mode-night #markdown-content code { background: #2a2520; color: #d4c8b8; }
+    body.mode-night #markdown-content pre { background: #141210; }
+    body.mode-night #markdown-content pre code { color: #c8c0b5; }
+    body.mode-sunny { --bg:#fffbf0; --bg-card:#fff; --text:#2c2825; --mid:#a09080; --line:#f0e8d8; --accent:#f0a030; --surface:#fdf6e3; }
+  </style>
+</head>
+<body>
+
+  <div class="noise"></div>
+  <video id="leaves-overlay" src="https://jeekeagle.github.io/Seed/leaves.mp4" loop muted playsinline preload="none"></video>
+  <div class="sun-glow"></div>
+  <div class="light-shaft shaft-1"></div>
+  <div class="light-shaft shaft-2"></div>
+  <div class="light-shaft shaft-3"></div>
+
+  <div class="mode-bar">
+    <a class="mode-btn" href="https://jeekeagle.github.io/theo-hub/" title="Back to Hub" style="text-decoration:none">&#8592; Hub</a>
+    <button class="mode-btn active" data-mode="D" title="Day (D)">☀️ D</button>
+    <button class="mode-btn" data-mode="N" title="Night (N)">🌙 N</button>
+    <button class="mode-btn" data-mode="S" title="Sunny (S)">☀️ S</button>
+  </div>
+
+  <div class="page">
+    <div id="home-view">
+      <div class="page-card">
+        <h1 class="hero-title">Seed<span>.</span></h1>
+        <p class="hero-subtitle">Theo 的数字花园</p>
+        <p class="hero-tagline">种下一颗种子，等待长成。</p>
+        <p class="hero-date" id="current-date"></p>
+        <div class="section-label">所有文章</div>
+        <div id="articles-list" class="articles"></div>
+        <div id="articles-empty" class="empty-state" style="display:none">花园里还没有文章，种子正在生长中。</div>
+      </div>
+    </div>
+
+    <div id="article-view" style="display:none">
+      <div class="page-card">
+        <a class="back-btn" onclick="showHome(); return false;" href="#" style="margin-bottom:40px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          返回花园
+        </a>
+        <div id="markdown-content"></div>
+        <a class="back-btn-fixed hidden" id="back-btn-fixed" onclick="showHome(); return false;" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          返回花园
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer" style="display:none" id="site-footer">
+    <div class="footer-links">
+      <a href="https://jeekeagle.github.io/theo-hub/" target="_blank">Theo Hub</a>
+      <a href="https://github.com/jeekeagle" target="_blank">GitHub</a>
+    </div>
+    <span class="footer-copy">© <span id="footer-year"></span> Theo · Seed</span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    const BLOG_API = 'https://api.github.com/repos/jeekeagle/theo-hub/contents/seed/src/content/blog';
+    const RAW_BASE = 'https://raw.githubusercontent.com/jeekeagle/theo-hub/main/seed/src/content/blog';
+    let allArticles = [];
+
+    function formatDate(iso) {
+      if (!iso) return '';
+      const d = new Date(iso);
+      if (isNaN(d)) return '';
+      const yyyy = d.getFullYear();
+      const mm   = String(d.getMonth() + 1).padStart(2, '0');
+      const dd   = String(d.getDate()).padStart(2, '0');
+      return `${yyyy}年${mm}月${dd}日`;
+    }
+
+    function formatDisplayDate(iso) {
+      if (!iso) return '';
+      const d = new Date(iso);
+      if (isNaN(d)) return '';
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+    }
+
+    function parseMeta(md) {
+      // Extract frontmatter
+      const fmMatch = md.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+      if (!fmMatch) return { title: '', date: '', body: md };
+
+      const fmText = fmMatch[1];
+      const body   = fmMatch[2];
+
+      let title = '';
+      let date  = '';
+
+      const titleMatch = fmText.match(/^title:\s*(.+)$/m);
+      if (titleMatch) title = titleMatch[1].trim().replace(/^["']|["']$/g, '');
+
+      const dateMatch = fmText.match(/^pubDatetime:\s*(.+)$/m);
+      if (dateMatch) date = dateMatch[1].trim().replace(/^["']|["']$/g, '');
+
+      return { title, date, body };
+    }
+
+    async function loadArticles() {
+      try {
+        const r = await fetch(BLOG_API, {
+          headers: { 'Accept': 'application/vnd.github.v3+json' }
+        });
+        const files = await r.json();
+        const mdFiles = files.filter(f => f.name.endsWith('.md')).map(f => f.name);
+
+        allArticles = await Promise.all(
+          mdFiles.map(async fname => {
+            try {
+              const md = await (await fetch(RAW_BASE + '/' + fname)).text();
+              const meta = parseMeta(md);
+              return {
+                filename: fname,
+                title:    meta.title || fname,
+                date:     meta.date ? formatDate(meta.date) : '',
+                rawDate:  meta.date || ''
+              };
+            } catch (e) { return null; }
+          })
+        );
+
+        allArticles = allArticles.filter(Boolean).sort((a, b) => {
+          return (b.rawDate || '').localeCompare(a.rawDate || '');
+        });
+
+        renderHome();
+      } catch (e) {
+        document.getElementById('articles-empty').style.display = 'block';
+        document.getElementById('site-footer').style.display = 'flex';
+      }
+    }
+
+    function renderHome() {
+      const list = document.getElementById('articles-list');
+      if (!allArticles.length) {
+        document.getElementById('articles-empty').style.display = 'block';
+        document.getElementById('site-footer').style.display = 'flex';
+        return;
+      }
+      list.innerHTML = allArticles.map(a => `
+        <a class="article-card" onclick="loadArticle('${a.filename}'); return false;" href="#">
+          <div class="article-meta">${a.date}</div>
+          <div class="article-title">${a.title}</div>
+        </a>
+      `).join('');
+      document.getElementById('site-footer').style.display = 'flex';
+    }
+
+    async function loadArticle(filename) {
+      window.scrollTo(0, 0);
+      document.getElementById('home-view').style.display = 'none';
+      document.getElementById('article-view').style.display = 'block';
+      document.getElementById('site-footer').style.display = 'none';
+      document.getElementById('back-btn-fixed').classList.remove('hidden');
+      const container = document.getElementById('markdown-content');
+      container.style.display = 'none';
+
+      try {
+        const md = await (await fetch(RAW_BASE + '/' + filename)).text();
+        const meta = parseMeta(md);
+
+        // Render title + meta header, then body content (strip frontmatter)
+        container.innerHTML = `
+          <h1>${meta.title}</h1>
+          <div class="article-meta">${meta.date ? formatDisplayDate(meta.date) : ''}</div>
+          <div id="article-body"></div>
+        `;
+        document.getElementById('article-body').innerHTML = marked.parse(meta.body.replace(/^#\s.+\n/, ''));
+        container.style.display = 'block';
+      } catch (e) {
+        container.innerHTML = '<p>加载失败。</p>';
+        container.style.display = 'block';
+      }
+    }
+
+    function showHome() {
+      document.getElementById('article-view').style.display = 'none';
+      document.getElementById('home-view').style.display = 'block';
+      document.getElementById('site-footer').style.display = 'flex';
+      document.getElementById('back-btn-fixed').classList.add('hidden');
+      window.scrollTo(0, 0);
+    }
+
+    // Init
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+    document.getElementById('current-date').textContent = formatDisplayDate(
+      new Date().toISOString().slice(0, 10)
+    ) + ' · ' + new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+
+    // Mode switcher
+    const body = document.body;
+    const btns = document.querySelectorAll('.mode-btn');
+
+    function setMode(mode) {
+      body.className = '';
+      if (mode === 'N') body.classList.add('mode-night');
+      else if (mode === 'S') body.classList.add('mode-sunny');
+      else body.classList.add('mode-day');
+      btns.forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+      try { localStorage.setItem('seed-mode', mode); } catch (e) {}
+    }
+
+    btns.forEach(btn => btn.addEventListener('click', () => setMode(btn.dataset.mode)));
+    document.addEventListener('keydown', e => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === 'D' || e.key === 'd') setMode('D');
+      else if (e.key === 'N' || e.key === 'n') setMode('N');
+      else if (e.key === 'S' || e.key === 's') setMode('S');
+    });
+
+    try {
+      const saved = localStorage.getItem('seed-mode');
+      if (saved) setMode(saved);
+    } catch (e) {}
+
+    loadArticles();
+  </script>
+</body>
+</html>
