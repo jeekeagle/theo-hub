@@ -171,21 +171,10 @@ header h1 span { color: var(--text-muted); }
   z-index: 1;
 }
 
-/* ─── Flip Card ─── */
+/* ─── Card expand/collapse ─── */
 .card {
-  perspective: 1200px;
   margin-bottom: 16px;
   cursor: pointer;
-  /* 高度由内容撑开，翻转时通过JS设置min-height */
-}
-.card-inner {
-  position: relative;
-  width: 100%;
-  transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
-  transform-style: preserve-3d;
-}
-.card.flipped .card-inner {
-  transform: rotateY(180deg);
 }
 .card-front,
 .card-back {
@@ -195,8 +184,6 @@ header h1 span { color: var(--text-muted); }
   padding: 28px 32px;
   box-shadow: var(--shadow);
   transition: border-color 0.2s, box-shadow 0.2s;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
 .card:hover .card-front,
 .card:hover .card-back {
@@ -204,13 +191,14 @@ header h1 span { color: var(--text-muted); }
   box-shadow: var(--shadow-h);
 }
 .card-back {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  transform: rotateY(180deg);
   background: var(--bg-card-h);
+  margin-top: 8px;
 }
-.card.flipped {
-  min-height: 300px;  /* JS会动态精确设置 */
+.card.flipped .card-front {
+  display: none;
+}
+.card:not(.flipped) .card-back {
+  display: none;
 }
 /* left accent bar */
 .card-front::before,
@@ -504,14 +492,7 @@ function renderCard(post) {
   const card = document.createElement('div');
   card.className = 'card';
   card.addEventListener('click', () => {
-    const isFlipped = card.classList.toggle('flipped');
-    if (isFlipped) {
-      // 翻转后：以背面高度为基准，确保背面完整展示不遮挡下方
-      const back = card.querySelector('.card-back');
-      card.style.minHeight = back.offsetHeight + 'px';
-    } else {
-      card.style.minHeight = '';
-    }
+    card.classList.toggle('flipped');
   });
 
   const hasOriginal = !!(post.originalContent && post.originalContent.trim());
