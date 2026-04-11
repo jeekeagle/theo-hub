@@ -497,6 +497,8 @@ function renderCard(post) {
   card.addEventListener('click', () => card.classList.toggle('flipped'));
 
   const hasOriginal = !!(post.originalContent && post.originalContent.trim());
+  // 旧 post 没有 originalContent 时，复制正面内容到背面，保证翻转功能可用
+  const originalContent = hasOriginal ? post.originalContent : post.content;
 
   // 分类标签
   const catTags = (Array.isArray(post.category) ? post.category : [post.category || '想法']).map(t =>
@@ -511,65 +513,51 @@ function renderCard(post) {
   // Flip icon SVG
   const flipIcon = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`;
 
-  if (hasOriginal) {
-    // 有原始版本 → 正面（精炼）+ 背面（原始）
-    card.innerHTML = `
-    <div class="card-inner">
-      <div class="card-front">
-        <span class="card-version-badge badge-refined">Refined</span>
-        <div class="card-header">
-          <span class="card-date">${formatDate(post.created)}</span>
-          <div class="card-tags">
-            ${catTags}
-            ${contentTags}
-          </div>
+  // 翻转图标
+  const flipIcon = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`;
+
+  // Refined 标签（有精炼内容才显示）
+  const refinedBadge = hasOriginal ? `<span class="card-version-badge badge-refined">Refined</span>` : '';
+  // Original 标签（有原始内容才显示）
+  const originalBadge = hasOriginal ? `<span class="card-version-badge badge-original">Original</span>` : '';
+  // 翻转提示（有原始内容才显示）
+  const flipHintFront = hasOriginal ? `<div class="card-flip-hint">${flipIcon} 点击查看原文</div>` : '';
+  const flipHintBack = hasOriginal ? `<div class="card-flip-hint" style="opacity:0.8">${flipIcon} 点击返回</div>` : '';
+
+  card.innerHTML = `
+  <div class="card-inner">
+    <div class="card-front">
+      ${refinedBadge}
+      <div class="card-header">
+        <span class="card-date">${formatDate(post.created)}</span>
+        <div class="card-tags">
+          ${catTags}
+          ${contentTags}
         </div>
-        <div class="card-body">${formatBody(post.content)}</div>
-        ${post.question ? `
-        <div class="card-question">
-          <div class="question-mark">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          </div>
-          <span class="question-text">${formatBody(post.question)}</span>
-        </div>` : ''}
-        <div class="card-flip-hint">${flipIcon} 点击查看原文</div>
       </div>
-      <div class="card-back">
-        <span class="card-version-badge badge-original">Original</span>
-        <div class="card-header">
-          <span class="card-date">${formatDate(post.created)}</span>
-          <div class="card-tags">
-            ${catTags}
-            ${contentTags}
-          </div>
+      <div class="card-body">${formatBody(post.content)}</div>
+      ${post.question ? `
+      <div class="card-question">
+        <div class="question-mark">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </div>
-        <div class="card-body">${formatBody(post.originalContent)}</div>
-        <div class="card-flip-hint" style="opacity:0.8">${flipIcon} 点击返回精炼版</div>
-      </div>
-    </div>`;
-  } else {
-    // 无原始版本 → 正常显示正面（单面卡）
-    card.innerHTML = `
-    <div class="card-inner">
-      <div class="card-front">
-        <div class="card-header">
-          <span class="card-date">${formatDate(post.created)}</span>
-          <div class="card-tags">
-            ${catTags}
-            ${contentTags}
-          </div>
+        <span class="question-text">${formatBody(post.question)}</span>
+      </div>` : ''}
+      ${flipHintFront}
+    </div>
+    <div class="card-back">
+      ${originalBadge}
+      <div class="card-header">
+        <span class="card-date">${formatDate(post.created)}</span>
+        <div class="card-tags">
+          ${catTags}
+          ${contentTags}
         </div>
-        <div class="card-body">${formatBody(post.content)}</div>
-        ${post.question ? `
-        <div class="card-question">
-          <div class="question-mark">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          </div>
-          <span class="question-text">${formatBody(post.question)}</span>
-        </div>` : ''}
       </div>
-    </div>`;
-  }
+      <div class="card-body">${formatBody(originalContent)}</div>
+      ${flipHintBack}
+    </div>
+  </div>`;
 
   return card;
 }
