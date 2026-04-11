@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flow — 灵感流</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ─── Design: Warm Editorial Cards ─── */
+:root {
+  --bg:          #faf8f5;
+  --bg-card:     #ffffff;
+  --bg-card-h:   #fffdf9;
+  --border:      #e8e2d8;
+  --border-h:    #d4c9b8;
+  --accent:      #c4780a;
+  --accent2:     #5a8fb4;
+  --accent-bg:   #fdf3e3;
+  --text:        #2a2420;
+  --text-dim:    #7a6e65;
+  --text-muted:  #b0a498;
+  --font-serif:  'Noto Serif SC', Georgia, serif;
+  --font-mono:   'JetBrains Mono', monospace;
+  --shadow:      0 1px 3px rgba(80,60,30,0.06), 0 4px 12px rgba(80,60,30,0.04);
+  --shadow-h:    0 2px 8px rgba(80,60,30,0.10), 0 8px 24px rgba(80,60,30,0.06);
+}
+[data-theme="dark"] {
+  --bg:          #131110;
+  --bg-card:     #1c1a18;
+  --bg-card-h:   #242120;
+  --border:      #2e2a26;
+  --border-h:    #3e3830;
+  --accent:      #e8a445;
+  --accent2:     #7ab8e8;
+  --accent-bg:   #2a2218;
+  --text:        #ede8e0;
+  --text-dim:    #9a9088;
+  --text-muted:  #5a5248;
+  --shadow:      0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+  --shadow-h:    0 2px 8px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-serif);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  padding-top: 56px;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 0%, rgba(196,120,10,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 100%, rgba(90,143,180,0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Header ─── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.header-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.header-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+header h1 {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+header h1 span { color: var(--text-muted); }
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 8px;
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+}
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+#hubLink {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: var(--text-dim);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+#hubLink:hover {
+  border-color: var(--accent2);
+  color: var(--accent2);
+}
+[data-theme="dark"] #hubLink { color: var(--text-muted); }
+
+/* ─── Main feed ─── */
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 40px 24px 100px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Card ─── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 28px 32px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+.card:hover {
+  border-color: var(--border-h);
+  box-shadow: var(--shadow-h);
+  transform: translateY(-1px);
+}
+/* left accent bar */
+.card::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 16px;
+  bottom: 16px;
+  width: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.card:hover::before { opacity: 0.5; }
+.card { position: relative; }
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.card-time {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+.card-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid rgba(196,120,10,0.15);
+  padding: 1px 7px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+}
+.card-body {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--text);
+  letter-spacing: 0.3px;
+  word-break: break-word;
+}
+/* inline highlights */
+.card-body .kw { color: var(--accent); font-weight: 600; }
+.card-body .en { color: var(--text-dim); font-style: italic; }
+
+/* ─── Loading states ─── */
+.skeleton {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 28px 32px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.skeleton-line {
+  height: 14px;
+  background: linear-gradient(90deg, var(--border) 25%, var(--bg-card-h) 50%, var(--border) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+.skeleton-line:last-child { margin-bottom: 0; width: 70%; }
+.skeleton-line.lg { height: 18px; margin-bottom: 14px; }
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.end-marker {
+  text-align: center;
+  padding: 32px 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+}
+.end-marker::before, .end-marker::after {
+  content: '—';
+  margin: 0 8px;
+  opacity: 0.4;
+}
+
+/* ─── Toast ─── */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--text);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 8px 18px;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 200;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 600px) {
+  .card { padding: 22px 20px; }
+  .container { padding: 28px 16px 80px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="header-label">// Flow</div>
+      <h1><span>灵感流</span></h1>
+    </div>
+    <div class="header-right">
+      <a href="https://jeekeagle.github.io/theo-hub/" id="hubLink" aria-label="返回 theo-hub">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        theo-hub
+      </a>
+      <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">
+        <span class="sun-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+        <span class="moon-icon" style="display:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div id="feed"></div>
+  <div id="endMarker" class="end-marker" style="display:none">ALL CAUGHT UP</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MANIFEST = 'manifest.json';
+const RAW_BASE = 'https://raw.githubusercontent.com/jeekeagle/theo-hub/main/flow-posts/';
+let posts = [];
+let loading = false;
+let allLoaded = false;
+
+async function loadManifest() {
+  const r = await fetch(MANIFEST + '?t=' + Date.now());
+  const data = await r.json();
+  return data.posts || [];
+}
+
+function formatTime(iso) {
+  const d = new Date(iso);
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function formatBody(text) {
+  // Escape HTML first
+  text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  // Highlight **bold** and *italic* and `code`
+  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  text = text.replace(/`(.*?)`/g, '<code style="font-family:var(--font-mono);font-size:0.85em;color:var(--accent2)">$1</code>');
+  // Highlight [[keyword]] as keyword
+  text = text.replace(/\[\[(.*?)\]\]/g, '<span class="kw">[[$1]]</span>');
+  return text;
+}
+
+function renderCard(post) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="card-meta">
+      <span class="card-time">${formatTime(post.time)}</span>
+      <span class="card-tag">${post.tag || '想法'}</span>
+    </div>
+    <div class="card-body">${formatBody(post.content)}</div>
+  `;
+  return card;
+}
+
+function showSkeletons(n) {
+  const feed = document.getElementById('feed');
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'skeleton';
+    s.innerHTML = '<div class="skeleton-line lg"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line" style="width:55%"></div>';
+    feed.appendChild(s);
+  }
+}
+
+function clearSkeletons() {
+  document.querySelectorAll('.skeleton').forEach(s => s.remove());
+}
+
+async function loadPosts() {
+  if (loading || allLoaded) return;
+  loading = true;
+  showSkeletons(3);
+  try {
+    const manifest = await loadManifest();
+    clearSkeletons();
+    if (manifest.length === 0) {
+      allLoaded = true;
+      document.getElementById('endMarker').style.display = 'block';
+      document.getElementById('endMarker').textContent = 'NO POSTS YET';
+      return;
+    }
+    // Reverse so newest first
+    const sorted = manifest.slice().reverse();
+    const feed = document.getElementById('feed');
+    for (const post of sorted) {
+      feed.appendChild(renderCard(post));
+    }
+    allLoaded = true;
+    document.getElementById('endMarker').style.display = 'block';
+  } catch (e) {
+    clearSkeletons();
+    console.error(e);
+  }
+  loading = false;
+}
+
+// Theme
+(function() {
+  var saved = localStorage.getItem('theme');
+  var prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  var isLight = saved === 'light' || (!saved && prefersDark);
+  if (isLight) {
+    document.documentElement.setAttribute('data-theme','light');
+    var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
+    if (s) s.style.display = 'none';
+    if (m) m.style.display = 'inline';
+  }
+  window.toggleTheme = function() {
+    var isL = document.documentElement.getAttribute('data-theme') === 'light';
+    if (isL) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme','dark');
+      var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
+      if (s) s.style.display = 'inline';
+      if (m) m.style.display = 'none';
+    } else {
+      var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
+      document.documentElement.setAttribute('data-theme','light');
+      localStorage.setItem('theme','light');
+      if (s) s.style.display = 'none';
+      if (m) m.style.display = 'inline';
+    }
+  };
+})();
+
+// Toast helper
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// Init
+loadPosts();
+</script>
+</body>
+</html>
