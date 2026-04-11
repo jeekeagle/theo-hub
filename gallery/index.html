@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theo Gallery — 结构图 · 架构图 · 信息卡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ─── Blueprint Design System ─── */
+:root {
+  --bg:        #07090d;
+  --bg-card:   #0d1117;
+  --bg-hover:  #111820;
+  --border:    #1e2a3a;
+  --border-hi: #2d4060;
+  --accent:    #4a9eff;
+  --accent2:   #00d4aa;
+  --accent3:   #a78bfa;
+  --text:      #e2e8f0;
+  --text-dim:  #8aacc8;
+  --text-muted:#3a5a7a;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Noto Sans SC', sans-serif;
+  --tag-bg:    rgba(74,158,255,0.08);
+  --tag-bd:    rgba(74,158,255,0.25);
+  --tag-text:  #4a9eff;
+}
+[data-theme="light"] {
+  --bg:        #f5f6f8;
+  --bg-card:   #ffffff;
+  --bg-hover:  #eef0f4;
+  --border:    #d0d8e4;
+  --border-hi: #b0bcd0;
+  --accent:    #2563eb;
+  --accent2:   #059669;
+  --accent3:   #7c3aed;
+  --text:      #0f172a;
+  --text-dim:  #475569;
+  --text-muted:#94a3b8;
+  --tag-bg:    rgba(37,99,235,0.06);
+  --tag-bd:    rgba(37,99,235,0.2);
+  --tag-text:  #2563eb;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Blueprint grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Layout ─── */
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+/* ─── Header ─── */
+header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.header-left .label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.header-left h1 {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 2px;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+#hubLink {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.15s, color 0.15s;
+}
+#hubLink:hover { border-color: var(--border-hi); color: var(--text); }
+
+#themeToggle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  background: none;
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+#themeToggle:hover { border-color: var(--border-hi); color: var(--text); }
+
+/* ─── Filter Bar ─── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.filter-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+.filter-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  background: none;
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.3px;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.active {
+  background: var(--tag-bg);
+  border-color: var(--tag-bd);
+  color: var(--tag-text);
+}
+
+/* ─── Stats row ─── */
+.stats-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.stat {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.stat strong {
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+/* ─── Gallery Grid ─── */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+/* ─── Image Card ─── */
+.img-card {
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  overflow: hidden;
+  transition: border-color 0.15s, transform 0.15s;
+  cursor: pointer;
+}
+.img-card:hover {
+  border-color: var(--border-hi);
+  transform: translateY(-2px);
+}
+.img-card.hidden { display: none; }
+
+.card-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--bg-hover);
+  overflow: hidden;
+  position: relative;
+}
+.card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s;
+}
+.img-card:hover .card-thumb img { transform: scale(1.03); }
+
+/* Category badge overlay */
+.card-thumb .cat-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 3px 8px;
+  border: 1px solid;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.cat-badge.arch  { border-color: var(--accent2);  color: var(--accent2);  background: rgba(0,212,170,0.08); }
+.cat-badge.diagram { border-color: var(--accent);  color: var(--accent);  background: rgba(74,158,255,0.08); }
+.cat-badge.infocard { border-color: var(--accent3); color: var(--accent3); background: rgba(167,139,250,0.08); }
+.cat-badge.tech  { border-color: #f59e0b;         color: #f59e0b;         background: rgba(245,158,11,0.08); }
+
+.card-meta {
+  padding: 14px 16px;
+  border-top: 1px solid var(--border);
+}
+.card-title {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.card-desc {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.card-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 2px 7px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+}
+
+/* ─── Empty State ─── */
+.empty-state {
+  text-align: center;
+  padding: 80px 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ─── Footer ─── */
+footer {
+  margin-top: 60px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+footer span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+/* ─── Lightbox ─── */
+#lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+#lightbox.open { display: flex; }
+#lightbox img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  border: 1px solid var(--border);
+}
+#lightboxClose {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-dim);
+  background: none;
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  cursor: pointer;
+}
+#lightboxClose:hover { color: var(--text); border-color: var(--border-hi); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <div class="label">// Theo Gallery</div>
+      <h1>结构图库</h1>
+    </div>
+    <div class="header-right">
+      <a href="https://jeekeagle.github.io/theo-hub/" id="hubLink">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Hub
+      </a>
+      <button id="themeToggle">D/N</button>
+    </div>
+  </header>
+
+  <!-- Filter -->
+  <div class="filter-bar">
+    <span class="filter-label">Type</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="arch">架构图</button>
+    <button class="filter-btn" data-filter="diagram">结构图</button>
+    <button class="filter-btn" data-filter="infocard">信息卡</button>
+    <button class="filter-btn" data-filter="tech">技术图</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat">Total <strong id="stat-total">0</strong></div>
+    <div class="stat">架构图 <strong id="stat-arch">0</strong></div>
+    <div class="stat">结构图 <strong id="stat-diagram">0</strong></div>
+    <div class="stat">信息卡 <strong id="stat-infocard">0</strong></div>
+    <div class="stat">技术图 <strong id="stat-tech">0</strong></div>
+  </div>
+
+  <!-- Gallery Grid -->
+  <div class="gallery-grid" id="gallery"></div>
+
+  <!-- Empty -->
+  <div class="empty-state" id="emptyState" style="display:none">
+    No images in this category yet.
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <span>THEO GALLERY / v1.0</span>
+    <span>Blueprint Archive — 结构 · 架构 · 信息卡</span>
+  </footer>
+
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox">
+  <button id="lightboxClose">Close</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script>
+// ─── Image Database ───
+const IMAGES = [
+  {
+    id: "theo-architecture",
+    title: "Theo — Hermes Personal AI System",
+    desc: "整体体系架构图：Input → Hermes Agent → Output，包含 Obsidian Vault、Publication Channels、Skill System",
+    category: "arch",
+    tags: ["Hermes", "Theo", "AI-System"],
+    src: "https://jeekeagle.github.io/theo-hub/gallery/theo-architecture.png",
+    date: "2026-04-11"
+  },
+  {
+    id: "flow-post-structure",
+    title: "Flow Post — Card Anatomy",
+    desc: "Flow 灵感流卡片结构：日期 · 分类标签（紫色）· 内容标签（橙色）· 正文 · Question 区",
+    category: "diagram",
+    tags: ["Flow", "Card", "UI"],
+    src: "https://jeekeagle.github.io/theo-hub/gallery/flow-card-structure.png",
+    date: "2026-04-10"
+  },
+  {
+    id: "seed-pipeline",
+    title: "Seed Article — Writing Pipeline",
+    desc: "从选题到 Seed 长文的完整写作管道：素材 → rank分析 → word拆解 → 成文 → Seed压缩 → 发布",
+    category: "arch",
+    tags: ["Seed", "Writing", "Pipeline"],
+    src: "https://jeekeagle.github.io/theo-hub/gallery/seed-pipeline.png",
+    date: "2026-04-09"
+  },
+  {
+    id: "theo-hub-sites",
+    title: "theo-hub Ecosystem Map",
+    desc: "theo-hub 站点生态：Auto · Flow · Hub · Lab · Night · Skills — 各站点职能与关联",
+    category: "arch",
+    tags: ["theo-hub", "Ecosystem", "Sites"],
+    src: "https://jeekeagle.github.io/theo-hub/gallery/theo-hub-sites.png",
+    date: "2026-04-08"
+  }
+];
+
+// ─── Render ───
+const gallery = document.getElementById('gallery');
+const emptyState = document.getElementById('emptyState');
+
+function getCatLabel(cat) {
+  return { arch:'架构图', diagram:'结构图', infocard:'信息卡', tech:'技术图' }[cat] || cat;
+}
+
+function renderImages(filter) {
+  const filtered = filter === 'all' ? IMAGES : IMAGES.filter(i => i.category === filter);
+  gallery.innerHTML = '';
+  emptyState.style.display = filtered.length ? 'none' : 'block';
+
+  filtered.forEach(img => {
+    const card = document.createElement('div');
+    card.className = 'img-card';
+    card.dataset.category = img.category;
+    card.innerHTML = `
+      <div class="card-thumb">
+        <img src="${img.src}" alt="${img.title}" loading="lazy"
+             onerror="this.style.display='none';this.parentElement.style.background='var(--bg-hover)';this.parentElement.innerHTML+='<span style=\'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--text-muted)\'>No Preview</span>'">
+        <span class="cat-badge ${img.category}">${getCatLabel(img.category)}</span>
+      </div>
+      <div class="card-meta">
+        <div class="card-title">${img.title}</div>
+        <div class="card-desc">${img.desc}</div>
+        <div class="card-tags">
+          ${img.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => openLightbox(img.src));
+    gallery.appendChild(card);
+  });
+
+  updateStats();
+}
+
+function updateStats() {
+  document.getElementById('stat-total').textContent = IMAGES.length;
+  ['arch','diagram','infocard','tech'].forEach(cat => {
+    document.getElementById('stat-' + cat).textContent = IMAGES.filter(i => i.category === cat).length;
+  });
+}
+
+// ─── Filter ───
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderImages(btn.dataset.filter);
+  });
+});
+
+// ─── Lightbox ───
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+function openLightbox(src) {
+  lightboxImg.src = src;
+  lightbox.classList.add('open');
+}
+document.getElementById('lightboxClose').addEventListener('click', () => lightbox.classList.remove('open'));
+lightbox.addEventListener('click', e => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
+
+// ─── Theme Toggle ───
+const themeToggle = document.getElementById('themeToggle');
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theo-gallery-theme', theme);
+  themeToggle.textContent = theme === 'dark' ? 'D/N' : 'D/N';
+}
+themeToggle.addEventListener('click', () => {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+(function initTheme() {
+  const saved = localStorage.getItem('theo-gallery-theme');
+  if (saved) { applyTheme(saved); return; }
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) applyTheme('light');
+  else applyTheme('dark');
+})();
+
+// ─── Init ───
+renderImages('all');
+</script>
+</body>
+</html>
