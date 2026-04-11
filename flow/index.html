@@ -522,7 +522,6 @@ function renderCard(post) {
 
   card.innerHTML = `
   <div class="card-front">
-    ${refinedBadge}
     <div class="card-meta">
       <div class="card-meta-left">
         <span class="card-date">${formatDate(post.created)}</span>
@@ -544,7 +543,6 @@ function renderCard(post) {
     ${flipHintFront}
   </div>
   <div class="card-back">
-    ${originalBadge}
     <div class="card-meta">
       <div class="card-meta-left">
         <span class="card-date">${formatDate(post.created)}</span>
