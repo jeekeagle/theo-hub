@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>表象、评价与本质——认识世界的新框架</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700&family=Inter:wght@400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  background: #f5f3ed;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.card {
+  width: 900px;
+  max-width: 95vw;
+  background: #f5f3ed;
+  padding: 50px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+}
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 35px;
+  position: relative;
+  z-index: 1;
+}
+.meta {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 12px;
+}
+.main-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1.15;
+  color: #0a0a0a;
+  max-width: 700px;
+}
+.accent-bar {
+  width: 60px;
+  height: 6px;
+  background: #2563eb;
+  margin-top: 20px;
+}
+.content { position: relative; z-index: 1; }
+.content-body {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #1a1a1a;
+  margin-bottom: 28px;
+}
+.triangle-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin: 30px 0;
+  position: relative;
+}
+.layer-item {
+  background: rgba(0,0,0,0.04);
+  padding: 25px 20px;
+  text-align: center;
+  position: relative;
+}
+.layer-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+}
+.layer-item:nth-child(1)::before { background: #f59e0b; }
+.layer-item:nth-child(2)::before { background: #2563eb; }
+.layer-item:nth-child(3)::before { background: #059669; }
+.layer-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 10px;
+}
+.layer-name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #0a0a0a;
+  margin-bottom: 8px;
+}
+.layer-desc {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}
+.arrow-connector {
+  text-align: center;
+  font-size: 24px;
+  color: #888;
+  margin: 10px 0;
+  letter-spacing: 8px;
+}
+.quote-block {
+  background: rgba(37, 99, 235, 0.08);
+  border-left: 4px solid #2563eb;
+  padding: 22px 28px;
+  margin: 30px 0;
+  font-size: 19px;
+  line-height: 1.6;
+  color: #1a1a1a;
+}
+.divider {
+  width: 100%;
+  height: 2px;
+  background: rgba(0,0,0,0.08);
+  margin: 30px 0;
+}
+.key-insight {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 25px 0;
+}
+.key-dot {
+  width: 10px;
+  height: 10px;
+  background: #2563eb;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #666;
+  background: rgba(0,0,0,0.06);
+  padding: 6px 12px;
+}
+.source {
+  font-size: 12px;
+  color: #999;
+}
+@media (max-width: 600px) {
+  .card { padding: 30px 25px; }
+  .main-title { font-size: 32px; }
+  .triangle-layout { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <div>
+      <div class="meta">Night Routine · 2026-04-09</div>
+      <h1 class="main-title">表象、评价与本质——<br>认识世界的新框架</h1>
+      <div class="accent-bar"></div>
+    </div>
+  </div>
+  <div class="content">
+    <p class="content-body">
+      我们每天都在做一件事，却很少意识到它的深层结构：看见一个东西，然后在心里给它打分。表象提供了信息，评价提供了情感动力，但本质——那个决定事物为何如此的深层逻辑——往往在我们的认知过程中缺席了。
+    </p>
+    <div class="triangle-layout">
+      <div class="layer-item">
+        <div class="layer-label">Layer 01</div>
+        <div class="layer-name">表象</div>
+        <div class="layer-desc">事物呈现给我们的样子<br>最直接、最感性<br>最容易被捕获</div>
+      </div>
+      <div class="layer-item">
+        <div class="layer-label">Layer 02</div>
+        <div class="layer-name">评价</div>
+        <div class="layer-desc">基于表象的即时判断<br>认知的快捷方式<br>也是最危险的捷径</div>
+      </div>
+      <div class="layer-item">
+        <div class="layer-label">Layer 03</div>
+        <div class="layer-name">本质</div>
+        <div class="layer-desc">让事物成为自身的<br>核心结构<br>需要穿过迷雾才能触及</div>
+      </div>
+    </div>
+    <div class="quote-block">
+      评价是连接表象和本质的桥梁，也是我们唯一能主动控制的认知环节。
+    </div>
+    <div class="divider"></div>
+    <div class="key-insight">
+      <div class="key-dot"></div>
+      <span style="font-size: 16px; color: #1a1a1a;">一表象对多本质 · 一本质对多表象 · 评价是主观能动性的着力点</span>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="tags">
+      <span class="tag">表象</span>
+      <span class="tag">评价</span>
+      <span class="tag">本质</span>
+      <span class="tag">认知框架</span>
+    </div>
+    <div class="source">Seed · jeekeagle.github.io</div>
+  </div>
+</div>
+</body>
+</html>
