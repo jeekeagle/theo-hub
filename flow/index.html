@@ -51,9 +51,9 @@
 .tag-pair {
   display: inline-flex;
   align-items: center;
-  gap: 0;
   margin-left: 10px;
 }
+/* 极简发光点，无文字 */
 .tag-dot {
   width: 5px;
   height: 5px;
@@ -61,36 +61,24 @@
   display: inline-block;
   flex-shrink: 0;
 }
-.tag-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  margin-left: 5px;
-  opacity: 0.6;
-}
-/* 精修：琥珀色圆点 */
+/* 精修：琥珀色发光点 */
 .tag-refined .tag-dot {
   background: #c4780a;
-  box-shadow: 0 0 4px rgba(196,120,10,0.5);
+  box-shadow: 0 0 5px rgba(196,120,10,0.6), 0 0 10px rgba(196,120,10,0.2);
 }
-.tag-refined .tag-label { color: #9a7030; }
-/* 原文：灰紫圆点 */
+/* 原文：灰紫发光点 */
 .tag-original .tag-dot {
   background: #8b7ab8;
-  box-shadow: 0 0 4px rgba(139,122,184,0.4);
+  box-shadow: 0 0 5px rgba(139,122,184,0.5), 0 0 10px rgba(139,122,184,0.2);
 }
-.tag-original .tag-label { color: #7a6a98; }
 [data-theme="dark"] .tag-refined .tag-dot {
   background: #e8a445;
-  box-shadow: 0 0 6px rgba(232,164,69,0.6);
+  box-shadow: 0 0 6px rgba(232,164,69,0.7), 0 0 12px rgba(232,164,69,0.3);
 }
-[data-theme="dark"] .tag-refined .tag-label { color: #c09050; }
 [data-theme="dark"] .tag-original .tag-dot {
   background: #a090e0;
-  box-shadow: 0 0 6px rgba(160,144,224,0.5);
+  box-shadow: 0 0 6px rgba(160,144,224,0.6), 0 0 12px rgba(160,144,224,0.25);
 }
-[data-theme="dark"] .tag-original .tag-label { color: #9080b8; }
 
 /* Layout */
 body {
@@ -431,10 +419,10 @@ function renderCard(post) {
   var flipIcon = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>';
 
   var refinedBadge = hasOriginal
-    ? '<span class="tag-pair tag-refined"><span class="tag-dot"></span><span class="tag-label">精修</span></span>'
+    ? '<span class="tag-pair tag-refined"><span class="tag-dot"></span></span>'
     : '';
   var originalBadge = hasOriginal
-    ? '<span class="tag-pair tag-original"><span class="tag-dot"></span><span class="tag-label">原文</span></span>'
+    ? '<span class="tag-pair tag-original"><span class="tag-dot"></span></span>'
     : '';
   var flipHintFront = hasOriginal ? '<div class="card-flip-hint">' + flipIcon + ' 查看原文</div>' : '';
   var flipHintBack = hasOriginal ? '<div class="card-flip-hint" style="opacity:0.8">' + flipIcon + ' 返回</div>' : '';
