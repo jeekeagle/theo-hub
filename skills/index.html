@@ -673,6 +673,6 @@ footer {
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && overlay.classList.contains('open')) closeOverlay(); });
 })();
 
-</script>
+(function(){var o=document.getElementById("cardPreviewOverlay"),c=document.getElementById("cardPreviewClose"),t=document.getElementById("cardPreviewTitle"),b=document.getElementById("cardPreviewBody");function p(card){var ti=card.querySelector(".card-name")||card.querySelector(".card-category")||document.createElement("span");t.textContent=ti.textContent||ti.innerText||"技能预览";var hi=card.querySelector(".card-hint");b.innerHTML=hi?"<p>"+hi.innerHTML+"</p>":'<p class="card-preview-placeholder">更多信息待填充</p>';o.classList.add("open");document.body.style.overflow="hidden";}function q(){o.classList.remove("open");document.body.style.overflow="";}c.addEventListener("click",q);o.addEventListener("click",function(e){if(e.target===o)q()});document.addEventListener("keydown",function(e){if(e.key==="Escape"&&o.classList.contains("open"))q()});document.querySelectorAll(".flip-card").forEach(function(card){card.style.cursor="pointer";card.addEventListener("click",function(){p(card);});});})();</script>
 </body>
 </html>
