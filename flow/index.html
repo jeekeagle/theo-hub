@@ -384,7 +384,12 @@ function formatDate(iso) {
 }
 
 function formatBody(text) {
+  // 先把已有 HTML 标签转为 markdown 符号，防止后续转义损坏
+  text = text.replace(/<strong>(.*?)<\/strong>/g, '**$1**');
+  text = text.replace(/<em>(.*?)<\/em>/g, '*$1*');
+  // HTML 转义
   text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  // markdown 渲染
   text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
   text = text.replace(/`(.*?)`/g, '<code style="font-family:\'JetBrains Mono\',monospace;font-size:0.85em;color:var(--accent2)">$1</code>');
