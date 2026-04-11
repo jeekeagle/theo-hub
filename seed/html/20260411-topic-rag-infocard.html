@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic-RAG：如何让 AI 成为真正的研究伙伴</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700&family=Inter:wght@400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: #f5f3ed;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.card {
+  width: 900px;
+  background: #f5f3ed;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  position: relative;
+}
+
+.card-header {
+  background: #1a1a2e;
+  margin: -50px -50px 0 -50px;
+  padding: 40px 50px 35px 50px;
+  position: relative;
+}
+
+.card-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #e63946, #f4a261, #2a9d8f);
+}
+
+.header-meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8899aa;
+  margin-bottom: 12px;
+}
+
+.main-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 1.1;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.accent-bar {
+  width: 60px;
+  height: 4px;
+  background: #e63946;
+  margin-top: 20px;
+}
+
+.content-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+  padding-left: 20px;
+  border-left: 3px solid #e63946;
+}
+
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #e63946;
+  margin-bottom: 10px;
+}
+
+.section-text {
+  font-size: 17px;
+  line-height: 1.7;
+  color: #1a1a1a;
+}
+
+.highlight-box {
+  background: rgba(230, 57, 70, 0.06);
+  border: 1px solid rgba(230, 57, 70, 0.15);
+  padding: 24px 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.highlight-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.highlight-text {
+  font-size: 17px;
+  line-height: 1.7;
+  color: #1a1a1a;
+}
+
+.highlight-text strong {
+  color: #e63946;
+  font-weight: 700;
+}
+
+.three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.col {
+  background: rgba(0,0,0,0.03);
+  padding: 20px;
+  border-top: 3px solid #1a1a2e;
+}
+
+.col-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.col-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 8px;
+}
+
+.col-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #444;
+}
+
+.quote-box {
+  background: #1a1a2e;
+  padding: 28px 32px;
+  position: relative;
+}
+
+.quote-box::before {
+  content: '"';
+  font-family: 'Noto Serif SC', serif;
+  font-size: 72px;
+  color: #e63946;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  line-height: 1;
+  opacity: 0.6;
+}
+
+.quote-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #ffffff;
+  padding-left: 30px;
+}
+
+.key-insight {
+  background: #1a1a2e;
+  padding: 28px 32px;
+  position: relative;
+}
+
+.key-insight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, #e63946, #f4a261);
+}
+
+.key-insight-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #e63946;
+  margin-bottom: 10px;
+}
+
+.key-insight-text {
+  font-size: 17px;
+  line-height: 1.7;
+  color: #e8e8e8;
+}
+
+.key-insight-text strong {
+  color: #f4a261;
+  font-weight: 700;
+}
+
+.card-footer {
+  border-top: 1px solid rgba(0,0,0,0.1);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-source {
+  font-size: 12px;
+  color: #888;
+}
+
+.footer-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: #1a1a2e;
+  padding: 5px 12px;
+}
+
+@media (max-width: 940px) {
+  .card { width: 100%; padding: 30px; }
+  .card-header { margin: -30px -30px 0 -30px; padding: 30px 30px 25px 30px; }
+  .main-title { font-size: 36px; }
+  .three-col { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-header">
+    <div class="header-meta">Research Workflow · AI Partner · Topic-RAG · 2026-04-11</div>
+    <h1 class="main-title">Topic-RAG</h1>
+    <div style="color:#aabbcc;font-size:22px;font-weight:400;margin-top:6px;">如何让 AI 成为真正的研究伙伴</div>
+    <div class="accent-bar"></div>
+  </div>
+
+  <div class="content-body">
+    <div class="section">
+      <div class="section-title">困境</div>
+      <p class="section-text">研究生问 AI 一个问题，AI 给了一个答案。第二天问一个类似的问题，AI 给了一个看起来差不多但细节不同的答案。第三个月回头看，这三个月积累了几百次问答，没有形成任何东西——换一台机器问同样的问题，AI 什么都不记得。</p>
+    </div>
+
+    <div class="highlight-box">
+      <div class="highlight-icon">⚡</div>
+      <div class="highlight-text">我们用 AI 做研究，但 AI 记不住我们在研究什么。<strong>它是问答工具，不是研究伙伴。</strong></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">链路</div>
+      <p class="section-text">Semantic Scholar 搜集论文，NotebookLM 建立课题 RAG，Claude Code 驱动主题研究和写作。这条链路本身不新鲜——但把它「按主题封装」这件事，让它变得不一样。</p>
+    </div>
+
+    <div class="three-col">
+      <div class="col">
+        <div class="col-label">Step 01</div>
+        <div class="col-title">搜集</div>
+        <div class="col-text">Semantic Scholar 按主题领域抓取论文，建立课题文献库</div>
+      </div>
+      <div class="col">
+        <div class="col-label">Step 02</div>
+        <div class="col-title">沉淀</div>
+        <div class="col-text">NotebookLM 构建课题专属 RAG，形成持续生长的知识库</div>
+      </div>
+      <div class="col">
+        <div class="col-label">Step 03</div>
+        <div class="col-title">研究</div>
+        <div class="col-text">Claude Code 围绕课题做专题研究与写作，调用积累而非从零开始</div>
+      </div>
+    </div>
+
+    <div class="quote-box">
+      <div class="quote-text">不是问答，是积累。一个研究课题对应一个 RAG 库，一个 RAG 库对应一个持续工作的 AI。</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">本质</div>
+      <p class="section-text">「按主题封装」这四个字才是关键。不是「用 RAG」，是「为每个研究课题建立专属的知识飞轮」。</p>
+    </div>
+
+    <div class="key-insight">
+      <div class="key-insight-label">Core Insight</div>
+      <div class="key-insight-text">当你建立一个 Topic-RAG 库，你是在训练一个了解你这个课题的 AI——它知道你读了哪些论文，知道你的研究方向，知道你踩过哪些坑。伙伴记得你说过什么，工具不记得。</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">飞轮</div>
+      <p class="section-text">你读论文，材料进入 NotebookLM。你产生想法，用 Claude Code 做验证。你得到结果，结果反馈进 RAG 库。下次研究同一个课题，AI 从你的积累出发而不是从空白开始。转得越久，这个 AI 越懂你的课题。</p>
+    </div>
+
+    <div class="highlight-box">
+      <div class="highlight-icon">⏳</div>
+      <div class="highlight-text">这件事没有直接回报——不像问 AI 一个问题立刻得到反馈。但它的回报是指数级的。三个月后你会拥有一份积累，会在每一次新的研究中放大你的效率。</div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <div class="footer-source">Seed · theo-note · Night Routine</div>
+    <div class="footer-tag">Research AI</div>
+  </div>
+</div>
+</body>
+</html>
