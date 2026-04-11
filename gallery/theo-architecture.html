@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theo — Hermes Personal AI System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --c-bg: #f8fafc;
+      --c-canvas: #ffffff;
+      --c-border: #cbd5e1;
+      --c-text-main: #0f172a;
+      --c-text-sub: #64748b;
+      --c-accent: #0f172a;
+      --font-ui: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-ui);
+      background: var(--c-bg);
+      padding: 40px;
+      min-height: 100vh;
+    }
+    .diagram-container { max-width: 1100px; margin: 0 auto; }
+    .diagram-canvas {
+      background: var(--c-canvas);
+      border: 1px solid var(--c-border);
+      padding: 32px;
+    }
+    .diagram-header {
+      border-bottom: 1px solid var(--c-border);
+      padding-bottom: 16px;
+      margin-bottom: 28px;
+    }
+    .diagram-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--c-text-main);
+      margin-bottom: 4px;
+    }
+    .diagram-subtitle {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--c-text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── Grid ─── */
+    .sys-grid {
+      display: grid;
+      grid-template-columns: 260px 1fr 260px;
+      gap: 20px;
+      align-items: start;
+    }
+    .col-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--c-text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--c-border);
+      margin-bottom: 12px;
+    }
+
+    /* ─── Block ─── */
+    .block {
+      border: 1px solid var(--c-border);
+      padding: 14px 16px;
+      background: var(--c-canvas);
+      margin-bottom: 10px;
+    }
+    .block-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--c-text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .block-title {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--c-text-main);
+      margin-bottom: 4px;
+    }
+    .block-sub {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--c-text-sub);
+      line-height: 1.5;
+    }
+    .badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      padding: 1px 5px;
+      border: 1px solid var(--c-border);
+      color: var(--c-text-sub);
+      margin-right: 3px;
+    }
+    .badge-solid {
+      background: var(--c-text-main);
+      color: var(--c-canvas);
+      border-color: var(--c-text-main);
+    }
+
+    /* ─── Arrow connector ─── */
+    .connector-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding-top: 60px;
+    }
+    .arrow-h {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .arrow-line {
+      width: 32px;
+      height: 1px;
+      background: var(--c-border);
+    }
+    .arrow-head {
+      width: 0;
+      height: 0;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      border-left: 6px solid var(--c-border);
+    }
+
+    /* ─── Section titles ─── */
+    .section-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--c-text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin: 20px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--c-border);
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    /* ─── Bottom flow row ─── */
+    .flow-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .flow-card {
+      border: 1px solid var(--c-border);
+      padding: 14px 16px;
+    }
+    .flow-card-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--c-text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .flow-card-title {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--c-text-main);
+      margin-bottom: 6px;
+    }
+    .flow-card-url {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--c-text-sub);
+      word-break: break-all;
+    }
+    .flow-card-repo {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--c-text-sub);
+      margin-top: 4px;
+    }
+
+    /* ─── Skill chips ─── */
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .skill-chip {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--c-text-sub);
+      border: 1px solid var(--c-border);
+      padding: 1px 5px;
+    }
+
+    /* ─── Divider ─── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--c-border);
+      margin: 20px 0;
+    }
+
+    /* ─── Vault tree ─── */
+    .vault-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .vault-item {
+      border: 1px solid var(--c-border);
+      padding: 10px 12px;
+    }
+    .vault-item-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--c-text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+    .vault-item-name {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--c-text-main);
+    }
+    .vault-item-desc {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--c-text-sub);
+      margin-top: 3px;
+    }
+
+    /* ─── Architecture bottom bar ─── */
+    .arch-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .arch-item {
+      border: 1px solid var(--c-border);
+      padding: 12px 14px;
+    }
+    .arch-item-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--c-text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 5px;
+    }
+    .arch-item-title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--c-text-main);
+      margin-bottom: 4px;
+    }
+    .arch-item-sub {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--c-text-sub);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+<div class="diagram-container">
+  <div class="diagram-canvas">
+
+    <!-- Header -->
+    <div class="diagram-header">
+      <div class="diagram-title">Theo — Hermes Personal AI System</div>
+      <div class="diagram-subtitle">Architecture Overview / v1.0</div>
+    </div>
+
+    <!-- Layer 1: Input → Agent → Output -->
+    <div class="sys-grid">
+
+      <!-- INPUT: Platforms & Vault -->
+      <div>
+        <div class="col-label">Input Layer</div>
+
+        <div class="block">
+          <div class="block-label">Chat Platform</div>
+          <div class="block-title">Feishu</div>
+          <div class="block-sub">ou_5e6f8e4e16481fd001830172f4a6f43d</div>
+          <div style="margin-top:6px">
+            <span class="badge-solid">DM</span>
+            <span class="badge">Multi-msg</span>
+            <span class="badge">Batch</span>
+          </div>
+        </div>
+
+        <div class="section-title">Obsidian Vault</div>
+
+        <div class="vault-grid" style="grid-template-columns:1fr 1fr">
+          <div class="vault-item">
+            <div class="vault-item-label">theo-note</div>
+            <div class="vault-item-name">输入</div>
+            <div class="vault-item-desc">笔记·想法·素材</div>
+          </div>
+          <div class="vault-item">
+            <div class="vault-item-label">theo-output</div>
+            <div class="vault-item-name">输出</div>
+            <div class="vault-item-desc">发布到公网的内容</div>
+          </div>
+          <div class="vault-item">
+            <div class="vault-item-label">theo-lab</div>
+            <div class="vault-item-name">探索</div>
+            <div class="vault-item-desc">实验性·低成本试错</div>
+          </div>
+          <div class="vault-item">
+            <div class="vault-item-label">theo-project</div>
+            <div class="vault-item-name">项目</div>
+            <div class="vault-item-desc">工作项目跟踪</div>
+          </div>
+          <div class="vault-item" style="grid-column:span 2">
+            <div class="vault-item-label">theo-agent</div>
+            <div class="vault-item-name">智能体</div>
+            <div class="vault-item-desc">技能·工作流·自动化</div>
+          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <div class="block" style="margin-bottom:0">
+            <div class="block-label">Cron / Auto</div>
+            <div class="block-sub">
+              日结 23:30 · 夜间 01:30<br>
+              Flow 定期回填
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER: Hermes Agent -->
+      <div class="connector-col">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0">
+          <div class="arrow-line" style="width:1px;height:32px;background:var(--c-border);align-self:center"></div>
+          <div class="arrow-head" style="border-left:none;border-top:6px solid transparent;border-bottom:6px solid transparent;border-right:8px solid var(--c-border)"></div>
+        </div>
+
+        <div style="border:2px solid var(--c-text-main);padding:20px 24px;background:var(--c-canvas);text-align:center;min-width:200px">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--c-text-sub);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Core Engine</div>
+          <div style="font-family:var(--font-mono);font-size:18px;font-weight:600;color:var(--c-text-main);margin-bottom:6px">Hermes</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--c-text-sub);margin-bottom:10px">MiniMax-M2.7-highspeed</div>
+          <div style="display:flex;flex-wrap:wrap;gap:3px;justify-content:center">
+            <span class="badge-solid">Memory</span>
+            <span class="badge">Skills</span>
+            <span class="badge">MCP</span>
+            <span class="badge">Delegate</span>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0;margin-top:20px">
+          <div class="arrow-head" style="border-left:none;border-top:6px solid transparent;border-bottom:6px solid transparent;border-right:8px solid var(--c-border)"></div>
+          <div class="arrow-line" style="width:1px;height:32px;background:var(--c-border);align-self:center"></div>
+        </div>
+      </div>
+
+      <!-- OUTPUT: Publication Targets -->
+      <div>
+        <div class="col-label">Output Layer</div>
+
+        <div class="block">
+          <div class="block-label">Repository</div>
+          <div class="block-title">jeekeagle/Seed</div>
+          <div class="block-sub">GitHub Pages Hosted</div>
+          <div style="margin-top:6px">
+            <span class="badge">Seed Blog</span>
+            <span class="badge">Night</span>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="block-label">Repository</div>
+          <div class="block-title">jeekeagle/theo-hub</div>
+          <div class="block-sub">Hub + Flow Site</div>
+          <div style="margin-top:6px">
+            <span class="badge">Flow</span>
+            <span class="badge">Hub</span>
+          </div>
+        </div>
+
+        <div style="margin-top:8px">
+          <div class="block" style="margin-bottom:0">
+            <div class="block-label">Local Log</div>
+            <div class="block-sub">
+              then-hermes/<br>
+              voice-log.md<br>
+              action-log.md
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /sys-grid -->
+
+    <hr class="divider">
+
+    <!-- Layer 2: Publication Channels -->
+    <div class="section-title" style="margin-top:0">Publication Channels</div>
+    <div class="flow-row">
+      <div class="flow-card">
+        <div class="flow-card-label">Seed Blog</div>
+        <div class="flow-card-title">Long-form Articles</div>
+        <div class="flow-card-url">jeekeagle.github.io/Seed/</div>
+        <div class="flow-card-repo">src/content/blog/*.md</div>
+        <div style="margin-top:8px">
+          <span class="badge">AstroPaper</span>
+          <span class="badge">Frontmatter</span>
+        </div>
+      </div>
+      <div class="flow-card">
+        <div class="flow-card-label">Night</div>
+        <div class="flow-card-title">Nightly Reflections</div>
+        <div class="flow-card-url">jeekeagle.github.io/Seed/night/</div>
+        <div class="flow-card-repo">src/content/night/*.md</div>
+        <div style="margin-top:8px">
+          <span class="badge">AstroPaper</span>
+          <span class="badge">01:30 Cron</span>
+        </div>
+      </div>
+      <div class="flow-card">
+        <div class="flow-card-label">Flow</div>
+        <div class="flow-card-title">Short-form Insights</div>
+        <div class="flow-card-url">jeekeagle.github.io/theo-hub/flow/</div>
+        <div class="flow-card-repo">flow/manifest.json</div>
+        <div style="margin-top:8px">
+          <span class="badge">JSON API</span>
+          <span class="badge">Card Flip</span>
+          <span class="badge">Dual-tag</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Layer 3: Skill System -->
+    <div class="section-title" style="margin-top:0">Skill System</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+
+      <div class="arch-item">
+        <div class="arch-item-label">theo-write-*</div>
+        <div class="arch-item-title">Writing Flows</div>
+        <div class="arch-item-sub">
+          theo-write-flow → 120字精炼短文<br>
+          theo-write-tech → 技术长文<br>
+          theo-write-seed-flow → 长文→Seed
+        </div>
+      </div>
+
+      <div class="arch-item">
+        <div class="arch-item-label">theo-note-*</div>
+        <div class="arch-item-title">Note Intelligence</div>
+        <div class="arch-item-sub">
+          theo-note-rank → 底层逻辑分析<br>
+          theo-note-word → 词汇深度解析<br>
+          theo-note-roundtable → 圆桌讨论
+        </div>
+      </div>
+
+      <div class="arch-item">
+        <div class="arch-item-label">theo-post-*</div>
+        <div class="arch-item-title">Publication</div>
+        <div class="arch-item-sub">
+          theo-post → Seed博客发布<br>
+          theo-flow-post → Flow卡片发布<br>
+          theo-night-routine → 夜间自动化
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <!-- Layer 4: Theo-hub sub-sites -->
+    <div class="section-title" style="margin-top:0">theo-hub Ecosystem</div>
+    <div class="arch-bar">
+      <div class="arch-item">
+        <div class="arch-item-label">Auto</div>
+        <div class="arch-item-title">Raycast-style Panel</div>
+        <div class="arch-item-sub">
+          Deep blue-black · Red accent<br>
+          Pulse animation · Dual shadow<br>
+          hubLink left · theme-toggle right
+        </div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-item-label">Flow</div>
+        <div class="arch-item-title">Insight Cards</div>
+        <div class="arch-item-sub">
+          manifest.json driven<br>
+          Card flip: refined ↔ original<br>
+          Dual tag: category + contentTags
+        </div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-item-label">Night</div>
+        <div class="arch-item-title">Night-mode Articles</div>
+        <div class="arch-item-sub">
+          AstroPaper frontmatter<br>
+          src/content/night/<br>
+          theo-night-routine 01:30 cron
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="margin-top:24px;padding-top:12px;border-top:1px solid var(--c-border);display:flex;justify-content:space-between;align-items:center">
+      <span style="font-family:var(--font-mono);font-size:10px;color:var(--c-text-sub)">THEO-HERMES / SYSTEM ARCHITECTURE</span>
+      <span style="font-family:var(--font-mono);font-size:10px;color:var(--c-text-sub)">2026-04-11</span>
+    </div>
+
+  </div><!-- /diagram-canvas -->
+</div><!-- /diagram-container -->
+</body>
+</html>
