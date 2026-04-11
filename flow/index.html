@@ -506,9 +506,9 @@ function renderCard(post) {
   card.addEventListener('click', () => {
     const isFlipped = card.classList.toggle('flipped');
     if (isFlipped) {
-      // 翻转后：card-back朝前，内容高度可能更大
-      // 设一个足够大的min-height，让背面完全展示
-      card.style.minHeight = card.offsetHeight + 'px';
+      // 翻转后：以背面高度为基准，确保背面完整展示不遮挡下方
+      const back = card.querySelector('.card-back');
+      card.style.minHeight = back.offsetHeight + 'px';
     } else {
       card.style.minHeight = '';
     }
