@@ -24,6 +24,13 @@
   --font-mono:   'JetBrains Mono', monospace;
   --shadow:      0 1px 3px rgba(80,60,30,0.06), 0 4px 12px rgba(80,60,30,0.04);
   --shadow-h:    0 2px 8px rgba(80,60,30,0.10), 0 8px 24px rgba(80,60,30,0.06);
+  /* 两类标签颜色 */
+  --tag-cat-bg:   #ede8f5;
+  --tag-cat-text: #6b5fa3;
+  --tag-cat-border: #c9c0e8;
+  --tag-content-bg:   #fdf3e3;
+  --tag-content-text: #9a6508;
+  --tag-content-border: #e8d08a;
 }
 [data-theme="dark"] {
   --bg:          #131110;
@@ -39,12 +46,20 @@
   --text-muted:  #5a5248;
   --shadow:      0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
   --shadow-h:    0 2px 8px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.3);
+  --tag-cat-bg:   #2a2240;
+  --tag-cat-text: #a090e0;
+  --tag-cat-border: #504070;
+  --tag-content-bg:   #2a2010;
+  --tag-content-text: #d4a030;
+  --tag-content-border: #605020;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-serif);
+  font-size: 21px;
+  line-height: 1.7;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   padding-top: 56px;
@@ -142,7 +157,6 @@ header h1 span { color: var(--text-muted); }
   border-color: var(--accent2);
   color: var(--accent2);
 }
-[data-theme="dark"] #hubLink { color: var(--text-muted); }
 
 /* ─── Main feed ─── */
 .container {
@@ -162,6 +176,7 @@ header h1 span { color: var(--text-muted); }
   margin-bottom: 16px;
   box-shadow: var(--shadow);
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  position: relative;
 }
 .card:hover {
   border-color: var(--border-h);
@@ -182,38 +197,63 @@ header h1 span { color: var(--text-muted); }
   transition: opacity 0.2s;
 }
 .card:hover::before { opacity: 0.5; }
-.card { position: relative; }
 
-.card-meta {
+/* Card header: date left, tags right */
+.card-header {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 14px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
 }
-.card-time {
+.card-date {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-muted);
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
+  padding-top: 2px;
+  white-space: nowrap;
 }
-.card-tag {
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: flex-end;
+}
+/* 分类标签：想法、灵感 */
+.tag-cat {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 1px solid rgba(196,120,10,0.15);
-  padding: 1px 7px;
-  border-radius: 2px;
-  letter-spacing: 0.5px;
+  color: var(--tag-cat-text);
+  background: var(--tag-cat-bg);
+  border: 1px solid var(--tag-cat-border);
+  padding: 1px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.4px;
 }
+/* 内容标签 */
+.tag-content {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--tag-content-text);
+  background: var(--tag-content-bg);
+  border: 1px solid var(--tag-content-border);
+  padding: 1px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.4px;
+}
+
 .card-body {
-  font-size: 17px;
+  font-size: 21px;
   line-height: 1.85;
   color: var(--text);
   letter-spacing: 0.3px;
   word-break: break-word;
 }
-/* inline highlights */
+.card-body strong {
+  font-weight: 600;
+  color: var(--text);
+}
 .card-body .kw { color: var(--accent); font-weight: 600; }
 .card-body .en { color: var(--text-dim); font-style: italic; }
 
@@ -281,6 +321,8 @@ header h1 span { color: var(--text-muted); }
 @media (max-width: 600px) {
   .card { padding: 22px 20px; }
   .container { padding: 28px 16px 80px; }
+  body { font-size: 18px; }
+  .card-body { font-size: 18px; }
 }
 </style>
 </head>
@@ -325,20 +367,17 @@ async function loadManifest() {
   return data.posts || [];
 }
 
-function formatTime(iso) {
+function formatDate(iso) {
   const d = new Date(iso);
   const pad = n => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 }
 
 function formatBody(text) {
-  // Escape HTML first
   text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  // Highlight **bold** and *italic* and `code`
   text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
   text = text.replace(/`(.*?)`/g, '<code style="font-family:var(--font-mono);font-size:0.85em;color:var(--accent2)">$1</code>');
-  // Highlight [[keyword]] as keyword
   text = text.replace(/\[\[(.*?)\]\]/g, '<span class="kw">[[$1]]</span>');
   return text;
 }
@@ -346,10 +385,24 @@ function formatBody(text) {
 function renderCard(post) {
   const card = document.createElement('div');
   card.className = 'card';
+
+  // 分类标签
+  const catTags = (post.category || ['想法']).map(t =>
+    `<span class="tag-cat">${t}</span>`
+  ).join('');
+
+  // 内容标签
+  const contentTags = (post.contentTags || post.tags || []).map(t =>
+    `<span class="tag-content">${t}</span>`
+  ).join('');
+
   card.innerHTML = `
-    <div class="card-meta">
-      <span class="card-time">${formatTime(post.time)}</span>
-      <span class="card-tag">${post.tag || '想法'}</span>
+    <div class="card-header">
+      <span class="card-date">${formatDate(post.created)}</span>
+      <div class="card-tags">
+        ${catTags}
+        ${contentTags}
+      </div>
     </div>
     <div class="card-body">${formatBody(post.content)}</div>
   `;
@@ -383,7 +436,6 @@ async function loadPosts() {
       document.getElementById('endMarker').textContent = 'NO POSTS YET';
       return;
     }
-    // Reverse so newest first
     const sorted = manifest.slice().reverse();
     const feed = document.getElementById('feed');
     for (const post of sorted) {
@@ -402,32 +454,31 @@ async function loadPosts() {
 (function() {
   var saved = localStorage.getItem('theme');
   var prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
-  var isLight = saved === 'light' || (!saved && prefersDark);
-  if (isLight) {
-    document.documentElement.setAttribute('data-theme','light');
+  var isDark = saved === 'dark' || (!saved && prefersDark);
+  if (isDark) {
+    document.documentElement.setAttribute('data-theme','dark');
     var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
     if (s) s.style.display = 'none';
     if (m) m.style.display = 'inline';
   }
   window.toggleTheme = function() {
-    var isL = document.documentElement.getAttribute('data-theme') === 'light';
-    if (isL) {
+    var isD = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isD) {
       document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('theme','dark');
+      localStorage.setItem('theme','light');
       var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
       if (s) s.style.display = 'inline';
       if (m) m.style.display = 'none';
     } else {
+      document.documentElement.setAttribute('data-theme','dark');
+      localStorage.setItem('theme','dark');
       var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
-      document.documentElement.setAttribute('data-theme','light');
-      localStorage.setItem('theme','light');
       if (s) s.style.display = 'none';
       if (m) m.style.display = 'inline';
     }
   };
 })();
 
-// Toast helper
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -435,7 +486,6 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2000);
 }
 
-// Init
 loadPosts();
 </script>
 </body>
