@@ -419,7 +419,7 @@ function renderCard(post) {
   card.className = 'card';
 
   // 分类标签
-  const catTags = (post.category || ['想法']).map(t =>
+  const catTags = (Array.isArray(post.category) ? post.category : [post.category || '想法']).map(t =>
     `<span class="tag-cat">${t}</span>`
   ).join('');
 
