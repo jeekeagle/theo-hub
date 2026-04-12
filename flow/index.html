@@ -577,7 +577,7 @@ async function loadPosts() {
       document.getElementById('endMarker').textContent = 'NO POSTS YET';
       return;
     }
-    const sorted = manifest.slice().reverse();
+    const sorted = manifest;
     const feed = document.getElementById('feed');
     for (const post of sorted) {
       feed.appendChild(renderCard(post));
