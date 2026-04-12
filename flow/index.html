@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flow — 灵感流</title>
-<!-- v3.0.0 — Apple Design -->
+<!-- v3.1.0 — Apple Design System — Refactored -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================================
-   Flow v3.0.0 — Apple Design System
+   Flow v3.1.0 — Apple Design System
    ========================================================================== */
 
 :root {
@@ -26,12 +26,14 @@
   --accent:       #007AFF;
   --accent-hover: #0071e3;
   --accent-bg:    rgba(0,122,255,0.08);
-  --tag-cat-txt:  #007AFF;
-  --tag-cat-bg:   rgba(0,122,255,0.10);
-  --tag-cat-bd:   rgba(0,122,255,0.20);
-  --tag-cnt-txt:  #86868b;
-  --tag-cnt-bg:   rgba(0,0,0,0.04);
-  --tag-cnt-bd:   rgba(0,0,0,0.10);
+  /* Category: Purple */
+  --tag-cat-txt:  #AF52DE;
+  --tag-cat-bg:   rgba(175,82,222,0.10);
+  --tag-cat-bd:   rgba(175,82,222,0.25);
+  /* ContentTags: Orange */
+  --tag-cnt-txt:  #FF9500;
+  --tag-cnt-bg:   rgba(255,149,0,0.10);
+  --tag-cnt-bd:   rgba(255,149,0,0.25);
   --shadow-xs:    0 0.5px 1px rgba(0,0,0,0.04);
   --shadow-sm:    0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
   --shadow-md:    0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
@@ -56,12 +58,14 @@
   --accent:       #0A84FF;
   --accent-hover: #409cff;
   --accent-bg:    rgba(10,132,255,0.12);
-  --tag-cat-txt:  #0A84FF;
-  --tag-cat-bg:   rgba(10,132,255,0.15);
-  --tag-cat-bd:   rgba(10,132,255,0.30);
-  --tag-cnt-txt:  #98989d;
-  --tag-cnt-bg:   rgba(255,255,255,0.06);
-  --tag-cnt-bd:   rgba(255,255,255,0.12);
+  /* Category: Purple (dark) */
+  --tag-cat-txt:  #BF5AF2;
+  --tag-cat-bg:   rgba(191,90,242,0.15);
+  --tag-cat-bd:   rgba(191,90,242,0.35);
+  /* ContentTags: Orange (dark) */
+  --tag-cnt-txt:  #FF9F0A;
+  --tag-cnt-bg:   rgba(255,159,10,0.15);
+  --tag-cnt-bd:   rgba(255,159,10,0.35);
   --shadow-xs:    0 0.5px 1px rgba(0,0,0,0.3);
   --shadow-sm:    0 1px 3px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.25);
   --shadow-md:    0 2px 8px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.3);
@@ -186,6 +190,8 @@ body {
   border-color: var(--border-2);
   transform: translateY(-1px);
 }
+.card.flipped .card-front { display: none; }
+.card:not(.flipped) .card-back { display: none; }
 .card.flipped .card-inner { transform: rotateY(180deg); }
 
 .card-inner {
@@ -386,141 +392,8 @@ body {
 </main>
 
 <script>
-const MANIFEST = 'manifest.json';
-
-async function loadManifest() {
-  const r = await fetch(MANIFEST + '?t=' + Date.now() + '&r=' + Math.random());
-  const data = await r.json();
-  return data.posts || [];
-}
-
-function formatDate(iso) {
-  const d = new Date(iso);
-  const pad = n => String(n).padStart(2, '0');
-  return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
-}
-
-function escapeHtml(text) {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
-
-function formatBody(text) {
-  text = escapeHtml(text);
-  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
-  text = text.replace(/`(.+?)`/g, '<code>$1</code>');
-  const paras = text.split(/\n\n+/);
-  if (paras.length > 1) {
-    return paras.map(p => '<p>' + p.replace(/\n/g, '<br>') + '</p>').join('');
-  }
-  return text.replace(/\n/g, '<br>');
-}
-
-function flipCard(card, e) {
-  e.stopPropagation();
-  card.classList.toggle('flipped');
-}
-
-function renderCard(post, index) {
-  const card = document.createElement('div');
-  card.className = 'card';
-
-  const dateStr = formatDate(post.created);
-  const catTag = post.category
-    ? '<span class="tag tag-cat">' + escapeHtml(post.category) + '</span>'
-    : '';
-  const contentTags = (post.contentTags || []).slice(0,2).map(t =>
-    '<span class="tag tag-content">' + escapeHtml(t) + '</span>'
-  ).join('');
-
-  const frontHTML =
-    '<div class="card-content-wrap">' +
-      '<div class="card-meta">' +
-        '<span class="card-date">' + dateStr + '</span>' +
-        '<div class="card-tags">' + catTag + contentTags + '</div>' +
-      '</div>' +
-      '<div class="card-body">' + formatBody(post.content) + '</div>' +
-      '<div class="card-flip-hint">' +
-        '<svg class="flip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-          '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>' +
-          '<polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>' +
-        '</svg>' +
-        'Tap to see original' +
-      '</div>' +
-    '</div>';
-
-  const originalContent = post.originalContent || post.content;
-  const backHTML =
-    '<div class="card-back-content">' +
-      '<div class="card-back-label">Original</div>' +
-      '<div class="card-back-body">' + formatBody(originalContent) + '</div>' +
-      (post.question
-        ? '<div class="card-back-question"><strong>Question:</strong> ' + escapeHtml(post.question) + '</div>'
-        : '') +
-    '</div>';
-
-  card.innerHTML =
-    '<div class="card-inner">' +
-      '<div class="card-front">' + frontHTML + '</div>' +
-      '<div class="card-back">' + backHTML + '</div>' +
-    '</div>';
-
-  card.addEventListener('click', e => flipCard(card, e));
-
-  setTimeout(() => {
-    card.classList.add('visible');
-    card.style.animation = 'cardEntrance 0.55s cubic-bezier(0.32,0.72,0,1) ' + (index * 70) + 'ms forwards';
-  }, 10);
-
-  return card;
-}
-
-function showSkeletons(n) {
-  const feed = document.getElementById('feed');
-  for (let i = 0; i < n; i++) {
-    const s = document.createElement('div');
-    s.className = 'skeleton-card';
-    s.innerHTML =
-      '<div class="skeleton-line short"></div>' +
-      '<div class="skeleton-line long"></div>' +
-      '<div class="skeleton-line med"></div>' +
-      '<div class="skeleton-line long"></div>' +
-      '<div class="skeleton-line long2"></div>';
-    feed.appendChild(s);
-  }
-}
-
-function clearSkeletons() {
-  document.querySelectorAll('.skeleton-card').forEach(el => el.remove());
-}
-
-async function loadPosts() {
-  if (window.allLoaded) return;
-  window.allLoaded = true;
-  showSkeletons(3);
-  try {
-    const manifest = await loadManifest();
-    clearSkeletons();
-    if (manifest.length === 0) {
-      const em = document.getElementById('endMarker');
-      em.style.display = 'block';
-      em.textContent = 'NO POSTS YET';
-      return;
-    }
-    const sorted = manifest.slice().reverse();
-    const feed = document.getElementById('feed');
-    sorted.forEach((post, i) => feed.appendChild(renderCard(post, i)));
-    document.getElementById('endMarker').style.display = 'block';
-  } catch(e) {
-    clearSkeletons();
-    console.error(e);
-  }
-}
-
 (function() {
+  /* ── Theme ── */
   const saved = localStorage.getItem('theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
   const isDark = saved === 'dark' || (!saved && prefersDark);
@@ -543,10 +416,170 @@ async function loadPosts() {
       document.querySelectorAll('.moon-icon').forEach(m => m.style.display = 'inline');
     }
   };
-})();
 
-window.allLoaded = false;
-loadPosts();
+  /* ── Manifest & Posts ── */
+  const MANIFEST = 'manifest.json';
+  let allPosts = [];
+  let allLoaded = false;
+
+  async function loadManifest() {
+    const r = await fetch(MANIFEST + '?t=' + Date.now() + '&r=' + Math.random());
+    const data = await r.json();
+    return data.posts || [];
+  }
+
+  function formatDate(iso) {
+    const d = new Date(iso);
+    const pad = n => String(n).padStart(2, '0');
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+  }
+
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function formatBody(text) {
+    // Step 1: HTML tags to placeholders (preserve them)
+    const placeholders = {};
+    let idx = 0;
+    text = text.replace(/<([^>]+)>/g, (m, tag) => {
+      const ph = `\u0000${idx}\u0000`;
+      placeholders[ph] = m;
+      idx++;
+      return ph;
+    });
+
+    // Step 2: Escape HTML
+    text = escapeHtml(text);
+
+    // Step 3: Markdown → HTML
+    text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    text = text.replace(/`(.+?)`/g, '<code>$1</code>');
+
+    // Step 4: Restore placeholders
+    for (const [ph, original] of Object.entries(placeholders)) {
+      text = text.replace(ph, original);
+    }
+
+    // Step 5: Paragraphs
+    const paras = text.split(/\n\n+/);
+    if (paras.length > 1) {
+      return paras.map(p => '<p>' + p.replace(/\n/g, '<br>') + '</p>').join('');
+    }
+    return text.replace(/\n/g, '<br>');
+  }
+
+  function flipCard(card, e) {
+    e.stopPropagation();
+    card.classList.toggle('flipped');
+  }
+
+  function renderCard(post, index) {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const dateStr = formatDate(post.created);
+    const catTag = post.category
+      ? '<span class="tag tag-cat">' + escapeHtml(post.category) + '</span>'
+      : '';
+    const contentTags = (post.contentTags || []).slice(0, 3).map(t =>
+      '<span class="tag tag-content">' + escapeHtml(t) + '</span>'
+    ).join('');
+
+    // Card FRONT: refined content
+    const frontHTML =
+      '<div class="card-content-wrap">' +
+        '<div class="card-meta">' +
+          '<span class="card-date">' + dateStr + '</span>' +
+          '<div class="card-tags">' + catTag + contentTags + '</div>' +
+        '</div>' +
+        '<div class="card-body">' + formatBody(post.content) + '</div>' +
+        '<div class="card-flip-hint">' +
+          '<svg class="flip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>' +
+            '<polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>' +
+          '</svg>' +
+          'Tap to see original' +
+        '</div>' +
+      '</div>';
+
+    // Card BACK: original content
+    const originalContent = post.originalContent || post.content;
+    const backHTML =
+      '<div class="card-back-content">' +
+        '<div class="card-back-label">Original</div>' +
+        '<div class="card-back-body">' + formatBody(originalContent) + '</div>' +
+        (post.question
+          ? '<div class="card-back-question"><strong>Question:</strong> ' + escapeHtml(post.question) + '</div>'
+          : '') +
+      '</div>';
+
+    card.innerHTML =
+      '<div class="card-inner">' +
+        '<div class="card-front">' + frontHTML + '</div>' +
+        '<div class="card-back">' + backHTML + '</div>' +
+      '</div>';
+
+    card.addEventListener('click', e => flipCard(card, e));
+
+    setTimeout(() => {
+      card.classList.add('visible');
+      card.style.animation = 'cardEntrance 0.55s cubic-bezier(0.32,0.72,0,1) ' + (index * 70) + 'ms forwards';
+    }, 10);
+
+    return card;
+  }
+
+  function showSkeletons(n) {
+    const feed = document.getElementById('feed');
+    for (let i = 0; i < n; i++) {
+      const s = document.createElement('div');
+      s.className = 'skeleton-card';
+      s.innerHTML =
+        '<div class="skeleton-line short"></div>' +
+        '<div class="skeleton-line long"></div>' +
+        '<div class="skeleton-line med"></div>' +
+        '<div class="skeleton-line long"></div>' +
+        '<div class="skeleton-line long2"></div>';
+      feed.appendChild(s);
+    }
+  }
+
+  function clearSkeletons() {
+    document.querySelectorAll('.skeleton-card').forEach(el => el.remove());
+  }
+
+  async function loadPosts() {
+    if (allLoaded) return;
+    allLoaded = true;
+    showSkeletons(3);
+    try {
+      allPosts = await loadManifest();
+      clearSkeletons();
+      if (allPosts.length === 0) {
+        const em = document.getElementById('endMarker');
+        em.style.display = 'block';
+        em.textContent = 'NO POSTS YET';
+        return;
+      }
+      // Sort by created desc (newest first)
+      const sorted = allPosts.slice().reverse();
+      const feed = document.getElementById('feed');
+      sorted.forEach((post, i) => feed.appendChild(renderCard(post, i)));
+      document.getElementById('endMarker').style.display = 'block';
+    } catch(e) {
+      clearSkeletons();
+      console.error('Failed to load posts:', e);
+    }
+  }
+
+  window.allLoaded = false;
+  loadPosts();
+})();
 </script>
 </body>
 </html>
