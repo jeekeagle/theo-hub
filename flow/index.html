@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flow — 灵感流</title>
-<!-- v2.0.2 -->
+<!-- v2.0.1 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ───────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════
    Apple Design System — Flow
-   ─────────────────────────────────────────────────────────── */
+   ═══════════════════════════════════════════ */
 
 :root {
   /* Light — warm parchment */
@@ -332,11 +332,10 @@ body {
   margin-bottom: 14px;
 }
 .card-back-body {
-  font-family: 'Noto Serif SC', 'Noto Serif', Georgia, 'Times New Roman', serif;
-  font-size: 19px;
+  font-family: var(--font-ui);
+  font-size: 16px;
   line-height: 1.75;
   color: var(--text-2);
-  letter-spacing: 0.2px;
 }
 .card-back-body p { margin: 0 0 10px; }
 .card-back-body p:last-child { margin-bottom: 0; }
@@ -429,7 +428,7 @@ body {
   <div class="page-header">
     <div class="page-header-eyebrow">Inspiration in Motion</div>
     <h1 class="page-header-title">灵感流</h1>
-    <p class="page-header-sub">捕捉每一个闪过的想法，将它们变成可触碰的洞悉</p>
+    <p class="page-header-sub">捕捉每一个闪过的想法，将它们变成可触摸的洞察</p>
   </div>
 
   <!-- Feed -->
@@ -457,13 +456,13 @@ function formatDate(iso) {
 }
 
 function formatBody(text) {
-  text = text.replace(/<strong>(.*?)<\\/strong>/g, '**$1**');
-  text = text.replace(/<em>(.*?)<\\/em>/g, '*$1*');
+  text = text.replace(/<strong>(.*?)<\/strong>/g, '**$1**');
+  text = text.replace(/<em>(.*?)<\/em>/g, '*$1*');
   text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  text = text.replace(/\*\*\*(.*?)\*\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  text = text.replace(/`(.*?)`/g, '<code style="font-family:var('--font-mono'),monospace;font-size:0.85em;color:var(--accent)">$1</code>');
-  text = text.replace(/\\[\\[(.*?)\\]\\]/g, '<span class="kw">[[$1]]</span>');
+  text = text.replace(/`(.*?)`/g, '<code style="font-family:var(\'--font-mono\'),monospace;font-size:0.85em;color:var(--accent)">$1</code>');
+  text = text.replace(/\[\[(.*?)\]\]/g, '<span class="kw">[[$1]]</span>');
   const paragraphs = text.split(/\n\n+/);
   if (paragraphs.length > 1) {
     text = paragraphs.map(function(p){ return '<p>' + p.replace(/\n/g, '<br>') + '</p>'; }).join('');
