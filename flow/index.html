@@ -497,6 +497,15 @@ function formatBody(text) {
   return text;
 }
 
+function processContent(text) {
+  // 检测是否含HTML标签，有则直接innerHTML，否则走formatBody
+  if (/<[^>]+>/.test(text)) {
+    return text;
+  }
+  return formatBody(text);
+}
+
+
 function renderCard(post) {
   const card = document.createElement('div');
   card.className = 'card';
@@ -522,7 +531,7 @@ function renderCard(post) {
           ${contentTags}
         </div>
       </div>
-      <div class="card-body">${formatBody(post.content)}</div>
+      <div class="card-body">${processContent(post.content)}</div>
       <div class="card-expand-hint">
         <svg class="expand-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         Tap to see original
