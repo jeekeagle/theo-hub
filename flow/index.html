@@ -1,585 +1,458 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flow — 灵感流</title>
-<!-- v3.1.0 — Apple Design System — Refactored -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-<style>
-/* ==========================================================================
-   Flow v3.1.0 — Apple Design System
-   ========================================================================== */
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flow — 灵感流</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Design Tokens · Notion-Inspired Warm Minimal ─── */
+    :root {
+      --bg: #ffffff;
+      --bg-alt: #f6f5f4;
+      --text: rgba(0,0,0,0.95);
+      --text-secondary: #615d59;
+      --text-muted: #a39e98;
+      --accent: #0075de;
+      --accent-dark: #005bab;
+      --border: rgba(0,0,0,0.1);
+      --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.84688px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04062px;
+      --radius-sm: 4px;
+      --radius-md: 12px;
+      --radius-pill: 9999px;
+      --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
 
-:root {
-  /* Apple Color Palette */
-  --bg:           #f5f5f7;
-  --surface:      #ffffff;
-  --surface-2:    #f0f0f3;
-  --border:       rgba(0,0,0,0.06);
-  --border-2:     rgba(0,0,0,0.12);
-  --text:         #1d1d1f;
-  --text-2:       #86868b;
-  --text-3:       #a1a1a6;
-  --accent:       #007AFF;
-  --accent-hover: #0071e3;
-  --accent-bg:    rgba(0,122,255,0.08);
-  /* Category: Purple */
-  --tag-cat-txt:  #AF52DE;
-  --tag-cat-bg:   rgba(175,82,222,0.10);
-  --tag-cat-bd:   rgba(175,82,222,0.25);
-  /* ContentTags: Orange */
-  --tag-cnt-txt:  #FF9500;
-  --tag-cnt-bg:   rgba(255,149,0,0.10);
-  --tag-cnt-bd:   rgba(255,149,0,0.25);
-  --shadow-xs:    0 0.5px 1px rgba(0,0,0,0.04);
-  --shadow-sm:    0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
-  --shadow-md:    0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
-  --shadow-lg:    0 4px 16px rgba(0,0,0,0.08), 0 16px 48px rgba(0,0,0,0.06);
-  --radius-xs:    6px;
-  --radius-sm:    8px;
-  --radius-md:    12px;
-  --radius-lg:    16px;
-  --ease-spring:  cubic-bezier(0.32, 0.72, 0, 1);
-  --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
-}
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-[data-theme="dark"] {
-  --bg:           #000000;
-  --surface:      #1c1c1e;
-  --surface-2:    #2c2c2e;
-  --border:       rgba(255,255,255,0.08);
-  --border-2:     rgba(255,255,255,0.16);
-  --text:         #f5f5f7;
-  --text-2:       #98989d;
-  --text-3:       #636366;
-  --accent:       #0A84FF;
-  --accent-hover: #409cff;
-  --accent-bg:    rgba(10,132,255,0.12);
-  /* Category: Purple (dark) */
-  --tag-cat-txt:  #BF5AF2;
-  --tag-cat-bg:   rgba(191,90,242,0.15);
-  --tag-cat-bd:   rgba(191,90,242,0.35);
-  /* ContentTags: Orange (dark) */
-  --tag-cnt-txt:  #FF9F0A;
-  --tag-cnt-bg:   rgba(255,159,10,0.15);
-  --tag-cnt-bd:   rgba(255,159,10,0.35);
-  --shadow-xs:    0 0.5px 1px rgba(0,0,0,0.3);
-  --shadow-sm:    0 1px 3px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.25);
-  --shadow-md:    0 2px 8px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.3);
-  --shadow-lg:    0 4px 16px rgba(0,0,0,0.6), 0 16px 48px rgba(0,0,0,0.4);
-}
+    /* ─── Header ─── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+    .brand {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--text);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .brand-icon svg { width: 16px; height: 16px; }
+    .header-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ─── Hero ─── */
+    .hero {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 72px 24px 56px;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.125px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .hero-eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      background: #1aae39;
+      border-radius: 50%;
+    }
+    .hero h1 {
+      font-size: 54px;
+      font-weight: 700;
+      letter-spacing: -1.875px;
+      line-height: 1.04;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      max-width: 480px;
+      margin: 0 auto;
+    }
 
-html {
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
+    /* ─── Filter Bar ─── */
+    .filter-bar {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-right: 4px;
+    }
+    .filter-btn {
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .filter-btn:hover { border-color: var(--text-muted); color: var(--text); }
+    .filter-btn.active {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+    .count-badge {
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--text-muted);
+      color: #fff;
+      border-radius: var(--radius-pill);
+      padding: 1px 6px;
+      margin-left: 4px;
+    }
+    .filter-btn.active .count-badge { background: rgba(255,255,255,0.4); }
 
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  transition: background 0.4s var(--ease-out), color 0.4s var(--ease-out);
-  overflow-x: hidden;
-}
+    /* ─── Post Grid ─── */
+    .posts-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+    .posts-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+    /* ─── Post Item ─── */
+    .post-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px 28px;
+      cursor: pointer;
+      transition: box-shadow 0.18s ease, transform 0.15s ease;
+      position: relative;
+      background: var(--bg);
+    }
+    .post-item:hover {
+      box-shadow: var(--shadow-card);
+      transform: translateY(-1px);
+    }
+    .post-item-category {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.125px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .post-item-content {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .post-item-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .post-item-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-alt);
+      color: var(--text-secondary);
+    }
+    .post-item-time {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .post-item-question {
+      font-size: 13px;
+      color: var(--accent);
+      margin-top: 12px;
+      font-style: italic;
+      border-left: 2px solid var(--accent);
+      padding-left: 10px;
+    }
 
-/* ── Navigation — Apple Translucent Bar ── */
-.nav-bar {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(245,245,247,0.72);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 0.5px solid var(--border);
-  transition: background 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
-}
-[data-theme="dark"] .nav-bar { background: rgba(0,0,0,0.72); }
-.nav-inner {
-  max-width: 980px; margin: 0 auto; padding: 0 24px;
-  height: 52px; display: flex; align-items: center; justify-content: space-between;
-}
-.nav-brand { display: flex; align-items: center; gap: 10px; }
-.nav-label {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 22px; color: var(--text-3); letter-spacing: 0.02em;
-  font-weight: 400;
-}
-.nav-title {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-  font-size: 34px; font-weight: 600;
-  color: var(--text); letter-spacing: -0.5px;
-}
-.nav-actions { display: flex; align-items: center; gap: 6px; }
-.nav-btn {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 12px; font-weight: 400; color: var(--accent);
-  background: transparent;
-  border: none; border-radius: var(--radius-xs);
-  padding: 6px 12px; cursor: pointer; display: flex; align-items: center;
-  gap: 5px; transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
-  text-decoration: none;
-}
-.nav-btn:hover { background: var(--accent-bg); color: var(--accent-hover); }
+    /* ─── Expanded Post ─── */
+    .post-detail {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .post-item.expanded .post-detail { display: block; }
+    .post-detail-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.125px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      margin-top: 16px;
+    }
+    .post-detail-label:first-child { margin-top: 0; }
+    .post-detail-text {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+    .post-detail-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
 
-.nav-icon-btn {
-  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
-  border-radius: var(--radius-xs); background: transparent;
-  border: none; cursor: pointer; color: var(--text-2);
-  transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
-}
-.nav-icon-btn:hover { background: rgba(0,0,0,0.05); color: var(--text); }
-[data-theme="dark"] .nav-icon-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+    /* ─── Empty State ─── */
+    .empty-state {
+      text-align: center;
+      padding: 64px 24px;
+      color: var(--text-muted);
+    }
+    .empty-state-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 16px;
+      opacity: 0.4;
+    }
 
-/* ── Main ── */
-.main { max-width: 980px; margin: 0 auto; padding: 80px 24px 120px; }
+    /* ─── Footer ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
 
-/* ── Hero Header ── */
-.page-header {
-  text-align: center; margin-bottom: 80px; padding-top: 40px;
-}
-.page-header-title {
-  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  font-size: 42px; font-weight: 500;
-  font-style: italic;
-  color: var(--text); letter-spacing: -0.5px; line-height: 1.35;
-  max-width: 640px; margin: 0 auto;
-  opacity: 0; animation: fadeSlideUp 0.9s var(--ease-out) 0.15s forwards;
-}
-[data-theme="dark"] .page-header-title { font-weight: 400; }
-.page-header-line {
-  width: 36px; height: 1.5px; background: var(--accent);
-  margin: 40px auto 0; border-radius: 99px;
-  opacity: 0; animation: fadeSlideUp 0.7s var(--ease-out) 0.5s forwards;
-}
-
-/* ── Feed ── */
-.feed { display: flex; flex-direction: column; gap: 16px; }
-
-/* ── Card ── */
-.card {
-  background: var(--surface); border: 0.5px solid var(--border);
-  border-radius: var(--radius-md); box-shadow: var(--shadow-sm);
-  cursor: pointer; perspective: 1200px;
-  opacity: 0; transform: translateY(20px);
-  transition:
-    box-shadow 0.35s var(--ease-out),
-    border-color 0.25s var(--ease-out),
-    transform 0.35s var(--ease-out);
-}
-.card.visible {
-  opacity: 1; transform: translateY(0);
-  transition:
-    opacity 0.5s var(--ease-out),
-    transform 0.5s var(--ease-out),
-    box-shadow 0.35s var(--ease-out),
-    border-color 0.25s var(--ease-out);
-}
-.card:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--border-2);
-  transform: translateY(-1px);
-}
-.card.flipped .card-front { display: none; }
-.card:not(.flipped) .card-back { display: none; }
-.card.flipped .card-inner { transform: rotateY(180deg); }
-
-.card-inner {
-  position: relative; width: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.55s var(--ease-spring);
-  border-radius: var(--radius-md);
-}
-.card-front, .card-back {
-  backface-visibility: hidden; -webkit-backface-visibility: hidden;
-  border-radius: var(--radius-md); overflow: hidden;
-}
-.card-front { background: var(--surface); }
-.card-back {
-  position: absolute; top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: var(--surface-2); transform: rotateY(180deg);
-}
-
-.card-content-wrap { padding: 28px 32px 26px; }
-.card-meta {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 18px; gap: 12px;
-}
-.card-date {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', monospace;
-  font-size: 11px; color: var(--text-3); letter-spacing: 0.02em; font-weight: 400;
-}
-.card-tags { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
-.tag {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 11px; font-weight: 500;
-  padding: 3px 10px; border-radius: 999px; letter-spacing: 0.01em;
-  transition: all 0.2s var(--ease-out);
-}
-.tag-cat { color: var(--tag-cat-txt); background: var(--tag-cat-bg); border: 0.5px solid var(--tag-cat-bd); }
-.tag-content { color: var(--tag-cnt-txt); background: var(--tag-cnt-bg); border: 0.5px solid var(--tag-cnt-bd); }
-
-.card-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
-  font-size: 17px; line-height: 1.72;
-  color: var(--text); letter-spacing: -0.1px; word-break: break-word; font-weight: 400;
-}
-.card-body p { margin: 0 0 10px; }
-.card-body p:last-child { margin-bottom: 0; }
-.card-body strong { font-weight: 600; color: var(--text); }
-.card-body em { font-style: italic; }
-
-.card-flip-hint {
-  margin-top: 18px; padding-top: 14px; border-top: 0.5px solid var(--border);
-  display: flex; align-items: center; gap: 6px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 11px; color: var(--text-3); letter-spacing: 0.01em; user-select: none;
-}
-.flip-icon {
-  width: 12px; height: 12px; opacity: 0.5;
-  transition: opacity 0.2s var(--ease-out), transform 0.3s var(--ease-spring);
-}
-.card:hover .flip-icon { opacity: 0.9; transform: rotateY(20deg); }
-
-.card-back-content { padding: 28px 32px 26px; }
-.card-back-label {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 10px; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase;
-  font-weight: 500; margin-bottom: 12px;
-}
-.card-back-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
-  font-size: 15px; line-height: 1.75;
-  color: var(--text-2); font-weight: 400;
-}
-.card-back-body p { margin: 0 0 8px; }
-.card-back-body p:last-child { margin-bottom: 0; }
-.card-back-question {
-  margin-top: 16px; padding-top: 14px; border-top: 0.5px solid var(--border);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 12px; color: var(--text-3); line-height: 1.65; letter-spacing: 0;
-}
-.card-back-question strong {
-  color: var(--text-2); font-weight: 500;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 12px;
-}
-
-/* ── End Marker ── */
-#endMarker {
-  display: none; text-align: center; padding: 56px 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 11px; color: var(--text-3); letter-spacing: 0.08em;
-  opacity: 0; animation: fadeIn 0.6s var(--ease-out) forwards;
-}
-
-/* ── Skeleton ── */
-@keyframes shimmer {
-  0%   { background-position: -600px 0; }
-  100% { background-position: 600px 0; }
-}
-.skeleton-card {
-  background: var(--surface); border: 0.5px solid var(--border);
-  border-radius: var(--radius-md); padding: 28px 32px;
-  overflow: hidden; position: relative;
-}
-.skeleton-card::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.03) 50%, transparent 100%);
-  background-size: 600px 100%;
-  animation: shimmer 1.8s ease-in-out infinite;
-}
-[data-theme="dark"] .skeleton-card::after {
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
-  background-size: 600px 100%;
-}
-.skeleton-line { background: var(--surface-2); border-radius: 4px; }
-.skeleton-line.short { height: 10px; width: 28%; margin-bottom: 16px; }
-.skeleton-line.long  { height: 17px; width: 100%; margin-bottom: 9px; }
-.skeleton-line.med   { height: 17px; width: 75%; margin-bottom: 9px; }
-.skeleton-line.long2 { height: 17px; width: 60%; }
-
-/* ── Animations ── */
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes cardEntrance {
-  from { opacity: 0; transform: translateY(22px) scale(0.99); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-/* ── Responsive ── */
-@media (max-width: 768px) {
-  .main { padding: 56px 16px 80px; }
-  .nav-inner { padding: 0 16px; }
-  .page-header-title { font-size: 40px; letter-spacing: -1.5px; }
-  .page-header { margin-bottom: 52px; }
-  .card-content-wrap, .card-back-content { padding: 22px 18px 20px; }
-  .card-body { font-size: 16px; line-height: 1.68; }
-  .card-back-body { font-size: 14px; }
-  .card-meta { margin-bottom: 14px; }
-}
-@media (max-width: 480px) {
-  .main { padding: 40px 12px 64px; }
-  .nav-inner { padding: 0 12px; }
-  .page-header-title { font-size: 32px; letter-spacing: -1px; }
-  .card-content-wrap, .card-back-content { padding: 18px 14px 16px; }
-}
-</style>
+    /* ─── Responsive ─── */
+    @media (max-width: 600px) {
+      .hero { padding: 48px 20px 40px; }
+      .hero h1 { font-size: 36px; letter-spacing: -1.25px; }
+      .filter-bar { padding: 0 20px 32px; }
+      .posts-container { padding: 0 20px 60px; }
+      .post-item { padding: 20px; }
+    }
+  </style>
 </head>
 <body>
 
-<nav class="nav-bar">
-  <div class="nav-inner">
-    <div class="nav-brand">
-      <span class="nav-label">Flow</span>
-      <span class="nav-title">灵感流</span>
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+          <path d="M8 12h8M12 8v8"/>
+        </svg>
+      </div>
+      Flow
     </div>
-    <div class="nav-actions">
-      <a href="https://jeekeagle.github.io/theo-hub/" class="nav-btn">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-          <polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
-        Hub
-      </a>
-      <button class="nav-icon-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
-        <svg class="sun-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1" x2="12" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1" y1="12" x2="3" y2="12"/>
-          <line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-        <svg class="moon-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-      </button>
+    <div class="header-meta" id="post-count"></div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      灵感流
     </div>
-  </div>
-</nav>
+    <h1>想法发芽<br>意识沉淀</h1>
+    <p>碎片化的思考，在这里找到形状。点击任意一条，查看完整内容与背后的原始思路。</p>
+  </section>
 
-<main class="main">
+  <!-- Filter Bar -->
+  <div class="filter-bar" id="filter-bar"></div>
 
-  <div class="page-header">
-    <h1 class="page-header-title">捕捉每一个闪过的想法，<br>将它们变成可触摸的洞见</h1>
-    <div class="page-header-line"></div>
-  </div>
+  <!-- Posts -->
+  <main class="posts-container">
+    <div class="posts-grid" id="posts-grid"></div>
+  </main>
 
-  <div class="feed" id="feed"></div>
-  <div id="endMarker">— 已加载全部 —</div>
+  <!-- Footer -->
+  <footer>
+    <a href="https://github.com/jeekeagle/theo-hub/tree/main/flow" target="_blank" style="color:var(--text-muted)">theo-hub / flow</a>
+    &nbsp;·&nbsp;
+    灵感流 manifesto
+  </footer>
 
-</main>
+  <script>
+    /* ─── Data (injected by server) ─── */
+    const MANIFEST = {"version": "1.0", "updated": "2026-04-12T09:21:30+08:00", "posts": [{"id": "life-dimension-ozgh", "content": "人们总在问\"你的人生过得好不好\"，却从不追问评价的标准是什么。\n\n成功学给出的答案是钱、权、名。这没有错，但它是**乘法**——基数不行，其他维度都是零。\n\n真正完整的评价框架是三维的：**情绪健康和人际关系**是基数，是底层的 1。**学历杠杆、认知杠杆**是乘法，一切非线性增长都靠它。**心智重构**是第三维，它决定你用前两维做什么。", "originalContent": "我们总反思自己的人生过得怎么样，有时候也会问别人的人生过得怎么样。但是这句话所表达的真实含义，很少有人能够真正理解——评价人生的方法到底是什么？\n\n每个人有不一样的想法。就像成功的标准一样：很多人想挣钱，很多人想得权力，也有人想留下名声。\n\n对我来说，我想有一个三维度的评价方法：\n\n第一个维度叫基数。在这个维度上，就是我们的情绪健康和人际关系等等。\n\n第二个维度就是乘法或者加法。用时间换金钱的工作就是加法，加法的本质是线性的变化。然后乘法是你有学历杠杆，你有认知杠杆，一切带有杠杆属性的都是乘法。\n\n那么第三个维度，就是我们所说的心智重构。", "category": "翻转", "contentTags": ["基数", "杠杆"], "question": "你有没有一个评价自己人生的框架？它是什么？", "created": "2026-04-12T05:37:29+08:00"}, {"id": "tech-exploration-balance-bgdh", "content": "技术探索本身并非无用，但方向偏离时，就成了大量无用功的来源。**真正的问题不是探索本身，而是我们容易在一些无谓的点上做探索，而忘了权衡收益与投入的时间。** 把主要时间 focus 到我们应该主要做的事情上——我们看到的、感受到的、正在做的，这些决定了我们的人生。", "originalContent": "有时候我们在做技术探索的时候，大部分时间可能都做了无用功。这并不是说这些探索本身没有价值，而是因为我们想象的技术探索方向，跟真正技术实现的路线往往是不一致的。当方向走偏了，就被迫用大量的时间在做探索。我们并不是说这些探索是没有用的，而是说在使用新技术的时候，应该权衡一下收益跟投入时间的平衡性。不要在一些无谓的点上做无谓的探索，而是把主要的时间 focus 到我们应该主要做的事情上。\n\n总结来说，我们看到的什么，我们感受到的是什么，我们做的是什么——这些事情决定了我们的人生。", "category": "方法论", "contentTags": ["方向选择", "时间投入"], "question": "什么才是值得探索的方向？", "created": "2026-04-12T09:09:38+08:00"}, {"id": "stimulus-response-choice-aj9z", "content": "在刺激和回应之间，还有自由选择的空间。**这不是鸡汤，是心智重构的路径。** 面对同样的事情，不同的解释框架会让你看到完全不同的世界。积极心理学给的，就是这样一种框架。", "originalContent": "在刺激和回应之间还有自由选择的空间。这不是一句鸡汤，而是关于心智重构的描述。我们可以对自己进行心智重构，用积极心理学的视角来看待周围发生的这些事情。这是在刺激和回应之间那个空间里，我们拥有的选择权。", "category": "翻转", "contentTags": ["刺激回应", "心智重构"], "question": "你在刺激和回应之间，选择了什么？", "created": "2026-04-12T09:21:30+08:00"}, {"id": "agency-boundary-acceptance-fojp", "content": "主观能动性不是改变世界，是分清边界。**能改变的，迅速行动；不能改变的，拒绝抱怨。** 海边遭遇大风，我们立刻换了安排，没有半句怨言。这就是美好生活的密度。", "originalContent": "在海边遇到突发天气变化，帐篷支撑不住。我们没有抱怨，而是很快改变了安排。这就是主观能动性的体现——分清哪些能改变、哪些不能改变。对不能改变的不抱怨，对能改变的用新框架框住。美好生活的密度，来自这种适应能力。", "category": "心性", "contentTags": ["主观能动性", "适应力"], "question": "你最近在抱怨的那件事，真的不能改变吗？", "created": "2026-04-12T09:21:30+08:00"}, {"id": "attention-behavior-design-kfsj", "content": "商场没有钟表，永远明亮，让你感受不到时间流逝。刷手机没有停止点，书翻完了会停，但往下刷就停不下来。**这就是行为设计在偷走你的注意力。** 能识别它，是提高认知的第一步。", "originalContent": "商场里没有钟表，永远那么明亮，让人感受不到时间流失。刷手机没有停止点——书翻完了会停，但往下刷没有底。这就是行为设计在消耗消耗者注意力。能够发现这些成瘾设计背后的逻辑，是很重要的认知。", "category": "认知", "contentTags": ["行为设计", "注意力"], "question": "你每天有多少注意力是被设计好的？", "created": "2026-04-12T09:21:30+08:00"}, {"id": "presence-parenting-phone-cnyk", "content": "陪孩子在场，不是身体在场就够了。**你在哪里，心在哪里？** 她问「爸爸怎么没看到我」的时候，我在看手机。信息时代的育儿迷茫，就是这种身心分离。", "originalContent": "在游乐场陪女儿，她在问我为什么没看到她，我在玩手机没有回答她。要享受陪伴孩子的时光，而且要在场，不能身体在场而思绪在手机上。这是对信息时代育儿迷茫的一个反思。", "category": "育儿", "contentTags": ["在场", "信息时代"], "question": "你陪孩子的时候，心在哪里不在？", "created": "2026-04-12T09:21:30+08:00"}, {"id": "let-go-child-rules-9b3n", "content": "孩子设计规则，大人配合。**放手不是放任，是把主动权还给孩子。** 她想让我对就对、错就错，全程她在掌舵。这种感觉，才是真正的放手。", "originalContent": "滑梯游戏，女儿设计规则让我猜，全程都是她在设计。她想让我对就对，想让我错就错。这很有意思的育儿理念——让孩子设计规则，家长配合。这是在放手。", "category": "育儿", "contentTags": ["放手", "主动权"], "question": "你在什么事情上还在替孩子做决定？", "created": "2026-04-12T09:21:30+08:00"}, {"id": "books-ai-assumption-xmcs", "content": "在西西弗书店翻商业书，忽然想问：AI时代，书籍学习的假设还成立吗？**假设一：知识在书里；假设二：读书是最优路径。** 两个都在被动摇。", "originalContent": "在西西弗书店看到很多商业图书，思考AI时代我们对书藉的认知是否还适用。两层反思：还要不要通过书籍学习？还要不要通过阅读学习？打破了两个假设。", "category": "未来", "contentTags": ["AI时代", "书籍学习"], "question": "你最近一次从书籍里获得认知，是什么时候？", "created": "2026-04-12T09:21:30+08:00"}, {"id": "kos-cognition-kernel-ai5c", "content": "能容纳两种相反观点不代表认知高，那是黑白思维。**真正的高阶认知是：有稳定的Kernel，灵活的OS，千人千面的UI。** 不是容器大，是内核稳。", "originalContent": "菲茨杰拉德说能容纳两种相反观点说明认知高，但这是黑白思维。更高版本是Kernel内核（稳定）+OS操作系统（灵活）+UI界面（千人千面）。不是容纳两种观点，是有足够稳定的内核让OS和UI在外围自如运转。", "category": "翻转", "contentTags": ["KOS架构", "内核稳定"], "question": "你的Kernel够稳定吗？", "created": "2026-04-12T09:21:30+08:00"}, {"id": "book-types-commerce-art-w9c9", "content": "书店里两类书：一类名字为卖书而生（商品），一类名字从内容里长出来（作品）。**前者引导注意力，后者拓展认知边界。** 你在哪类书上花时间？", "originalContent": "书店里两类书的命名逻辑：一类是为了卖书起的吸人的名字（商品），一类是为时代写的从内容里长出来的名字（作品）。本质区别是引导注意力vs拓展认知边界。", "category": "认知", "contentTags": ["商品书", "作品书"], "question": "你最近读的那本书，是商品还是作品？", "created": "2026-04-12T09:21:30+08:00"}, {"id": "age-change-embodied-ymvg", "content": "看自己的照片感到陌生，膝盖盖疼三天才会休息。**让人接受变化的，从来不是道理，是具体感受。** 35岁开始学会正视自己，做正确的事，减少消耗。", "originalContent": "35岁的变化，看自己照片感到陌生，AI生成45岁模样，打球膝盖盖疼三天。正视自己要做正确的选择，减少消耗。", "category": "成长", "contentTags": ["35岁", "减少消耗"], "question": "你用什么具体感受来校准自己的选择？", "created": "2026-04-12T09:21:30+08:00"}, {"id": "ai-revolution-deep-sea-y2fq", "content": "一切看起来风平浪静，但AI革命在深海底层发生。**以前工业革命改产品，AI革命改基础设置。** 你站在海面，看不见暗流。感受不到变化，不等于没有变化。", "originalContent": "商场里看起来没变化但AI革命在深海底层发生。以前工业革命是产品级的，AI革命是基础设置级的，改变最底层的东西：算力、模型能力、生产力逻辑。感受不到变化是因为变化在深海，站在海面看不见暗流。", "category": "未来", "contentTags": ["AI革命", "基础设置"], "question": "你感受到了哪些AI带来的底层变化？", "created": "2026-04-12T09:21:30+08:00"}, {"id": "eating-balance-body-need-1cyv", "content": "身体需要的能量，比你以为的要少。**分清「需要」和「欲望」，是饮食哲学的核心。** 今天吃得少，下午反而更有活力——欲望满足和身体需求，是两件事。", "originalContent": "身体不需要那么多能量，分清需要和欲望，找到balance。吃得少、咖啡因，下午反而更有活力。身体需要的和欲望想要的不一样，找到这个平衡点，是饮食哲学的核心。", "category": "健康", "contentTags": ["饮食哲学", "需要与欲望"], "question": "你吃的那顿饭，是身体需要还是欲望驱动？", "created": "2026-04-12T09:21:30+08:00"}]};
 
-<script>
-(function() {
-  /* ── Theme ── */
-  const saved = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
-  const isDark = saved === 'dark' || (!saved && prefersDark);
-  if (isDark) {
-    document.documentElement.setAttribute('data-theme','dark');
-    document.querySelectorAll('.sun-icon').forEach(s => s.style.display = 'none');
-    document.querySelectorAll('.moon-icon').forEach(m => m.style.display = 'inline');
-  }
-  window.toggleTheme = function() {
-    const isD = document.documentElement.getAttribute('data-theme') === 'dark';
-    if (isD) {
-      document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('theme','light');
-      document.querySelectorAll('.sun-icon').forEach(s => s.style.display = 'inline');
-      document.querySelectorAll('.moon-icon').forEach(m => m.style.display = 'none');
-    } else {
-      document.documentElement.setAttribute('data-theme','dark');
-      localStorage.setItem('theme','dark');
-      document.querySelectorAll('.sun-icon').forEach(s => s.style.display = 'none');
-      document.querySelectorAll('.moon-icon').forEach(m => m.style.display = 'inline');
-    }
-  };
+    /* ─── State ─── */
+    let activeCategory = '全部';
 
-  /* ── Manifest & Posts ── */
-  const MANIFEST = 'manifest.json';
-  let allPosts = [];
-  let allLoaded = false;
-
-  async function loadManifest() {
-    const r = await fetch(MANIFEST + '?t=' + Date.now() + '&r=' + Math.random());
-    const data = await r.json();
-    return data.posts || [];
-  }
-
-  function formatDate(iso) {
-    const d = new Date(iso);
-    const pad = n => String(n).padStart(2, '0');
-    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
-  }
-
-  function escapeHtml(text) {
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-  }
-
-  function formatBody(text) {
-    // Step 1: HTML tags to placeholders (preserve them)
-    const placeholders = {};
-    let idx = 0;
-    text = text.replace(/<([^>]+)>/g, (m, tag) => {
-      const ph = `\u0000${idx}\u0000`;
-      placeholders[ph] = m;
-      idx++;
-      return ph;
-    });
-
-    // Step 2: Escape HTML
-    text = escapeHtml(text);
-
-    // Step 3: Markdown → HTML
-    text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
-    text = text.replace(/`(.+?)`/g, '<code>$1</code>');
-
-    // Step 4: Restore placeholders
-    for (const [ph, original] of Object.entries(placeholders)) {
-      text = text.replace(ph, original);
+    /* ─── Helpers ─── */
+    function formatDate(iso) {
+      const d = new Date(iso);
+      return `${d.getMonth()+1}月${d.getDate()}日`;
     }
 
-    // Step 5: Paragraphs
-    const paras = text.split(/\n\n+/);
-    if (paras.length > 1) {
-      return paras.map(p => '<p>' + p.replace(/\n/g, '<br>') + '</p>').join('');
+    function getCategories(posts) {
+      const cats = ['全部'];
+      const seen = new Set();
+      posts.forEach(p => {
+        if (p.category && !seen.has(p.category)) {
+          seen.add(p.category);
+          cats.push(p.category);
+        }
+      });
+      return cats;
     }
-    return text.replace(/\n/g, '<br>');
-  }
 
-  function flipCard(card, e) {
-    e.stopPropagation();
-    card.classList.toggle('flipped');
-  }
-
-  function renderCard(post, index) {
-    const card = document.createElement('div');
-    card.className = 'card';
-
-    const dateStr = formatDate(post.created);
-    const catTag = post.category
-      ? '<span class="tag tag-cat">' + escapeHtml(post.category) + '</span>'
-      : '';
-    const contentTags = (post.contentTags || []).slice(0, 3).map(t =>
-      '<span class="tag tag-content">' + escapeHtml(t) + '</span>'
-    ).join('');
-
-    // Card FRONT: refined content
-    const frontHTML =
-      '<div class="card-content-wrap">' +
-        '<div class="card-meta">' +
-          '<span class="card-date">' + dateStr + '</span>' +
-          '<div class="card-tags">' + catTag + contentTags + '</div>' +
-        '</div>' +
-        '<div class="card-body">' + formatBody(post.content) + '</div>' +
-        '<div class="card-flip-hint">' +
-          '<svg class="flip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-            '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>' +
-            '<polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>' +
-          '</svg>' +
-          'Tap to see original' +
-        '</div>' +
-      '</div>';
-
-    // Card BACK: original content
-    const originalContent = post.originalContent || post.content;
-    const backHTML =
-      '<div class="card-back-content">' +
-        '<div class="card-back-label">Original</div>' +
-        '<div class="card-back-body">' + formatBody(originalContent) + '</div>' +
-        (post.question
-          ? '<div class="card-back-question"><strong>Question:</strong> ' + escapeHtml(post.question) + '</div>'
-          : '') +
-      '</div>';
-
-    card.innerHTML =
-      '<div class="card-inner">' +
-        '<div class="card-front">' + frontHTML + '</div>' +
-        '<div class="card-back">' + backHTML + '</div>' +
-      '</div>';
-
-    card.addEventListener('click', e => flipCard(card, e));
-
-    setTimeout(() => {
-      card.classList.add('visible');
-      card.style.animation = 'cardEntrance 0.55s cubic-bezier(0.32,0.72,0,1) ' + (index * 70) + 'ms forwards';
-    }, 10);
-
-    return card;
-  }
-
-  function showSkeletons(n) {
-    const feed = document.getElementById('feed');
-    for (let i = 0; i < n; i++) {
-      const s = document.createElement('div');
-      s.className = 'skeleton-card';
-      s.innerHTML =
-        '<div class="skeleton-line short"></div>' +
-        '<div class="skeleton-line long"></div>' +
-        '<div class="skeleton-line med"></div>' +
-        '<div class="skeleton-line long"></div>' +
-        '<div class="skeleton-line long2"></div>';
-      feed.appendChild(s);
+    function countByCategory(posts, cat) {
+      if (cat === '全部') return posts.length;
+      return posts.filter(p => p.category === cat).length;
     }
-  }
 
-  function clearSkeletons() {
-    document.querySelectorAll('.skeleton-card').forEach(el => el.remove());
-  }
+    function buildTag(tag) {
+      return `<span class="tag">${tag}</span>`;
+    }
 
-  async function loadPosts() {
-    if (allLoaded) return;
-    allLoaded = true;
-    showSkeletons(3);
-    try {
-      allPosts = await loadManifest();
-      clearSkeletons();
-      if (allPosts.length === 0) {
-        const em = document.getElementById('endMarker');
-        em.style.display = 'block';
-        em.textContent = 'NO POSTS YET';
+    function buildPost(post) {
+      const tags = (post.contentTags || []).map(buildTag).join('');
+      return `
+        <article class="post-item" data-id="${post.id}">
+          <div class="post-item-category">${post.category || '未分类'}</div>
+          <div class="post-item-content">${post.content}</div>
+          <div class="post-item-footer">
+            <div class="post-item-tags">${tags}</div>
+            <div class="post-item-time">${formatDate(post.created)}</div>
+          </div>
+          ${post.question ? `<div class="post-item-question">${post.question}</div>` : ''}
+          <div class="post-detail">
+            <div class="post-detail-divider"></div>
+            <div class="post-detail-label">原始流畅版</div>
+            <div class="post-detail-text">${post.originalContent || '—'}</div>
+            ${post.question ? `
+            <div class="post-detail-label" style="margin-top:16px">问题</div>
+            <div class="post-detail-text">${post.question}</div>` : ''}
+          </div>
+        </article>
+      `;
+    }
+
+    function renderFilterBar(categories, posts) {
+      const bar = document.getElementById('filter-bar');
+      bar.innerHTML = `<span class="filter-label">分类</span>` +
+        categories.map(cat => `
+          <button class="filter-btn${cat === activeCategory ? ' active' : ''}" data-cat="${cat}">
+            ${cat}<span class="count-badge">${countByCategory(posts, cat)}</span>
+          </button>
+        `).join('');
+      bar.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeCategory = btn.dataset.cat;
+          renderFilterBar(categories, posts);
+          renderPosts(posts);
+        });
+      });
+    }
+
+    function renderPosts(posts) {
+      const grid = document.getElementById('posts-grid');
+      const filtered = activeCategory === '全部'
+        ? posts
+        : posts.filter(p => p.category === activeCategory);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="24" cy="24" r="20"/>
+                <path d="M16 24h16M24 16v16"/>
+              </svg>
+            </div>
+            <p>该分类下暂无内容</p>
+          </div>`;
         return;
       }
-      // Sort by created desc (newest first)
-      const sorted = allPosts.slice().reverse();
-      const feed = document.getElementById('feed');
-      sorted.forEach((post, i) => feed.appendChild(renderCard(post, i)));
-      document.getElementById('endMarker').style.display = 'block';
-    } catch(e) {
-      clearSkeletons();
-      console.error('Failed to load posts:', e);
-    }
-  }
 
-  window.allLoaded = false;
-  loadPosts();
-})();
-</script>
+      grid.innerHTML = filtered.map(buildPost).join('');
+
+      // Click to expand
+      grid.querySelectorAll('.post-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          // Don't expand if clicking a link
+          if (e.target.tagName === 'A') return;
+          item.classList.toggle('expanded');
+        });
+      });
+    }
+
+    /* ─── Boot ─── */
+    const posts = MANIFEST.posts || [];
+    const categories = getCategories(posts);
+
+    document.getElementById('post-count').textContent = `${posts.length} 条灵感`;
+
+    renderFilterBar(categories, posts);
+    renderPosts(posts);
+  </script>
+
 </body>
 </html>
