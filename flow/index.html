@@ -7,7 +7,7 @@
 <!-- v3.0.0 — Apple Design -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================================
    Flow v3.0.0 — Apple Design System
@@ -108,13 +108,13 @@ body {
 .nav-brand { display: flex; align-items: center; gap: 10px; }
 .nav-label {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 11px; color: var(--text-3); letter-spacing: 0.02em;
+  font-size: 22px; color: var(--text-3); letter-spacing: 0.02em;
   font-weight: 400;
 }
 .nav-title {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-  font-size: 17px; font-weight: 600;
-  color: var(--text); letter-spacing: -0.3px;
+  font-size: 34px; font-weight: 600;
+  color: var(--text); letter-spacing: -0.5px;
 }
 .nav-actions { display: flex; align-items: center; gap: 6px; }
 .nav-btn {
@@ -142,31 +142,21 @@ body {
 
 /* ── Hero Header ── */
 .page-header {
-  text-align: center; margin-bottom: 72px; padding-top: 24px;
-}
-.page-header-eyebrow {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 11px; color: var(--accent); letter-spacing: 0.08em;
-  text-transform: uppercase; font-weight: 500; margin-bottom: 16px;
-  opacity: 0; animation: fadeSlideUp 0.65s var(--ease-out) 0.1s forwards;
+  text-align: center; margin-bottom: 80px; padding-top: 40px;
 }
 .page-header-title {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-  font-size: 56px; font-weight: 600;
-  color: var(--text); letter-spacing: -2px; line-height: 1.05; margin-bottom: 16px;
-  opacity: 0; animation: fadeSlideUp 0.7s var(--ease-out) 0.2s forwards;
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-size: 42px; font-weight: 500;
+  font-style: italic;
+  color: var(--text); letter-spacing: -0.5px; line-height: 1.35;
+  max-width: 640px; margin: 0 auto;
+  opacity: 0; animation: fadeSlideUp 0.9s var(--ease-out) 0.15s forwards;
 }
-[data-theme="dark"] .page-header-title { font-weight: 500; letter-spacing: -1.5px; }
-.page-header-sub {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 17px; color: var(--text-2); line-height: 1.55;
-  max-width: 380px; margin: 0 auto; font-weight: 400;
-  opacity: 0; animation: fadeSlideUp 0.7s var(--ease-out) 0.35s forwards;
-}
+[data-theme="dark"] .page-header-title { font-weight: 400; }
 .page-header-line {
   width: 36px; height: 1.5px; background: var(--accent);
-  margin: 32px auto 0; border-radius: 99px;
-  opacity: 0; animation: fadeSlideUp 0.6s var(--ease-out) 0.5s forwards;
+  margin: 40px auto 0; border-radius: 99px;
+  opacity: 0; animation: fadeSlideUp 0.7s var(--ease-out) 0.5s forwards;
 }
 
 /* ── Feed ── */
@@ -333,7 +323,6 @@ body {
   .main { padding: 56px 16px 80px; }
   .nav-inner { padding: 0 16px; }
   .page-header-title { font-size: 40px; letter-spacing: -1.5px; }
-  .page-header-sub { font-size: 15px; }
   .page-header { margin-bottom: 52px; }
   .card-content-wrap, .card-back-content { padding: 22px 18px 20px; }
   .card-body { font-size: 16px; line-height: 1.68; }
@@ -387,9 +376,7 @@ body {
 <main class="main">
 
   <div class="page-header">
-    <div class="page-header-eyebrow">Inspiration in Motion</div>
-    <h1 class="page-header-title">灵感流</h1>
-    <p class="page-header-sub">捕捉每一个闪过的想法，将它们变成可触摸的洞见</p>
+    <h1 class="page-header-title">捕捉每一个闪过的想法，<br>将它们变成可触摸的洞见</h1>
     <div class="page-header-line"></div>
   </div>
 
