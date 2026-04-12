@@ -171,16 +171,16 @@ header h1 span { color: var(--text-muted); }
   z-index: 1;
 }
 
-/* ─── Card (3D flip) ─── */
+/* ─── Card (expand to show original) ─── */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 4px;
   margin-bottom: 16px;
   box-shadow: var(--shadow);
-  perspective: 1200px;
   cursor: pointer;
   transition: border-color 0.2s, box-shadow 0.2s;
+  overflow: hidden;
 }
 /* left accent bar */
 .card::before {
@@ -198,39 +198,13 @@ header h1 span { color: var(--text-muted); }
 }
 .card:hover::before { opacity: 0.5; }
 
-/* flip card inner */
+/* card inner = front content */
 .card-inner {
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.55s cubic-bezier(0.32, 0.72, 0, 1);
+  padding: 28px 32px;
 }
-.card.flipped .card-inner { transform: rotateY(180deg); }
 
-/* front face */
-.card-front {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  background: var(--bg-card);
-  border-radius: 4px;
-  padding: 28px 32px;
-  position: relative;
-  z-index: 1;
-}
-/* back face */
-.card-back {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  background: var(--bg-card-h);
-  border: 1px solid var(--border-h);
-  border-radius: 4px;
-  padding: 28px 32px;
-  transform: rotateY(180deg);
-  min-height: 100%;
-}
-/* flip hint */
-.card-flip-hint {
+/* expand hint */
+.card-expand-hint {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -242,12 +216,28 @@ header h1 span { color: var(--text-muted); }
   color: var(--text-muted);
   letter-spacing: 0.5px;
 }
-.flip-icon {
+.expand-icon {
   opacity: 0.4;
   transition: opacity 0.2s, transform 0.3s;
   flex-shrink: 0;
 }
-.card:hover .flip-icon { opacity: 0.9; transform: rotateY(20deg); }
+.card:hover .expand-icon { opacity: 0.9; }
+.card.expanded .expand-icon { transform: rotate(180deg); }
+
+/* back content - hidden by default */
+.card-back {
+  display: none;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+  padding-top: 20px;
+}
+.card.expanded {
+  box-shadow: var(--shadow-h);
+}
+.card.expanded .card-back {
+  display: block;
+}
+
 
 /* Card header: date left, tags right */
 .card-header {
@@ -476,42 +466,46 @@ function renderCard(post) {
   ).join('');
 
   const originalContent = post.originalContent || post.content;
+
   const frontHTML = `
-    <div class="card-header">
-      <span class="card-date">${formatDate(post.created)}</span>
-      <div class="card-tags">
-        ${catTags}
-        ${contentTags}
+    <div class="card-inner">
+      <div class="card-header">
+        <span class="card-date">${formatDate(post.created)}</span>
+        <div class="card-tags">
+          ${catTags}
+          ${contentTags}
+        </div>
       </div>
-    </div>
-    <div class="card-body">${formatBody(post.content)}</div>
-    <div class="card-flip-hint">
-      <svg class="flip-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-      Tap to see original
+      <div class="card-body">${formatBody(post.content)}</div>
+      <div class="card-expand-hint">
+        <svg class="expand-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        Tap to see original
+      </div>
+      <div class="card-back">
+        <div class="card-header">
+          <span class="card-date">${formatDate(post.created)}</span>
+          <div class="card-tags">
+            <span class="tag-cat">Original</span>
+          </div>
+        </div>
+        <div class="card-body">${formatBody(originalContent)}</div>
+        ${post.question ? `
+        <div class="card-question">
+          <div class="question-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <span class="question-text">${formatBody(post.question)}</span>
+        </div>` : ''}
+      </div>
     </div>`;
 
-  const backHTML = `
-    <div class="card-header">
-      <span class="card-date">${formatDate(post.created)}</span>
-      <div class="card-tags">
-        <span class="tag-cat">Original</span>
-      </div>
-    </div>
-    <div class="card-body">${formatBody(originalContent)}</div>` +
-    (post.question ? `
-    <div class="card-question">
-      <div class="question-mark">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      </div>
-      <span class="question-text">${formatBody(post.question)}</span>
-    </div>` : '');
-
-  card.innerHTML = '<div class="card-inner"><div class="card-front">' + frontHTML + '</div><div class="card-back">' + backHTML + '</div></div>';
+  card.innerHTML = frontHTML;
   card.addEventListener('click', function(e) {
     e.stopPropagation();
-    card.classList.toggle('flipped');
+    card.classList.toggle('expanded');
   });
   return card;
+}
 }
 
 function showSkeletons(n) {
