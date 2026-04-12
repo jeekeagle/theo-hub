@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ─── Design: Raycast-inspired automation dashboard ─── */
+/* ── Design: Raycast-inspired automation dashboard ── */
 :root {
   --bg: #07080a;
   --bg-card: #101111;
@@ -94,7 +94,7 @@ body::after {
   z-index: 1;
 }
 
-/* ─── Header ─── */
+/* ── Header ── */
 header {
   padding: 48px 0 40px;
   border-bottom: 1px solid var(--border);
@@ -106,7 +106,6 @@ header {
   justify-content: space-between;
   gap: 16px;
 }
-.header-left {}
 .header-label {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -203,7 +202,7 @@ header h1 span { color: var(--accent); }
   background: var(--accent2-glow);
 }
 
-/* ─── Section label ─── */
+/* ── Section label ── */
 .section-label {
   font-family: var(--font-mono);
   font-size: 10px;
@@ -214,7 +213,7 @@ header h1 span { color: var(--accent); }
   font-weight: 500;
 }
 
-/* ─── Engine cards grid ─── */
+/* ── Engine cards grid ── */
 .engine-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -232,8 +231,7 @@ header h1 span { color: var(--accent); }
   position: relative;
   overflow: hidden;
   transition: border-color 0.2s, background 0.2s, transform 0.15s;
-  cursor: default;
-  /* Raycast-style double-ring shadow */
+  cursor: pointer;
   box-shadow:
     rgb(27,28,30) 0 0 0 1px,
     rgba(0,0,0,0.25) 0 2px 6px 0,
@@ -321,8 +319,78 @@ header h1 span { color: var(--accent); }
   line-height: 1.7;
   letter-spacing: 0.1px;
 }
+.card-click-hint {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 12px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.engine-card:hover .card-click-hint { opacity: 1; }
 
-/* ─── Flow section ─── */
+/* ── Modal overlay ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal-overlay.open {
+  display: flex;
+}
+.modal-box {
+  background: #f5f3ed;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  border-radius: 16px;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+}
+.modal-close {
+  position: sticky;
+  top: 16px;
+  float: right;
+  margin: 16px 16px 0 0;
+  background: rgba(0,0,0,0.08);
+  border: none;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  z-index: 10;
+}
+.modal-close:hover { background: rgba(0,0,0,0.15); }
+.modal-content {
+  padding: 0;
+}
+.modal-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #888;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+/* ── Flow section ── */
 .flow-section {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -364,7 +432,7 @@ header h1 span { color: var(--accent); }
 .flow-line .green { color: var(--green); }
 .flow-line .dim { color: var(--text-muted); }
 
-/* ─── Footer ─── */
+/* ── Footer ── */
 footer {
   margin-top: 56px;
   padding-top: 20px;
@@ -407,33 +475,84 @@ footer {
 
 <div class="section-label">// ACTIVE ENGINES</div>
 <div class="engine-grid">
-  <div class="engine-card">
+
+  <div class="engine-card" onclick="openCard('auto-01-daily-journal')">
+    <div class="card-meta">
+      <span class="card-badge">CRON</span>
+      <span class="card-status"><span class="dot" style="animation-delay:0s"></span>active</span>
+    </div>
+    <div class="card-title">Daily Journal</div>
+    <div class="card-schedule">23:30 · 每日</div>
+    <div class="card-desc">读取 my-logs 和 hermes-logs，自动生成结构化日记，保存到 my-dairy/。</div>
+    <div class="card-click-hint">Click → 详情</div>
+  </div>
+
+  <div class="engine-card" onclick="openCard('auto-02-night-routine')">
     <div class="card-meta">
       <span class="card-badge">CRON</span>
       <span class="card-status"><span class="dot" style="animation-delay:0s"></span>active</span>
     </div>
     <div class="card-title">Night Routine</div>
     <div class="card-schedule">01:30 · 每日</div>
-    <div class="card-desc">整理 note-flow/ 当天内容，让胚芽想法往前走一步，生成写作主题，推送发布到 Seed。</div>
+    <div class="card-desc">三阶段流水线：整理笔记 → 想法发芽 → 内容创作，直接发布到 Night。</div>
+    <div class="card-click-hint">Click → 详情</div>
   </div>
-  <div class="engine-card">
+
+  <div class="engine-card" onclick="openCard('auto-03-diet-reminder')">
     <div class="card-meta">
       <span class="card-badge">SCRIPT</span>
       <span class="card-status"><span class="dot" style="animation-delay:1s"></span>active</span>
     </div>
-    <div class="card-title">Health Script</div>
-    <div class="card-schedule">每小时</div>
+    <div class="card-title">Diet Reminder</div>
+    <div class="card-schedule">11:30 · 每日</div>
     <div class="card-desc">健康提醒。久坐提醒、喝水提醒、用眼提醒。飞书通知，零成本通知链路。</div>
+    <div class="card-click-hint">Click → 详情</div>
   </div>
-  <div class="engine-card">
+
+  <div class="engine-card" onclick="openCard('auto-04-ai-builders-digest')">
     <div class="card-meta">
-      <span class="card-badge">CHECK</span>
+      <span class="card-badge">CRON</span>
       <span class="card-status"><span class="dot" style="animation-delay:2s"></span>active</span>
     </div>
-    <div class="card-title">Check Obsidian</div>
-    <div class="card-schedule">每周</div>
-    <div class="card-desc">检查笔记库状态，更新链接和引用，清理孤儿页面，保持笔记系统健康度。</div>
+    <div class="card-title">AI Builders Digest</div>
+    <div class="card-schedule">00:40 · 每日</div>
+    <div class="card-desc">追踪 AI 顶级 builders 的 X 推文、播客、官方博客，LLM remix 生成中文文摘。</div>
+    <div class="card-click-hint">Click → 详情</div>
   </div>
+
+  <div class="engine-card" onclick="openCard('auto-05-inbox-poller')">
+    <div class="card-meta">
+      <span class="card-badge">CHECK</span>
+      <span class="card-status"><span class="dot" style="animation-delay:3s"></span>active</span>
+    </div>
+    <div class="card-title">Inbox Poller</div>
+    <div class="card-schedule">00/30 分 · 每30分钟</div>
+    <div class="card-desc">检查笔记库状态，更新链接和引用，清理孤儿页面，保持笔记系统健康度。</div>
+    <div class="card-click-hint">Click → 详情</div>
+  </div>
+
+  <div class="engine-card" onclick="openCard('auto-06-task-queue-lunch')">
+    <div class="card-meta">
+      <span class="card-badge">CRON</span>
+      <span class="card-status"><span class="dot" style="animation-delay:4s"></span>active</span>
+    </div>
+    <div class="card-title">Task Queue · Lunch</div>
+    <div class="card-schedule">12:00 · 每日</div>
+    <div class="card-desc">午餐窗口消费低优先级 pending 任务，探索性任务自动执行不占用注意力。</div>
+    <div class="card-click-hint">Click → 详情</div>
+  </div>
+
+  <div class="engine-card" onclick="openCard('auto-07-task-queue-dinner')">
+    <div class="card-meta">
+      <span class="card-badge">CRON</span>
+      <span class="card-status"><span class="dot" style="animation-delay:5s"></span>active</span>
+    </div>
+    <div class="card-title">Task Queue · Dinner</div>
+    <div class="card-schedule">19:30 · 每日</div>
+    <div class="card-desc">晚餐窗口消费低优先级 pending 任务，傍晚空闲期自动化执行。</div>
+    <div class="card-click-hint">Click → 详情</div>
+  </div>
+
 </div>
 
 <div class="section-label" style="margin-top:40px">// DATA FLOW</div>
@@ -456,12 +575,23 @@ footer {
 </div>
 
 <footer>
-  <span>auto v1.1 · 2026-04-10</span>
+  <span>auto v1.2 · 2026-04-12</span>
   <span>Hermes · Zero Manual Intervention</span>
 </footer>
 </div>
 
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()" title="关闭">✕</button>
+    <div class="modal-content" id="modalContent">
+      <div class="modal-loading">Loading...</div>
+    </div>
+  </div>
+</div>
+
 <script>
+// ── Theme ──
 (function(){
   var saved = localStorage.getItem('theme');
   var prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
@@ -489,6 +619,55 @@ footer {
     }
   };
 })();
+
+// ── Card modal ──
+var currentCardId = null;
+
+function openCard(id) {
+  currentCardId = id;
+  var overlay = document.getElementById('modalOverlay');
+  var content = document.getElementById('modalContent');
+  overlay.classList.add('open');
+  content.innerHTML = '<div class="modal-loading">Loading...</div>';
+  document.body.style.overflow = 'hidden';
+
+  var base = 'https://raw.githubusercontent.com/jeekeagle/theo-hub/main/auto/cards/';
+  var url = base + id + '.html?t=' + Date.now();
+
+  fetch(url)
+    .then(function(r) {
+      if (!r.ok) throw new Error('not found');
+      return r.text();
+    })
+    .then(function(html) {
+      content.innerHTML = html;
+      // make links open in new tab
+      content.querySelectorAll('a').forEach(function(a) {
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener noreferrer');
+      });
+    })
+    .catch(function() {
+      content.innerHTML = '<div style="padding:48px;text-align:center;color:#888;font-family:monospace;font-size:14px;">Card not found.<br><br>Run: <code>theo-auto push-cards</code> to deploy cards.</div>';
+    });
+}
+
+function closeModal() {
+  var overlay = document.getElementById('modalOverlay');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  currentCardId = null;
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) {
+    closeModal();
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
 </script>
 </body>
 </html>
