@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest — Auto Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #f5f3ed;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 60px 20px;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.card {
+  width: 860px;
+  max-width: 100%;
+  background: #ffffff;
+  padding: 52px 56px 48px;
+  box-sizing: border-box;
+  position: relative;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ff6363, transparent);
+}
+.eyebrow {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #aaa;
+  margin-bottom: 12px;
+}
+.main-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 62px;
+  font-weight: 900;
+  line-height: 1.05;
+  color: #111;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+.subtitle {
+  font-size: 14px;
+  color: #888;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+.meta-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 24px 0 20px;
+}
+.meta-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #ff6363;
+  background: #ff636318;
+  border: 1px solid #ff636330;
+  padding: 3px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+.accent-bar {
+  height: 2px;
+  background: linear-gradient(90deg, #ff6363, transparent 60%);
+  margin: 0 0 32px;
+  width: 160px;
+}
+.content-section {
+  margin-bottom: 26px;
+}
+.section-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ff6363;
+  margin-bottom: 10px;
+  border-left: 3px solid #ff6363;
+  padding-left: 10px;
+}
+.section-body, .section-body p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #222;
+}
+.section-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0;
+}
+.section-body ul li {
+  padding-left: 16px;
+  position: relative;
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: #333;
+}
+.section-body ul li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: #ff6363;
+  font-weight: 700;
+}
+.insight-box {
+  background: #f0f4ff;
+  border-left: 4px solid #ff6363;
+  padding: 18px 22px;
+  margin: 28px 0 0;
+}
+.insight-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ff6363;
+  margin-bottom: 8px;
+}
+.insight-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #333;
+}
+.link-bar {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.link-item {
+  font-size: 13px;
+  color: #666;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.link-item:hover { color: #ff6363; }
+.link-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #bbb;
+}
+.job-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #bbb;
+  margin-top: 18px;
+  letter-spacing: 0.05em;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="eyebrow">Auto Engine · Task Card</div>
+  <h1 class="main-title">AI Builders Digest</h1>
+  <p class="subtitle">AI Builders 文摘 &nbsp;·&nbsp; CRON</p>
+  <div class="meta-row">
+    <span class="meta-tag">⏰ 00:40 · 每日</span>
+    <span class="meta-tag">📦 local</span>
+    
+  </div>
+  <div class="accent-bar"></div>
+
+  <div class="content-section">
+    <div class="section-label">What — 核心定义</div>
+    <div class="section-body"><p>追踪 AI 领域顶级 builders 的 X 推文、播客、官方博客，LLM remix 后生成中文文摘，保存到 note-input/1-Ai-builder/。</p></div>
+  </div>
+
+  <div class="content-section">
+    <div class="section-label">How — 运行机制</div>
+    <div class="section-body">
+      <ul>
+        <li>内容来源：X/Twitter 顶级 AI founders & researchers、Latent Space/No Priors 等播客、OpenAI/Anthropic 官方博客</li><li>执行 node prepare-digest.js → LLM remix → 保存到 theo-note/note-input/1-Ai-builder/{date}.md</li><li>理念：'Follow builders with original opinions, not influencers who regurgitate'</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <div class="section-label">Why — 核心洞察</div>
+    <div class="section-body"><p>适合想紧跟 AI 前沿但信息过载的人。不适合需要深度技术论文解读的场景。核心价值是把碎片信息重组为有结构的日更简报。</p></div>
+  </div>
+
+  <div class="insight-box">
+    <div class="insight-label">Insight</div>
+    <div class="insight-text">追踪 builder 而非媒体，是在信息差战争中最聪明的策略——源头发推，比转发快三个数量级。</div>
+  </div>
+
+  <div class="link-bar">
+    <a href="#" class="link-item"><span class="link-label">Config</span><span>~/.follow-builders/config.yaml</span></a><a href="#" class="link-item"><span class="link-label">Note</span><span>theo-note/note-input/1-Ai-builder/</span></a>
+  </div>
+
+  <div class="job-id">Job ID: 59f05a47c6ea</div>
+</div>
+</body>
+</html>
