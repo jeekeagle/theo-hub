@@ -4,398 +4,324 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flow — 灵感流</title>
-<!-- v2.0.1 -->
+<!-- v2.1.0 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════
-   Apple Design System — Flow
-   ═══════════════════════════════════════════ */
+/* ==========================================================================
+   Flow v2.1.0 — Warm Editorial Magazine
+   ========================================================================== */
 
 :root {
-  /* Light — warm parchment */
-  --bg:          #faf9f7;
-  --surface:     #ffffff;
-  --surface-2:   #f5f4f2;
-  --border:      rgba(0,0,0,0.07);
-  --border-2:    rgba(0,0,0,0.12);
-  --text:        #1d1d1f;
-  --text-2:      #6e6e73;
-  --text-3:      #aeaeb2;
-  --accent:      #0071e3;
-  --accent-bg:   rgba(0,113,227,0.06);
-  --tag-cat-txt:  #5e5ce6;
-  --tag-cat-bg:   rgba(94,92,230,0.08);
-  --tag-cat-bd:   rgba(94,92,230,0.2);
-  --tag-cnt-txt:  #bf5a00;
-  --tag-cnt-bg:   rgba(191,90,0,0.07);
-  --tag-cnt-bd:   rgba(191,90,0,0.18);
-  --shadow-sm:   0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
-  --shadow-md:   0 4px 16px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03);
-  --shadow-lg:   0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
-  --radius-sm:   10px;
-  --radius-md:   14px;
-  --radius-lg:   20px;
-  --font-ui:     'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  --font-mono:   'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
-  --ease:        cubic-bezier(0.25, 0.1, 0.25, 1);
-  --ease-out:    cubic-bezier(0, 0, 0.2, 1);
+  --bg:           #f7f4ef;
+  --surface:      #ffffff;
+  --surface-2:    #f2efe9;
+  --border:       rgba(30,25,18,0.08);
+  --border-2:     rgba(30,25,18,0.15);
+  --text:         #1e1912;
+  --text-2:       #6b6256;
+  --text-3:       #a89f94;
+  --accent:        #b85c2a;
+  --accent-bg:     rgba(184,92,42,0.07);
+  --tag-cat-txt:  #b85c2a;
+  --tag-cat-bg:   rgba(184,92,42,0.08);
+  --tag-cat-bd:   rgba(184,92,42,0.22);
+  --tag-cnt-txt:  #8a5a00;
+  --tag-cnt-bg:   rgba(138,90,0,0.07);
+  --tag-cnt-bd:   rgba(138,90,0,0.18);
+  --shadow-sm:    0 1px 3px rgba(30,25,18,0.04), 0 1px 2px rgba(30,25,18,0.03);
+  --shadow-md:    0 4px 16px rgba(30,25,18,0.07), 0 2px 4px rgba(30,25,18,0.04);
+  --shadow-lg:    0 12px 40px rgba(30,25,18,0.10), 0 4px 12px rgba(30,25,18,0.05);
+  --shadow-card:  0 2px 8px rgba(30,25,18,0.05), 0 8px 24px rgba(30,25,18,0.06);
+  --radius-sm:    8px;
+  --radius-md:    14px;
+  --radius-lg:    20px;
+  --font-serif:   'Playfair Display', 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-body:    'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+  --ease:         cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="dark"] {
-  --bg:          #0d0d0f;
-  --surface:     #161618;
-  --surface-2:   #1c1c1f;
-  --border:      rgba(255,255,255,0.07);
-  --border-2:    rgba(255,255,255,0.14);
-  --text:        #f5f5f7;
-  --text-2:      #a1a1a6;
-  --text-3:      #5a5a5e;
-  --accent:      #0a84ff;
-  --accent-bg:   rgba(10,132,255,0.1);
-  --tag-cat-txt:  #7d7aff;
-  --tag-cat-bg:   rgba(125,122,255,0.1);
-  --tag-cat-bd:   rgba(125,122,255,0.25);
-  --tag-cnt-txt:  #ff9f0a;
-  --tag-cnt-bg:   rgba(255,159,10,0.1);
-  --tag-cnt-bd:   rgba(255,159,10,0.25);
-  --shadow-sm:   0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
-  --shadow-md:   0 4px 16px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.25);
-  --shadow-lg:   0 12px 40px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3);
+  --bg:           #141210;
+  --surface:      #1c1916;
+  --surface-2:    #232019;
+  --border:       rgba(255,250,242,0.07);
+  --border-2:     rgba(255,250,242,0.14);
+  --text:         #f5f0e8;
+  --text-2:       #a09890;
+  --text-3:       #5a544c;
+  --accent:        #d4703a;
+  --accent-bg:     rgba(212,112,58,0.10);
+  --tag-cat-txt:  #d4703a;
+  --tag-cat-bg:   rgba(212,112,58,0.10);
+  --tag-cat-bd:   rgba(212,112,58,0.28);
+  --tag-cnt-txt:  #e8a030;
+  --tag-cnt-bg:   rgba(232,160,48,0.10);
+  --tag-cnt-bd:   rgba(232,160,48,0.25);
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md:    0 4px 16px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.25);
+  --shadow-lg:    0 12px 40px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.35);
+  --shadow-card:  0 2px 8px rgba(0,0,0,0.35), 0 8px 24px rgba(0,0,0,0.30);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html {
-  font-size: 16px;
+  font-size: 17px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
 body {
-  font-family: var(--font-ui);
+  font-family: var(--font-body);
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+  transition: background 0.4s var(--ease), color 0.4s var(--ease);
+  overflow-x: hidden;
 }
 
-/* ─── Navigation Bar ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+
+/* ── Navigation ── */
 .nav-bar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(250,249,247,0.8);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(247,244,239,0.82);
+  backdrop-filter: saturate(180%) blur(24px) brightness(1.02);
+  -webkit-backdrop-filter: saturate(180%) blur(24px) brightness(1.02);
   border-bottom: 1px solid var(--border);
-  transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
+  transition: background 0.4s var(--ease), border-color 0.4s var(--ease);
 }
-[data-theme="dark"] .nav-bar {
-  background: rgba(13,13,15,0.8);
-}
+[data-theme="dark"] .nav-bar { background: rgba(20,18,16,0.85); }
 .nav-inner {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 0 24px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  max-width: 1020px; margin: 0 auto; padding: 0 32px;
+  height: 56px; display: flex; align-items: center; justify-content: space-between;
 }
-.nav-brand {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
+.nav-brand { display: flex; align-items: baseline; gap: 12px; }
 .nav-label {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-3);
-  letter-spacing: 0.5px;
+  font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+  letter-spacing: 1.5px; text-transform: uppercase;
 }
 .nav-title {
-  font-family: var(--font-ui);
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: -0.3px;
+  font-family: var(--font-serif); font-size: 19px; font-weight: 600;
+  color: var(--text); letter-spacing: -0.2px; font-style: italic;
 }
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.nav-actions { display: flex; align-items: center; gap: 8px; }
 .nav-btn {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-2);
-  background: rgba(0,0,0,0.04);
-  border: none;
-  border-radius: 8px;
-  padding: 5px 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  transition: background 0.15s var(--ease), color 0.15s var(--ease);
-  text-decoration: none;
+  font-family: var(--font-body); font-size: 13px; font-weight: 400;
+  color: var(--text-2); background: rgba(30,25,18,0.04);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 6px 14px; cursor: pointer; display: flex; align-items: center;
+  gap: 6px; transition: all 0.2s var(--ease); text-decoration: none;
 }
-[data-theme="dark"] .nav-btn {
-  background: rgba(255,255,255,0.06);
-  color: var(--text-2);
-}
-.nav-btn:hover {
-  background: rgba(0,0,0,0.08);
-  color: var(--text);
-}
-[data-theme="dark"] .nav-btn:hover {
-  background: rgba(255,255,255,0.1);
-}
+[data-theme="dark"] .nav-btn { background: rgba(255,250,242,0.05); border-color: var(--border); color: var(--text-2); }
+.nav-btn:hover { background: rgba(30,25,18,0.08); color: var(--text); border-color: var(--border-2); }
+[data-theme="dark"] .nav-btn:hover { background: rgba(255,250,242,0.09); color: var(--text); }
+
 .nav-icon-btn {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: var(--text-2);
-  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-sm); background: rgba(30,25,18,0.04);
+  border: 1px solid var(--border); cursor: pointer; color: var(--text-2);
+  transition: all 0.2s var(--ease);
 }
-.nav-icon-btn:hover {
-  background: rgba(0,0,0,0.06);
-  color: var(--text);
-}
-[data-theme="dark"] .nav-icon-btn:hover {
-  background: rgba(255,255,255,0.08);
-}
+[data-theme="dark"] .nav-icon-btn { background: rgba(255,250,242,0.05); border-color: var(--border); color: var(--text-2); }
+.nav-icon-btn:hover { background: rgba(30,25,18,0.09); color: var(--text); border-color: var(--border-2); }
+[data-theme="dark"] .nav-icon-btn:hover { background: rgba(255,250,242,0.09); color: var(--text); }
 
-/* ─── Main Content ─── */
-.main {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 48px 24px 96px;
-}
+/* ── Main ── */
+.main { max-width: 1020px; margin: 0 auto; padding: 64px 32px 120px; }
 
-/* ─── Hero Header ─── */
-.page-header {
-  text-align: center;
-  margin-bottom: 56px;
-  padding-top: 24px;
-}
+/* ── Hero Header ── */
+.page-header { text-align: center; margin-bottom: 72px; padding-top: 16px; }
 .page-header-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-3);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
+  font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+  letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px;
+  opacity: 0; animation: fadeSlideUp 0.6s var(--ease-out) 0.1s forwards;
 }
 .page-header-title {
-  font-family: var(--font-ui);
-  font-size: 40px;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: -1px;
-  line-height: 1.1;
-  margin-bottom: 12px;
+  font-family: var(--font-serif); font-size: 56px; font-weight: 700;
+  color: var(--text); letter-spacing: -2px; line-height: 1.05; margin-bottom: 16px;
+  opacity: 0; animation: fadeSlideUp 0.7s var(--ease-out) 0.2s forwards;
 }
-[data-theme="dark"] .page-header-title {
-  font-weight: 500;
-}
+[data-theme="dark"] .page-header-title { font-weight: 600; letter-spacing: -1.5px; }
 .page-header-sub {
-  font-family: var(--font-ui);
-  font-size: 15px;
-  color: var(--text-2);
-  line-height: 1.5;
-  max-width: 360px;
-  margin: 0 auto;
+  font-family: var(--font-body); font-size: 17px; color: var(--text-2);
+  line-height: 1.6; max-width: 420px; margin: 0 auto;
+  font-weight: 300; font-style: italic;
+  opacity: 0; animation: fadeSlideUp 0.7s var(--ease-out) 0.35s forwards;
+}
+.page-header-line {
+  width: 40px; height: 1px; background: var(--border-2);
+  margin: 28px auto 0;
+  opacity: 0; animation: fadeSlideUp 0.6s var(--ease-out) 0.5s forwards;
 }
 
-/* ─── Card ─── */
-.feed {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+/* ── Feed ── */
+.feed { display: flex; flex-direction: column; gap: 20px; }
 
+/* ── Card ── */
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition:
-    transform 0.25s var(--ease-out),
-    box-shadow 0.25s var(--ease-out),
-    border-color 0.2s var(--ease);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+  cursor: pointer; perspective: 1200px;
+  opacity: 0; transform: translateY(24px);
+  transition: box-shadow 0.35s var(--ease-out), border-color 0.25s var(--ease);
 }
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--border-2);
+.card.visible {
+  opacity: 1; transform: translateY(0);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out),
+              box-shadow 0.35s var(--ease-out), border-color 0.25s var(--ease);
 }
-.card.flipped .card-front { display: none; }
-.card:not(.flipped) .card-back { display: none; }
+.card:hover { box-shadow: var(--shadow-lg); border-color: var(--border-2); }
+.card.flipped .card-inner { transform: rotateY(180deg); }
 
-/* Card Front */
-.card-front {
-  padding: 28px 32px 24px;
+.card-inner {
+  position: relative; width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s var(--ease-out);
+  border-radius: var(--radius-lg);
 }
+.card-front, .card-back {
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.card-front { background: var(--surface); }
+.card-back {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--surface-2); transform: rotateY(180deg);
+}
+
+.card-content-wrap { padding: 36px 40px 32px; }
 .card-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
-  gap: 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; gap: 12px;
 }
-.card-date {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-3);
-  letter-spacing: 0.3px;
-}
-.card-tags {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
+.card-date { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); letter-spacing: 0.5px; }
+.card-tags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 .tag {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  padding: 3px 9px;
-  border-radius: 20px;
-  letter-spacing: 0.2px;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  padding: 3px 10px; border-radius: 999px; letter-spacing: 0.3px;
+  transition: all 0.2s var(--ease);
 }
-.tag-cat {
-  color: var(--tag-cat-txt);
-  background: var(--tag-cat-bg);
-  border: 1px solid var(--tag-cat-bd);
-}
-.tag-content {
-  color: var(--tag-cnt-txt);
-  background: var(--tag-cnt-bg);
-  border: 1px solid var(--tag-cnt-bd);
-}
+.tag-cat { color: var(--tag-cat-txt); background: var(--tag-cat-bg); border: 1px solid var(--tag-cat-bd); }
+.tag-content { color: var(--tag-cnt-txt); background: var(--tag-cnt-bg); border: 1px solid var(--tag-cnt-bd); }
 
 .card-body {
-  font-family: var(--font-ui);
-  font-size: 19px;
-  line-height: 1.75;
-  color: var(--text);
-  letter-spacing: -0.1px;
-  word-break: break-word;
+  font-family: var(--font-body); font-size: 19px; line-height: 1.78;
+  color: var(--text); letter-spacing: -0.1px; word-break: break-word; font-weight: 300;
 }
-.card-body p { margin: 0 0 10px; }
+.card-body p { margin: 0 0 12px; }
 .card-body p:last-child { margin-bottom: 0; }
-.card-body strong { font-weight: 600; }
-.card-body .kw { color: var(--accent); font-weight: 500; }
+.card-body strong { font-weight: 600; color: var(--text); }
+.card-body em { font-style: italic; }
 
 .card-flip-hint {
-  margin-top: 18px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text-3);
-  letter-spacing: 0.3px;
+  margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 7px;
+  font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+  letter-spacing: 0.4px; user-select: none;
 }
 .flip-icon {
-  width: 14px;
-  height: 14px;
-  opacity: 0.5;
+  width: 13px; height: 13px; opacity: 0.5;
+  transition: opacity 0.2s var(--ease), transform 0.3s var(--ease);
 }
+.card:hover .flip-icon { opacity: 0.8; transform: rotateY(15deg); }
 
-/* Card Back */
-.card-back {
-  background: var(--surface-2);
-  padding: 28px 32px;
-}
+.card-back-content { padding: 36px 40px 32px; }
 .card-back-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text-3);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 14px;
+  font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px;
 }
 .card-back-body {
-  font-family: var(--font-ui);
-  font-size: 16px;
-  line-height: 1.75;
-  color: var(--text-2);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.80;
+  color: var(--text-2); font-weight: 300;
 }
 .card-back-body p { margin: 0 0 10px; }
 .card-back-body p:last-child { margin-bottom: 0; }
 .card-back-question {
-  margin-top: 18px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-3);
-  line-height: 1.6;
+  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-3);
+  line-height: 1.7; letter-spacing: 0.2px;
 }
-.card-back-question strong {
-  color: var(--text-2);
-  font-weight: 500;
-}
+.card-back-question strong { color: var(--text-2); font-weight: 500; font-family: var(--font-body); font-size: 13px; }
 
-/* ─── End Marker ─── */
+/* ── End Marker ── */
 #endMarker {
-  display: none;
-  text-align: center;
-  padding: 40px 0;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-3);
-  letter-spacing: 1px;
+  display: none; text-align: center; padding: 48px 0;
+  font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+  letter-spacing: 2px; opacity: 0; animation: fadeIn 0.6s var(--ease-out) forwards;
 }
 
-/* ─── Skeleton ─── */
-@keyframes skeleton-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+/* ── Skeleton ── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
 }
 .skeleton-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 28px 32px;
-  margin-bottom: 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 36px 40px;
+  overflow: hidden; position: relative;
 }
-.skeleton-line {
-  background: var(--surface-2);
-  border-radius: 4px;
-  animation: skeleton-pulse 1.8s ease-in-out infinite;
+.skeleton-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(30,25,18,0.04) 50%, transparent 100%);
+  background-size: 600px 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
 }
-.skeleton-line.short { height: 12px; width: 40%; margin-bottom: 12px; }
-.skeleton-line.long  { height: 20px; width: 100%; margin-bottom: 8px; }
-.skeleton-line.med  { height: 20px; width: 75%; }
+[data-theme="dark"] .skeleton-card::after {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,250,242,0.04) 50%, transparent 100%);
+  background-size: 600px 100%;
+}
+.skeleton-line { background: var(--surface-2); border-radius: 4px; }
+.skeleton-line.short { height: 10px; width: 30%; margin-bottom: 16px; }
+.skeleton-line.long  { height: 19px; width: 100%; margin-bottom: 10px; }
+.skeleton-line.med  { height: 19px; width: 80%; margin-bottom: 10px; }
+.skeleton-line.long2 { height: 19px; width: 65%; }
 
-/* ─── Responsive ─── */
-@media (max-width: 640px) {
+/* ── Animations ── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(28px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .main { padding: 40px 16px 80px; }
+  .nav-inner { padding: 0 16px; }
+  .page-header-title { font-size: 40px; letter-spacing: -1.5px; }
+  .page-header-sub { font-size: 15px; }
+  .page-header { margin-bottom: 48px; }
+  .card-content-wrap, .card-back-content { padding: 24px 20px 22px; }
+  .card-body { font-size: 17px; line-height: 1.70; }
+  .card-back-body { font-size: 15px; }
+  .card-meta { margin-bottom: 14px; }
+}
+@media (max-width: 480px) {
+  .main { padding: 32px 12px 64px; }
+  .nav-inner { padding: 0 12px; }
   .page-header-title { font-size: 32px; }
-  .card-front, .card-back { padding: 22px 20px 20px; }
-  .card-body { font-size: 17px; }
+  .card-content-wrap, .card-back-content { padding: 20px 16px 18px; }
 }
 </style>
 </head>
 <body>
 
-<!-- Navigation Bar -->
 <nav class="nav-bar">
   <div class="nav-inner">
     <div class="nav-brand">
@@ -404,16 +330,25 @@ body {
     </div>
     <div class="nav-actions">
       <a href="https://jeekeagle.github.io/theo-hub/" class="nav-btn">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
         </svg>
         Hub
       </a>
       <button class="nav-icon-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
-        <svg class="sun-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        <svg class="sun-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
         </svg>
-        <svg class="moon-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+        <svg class="moon-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
         </svg>
       </button>
@@ -421,17 +356,15 @@ body {
   </div>
 </nav>
 
-<!-- Main -->
 <main class="main">
 
-  <!-- Page Header -->
   <div class="page-header">
     <div class="page-header-eyebrow">Inspiration in Motion</div>
     <h1 class="page-header-title">灵感流</h1>
-    <p class="page-header-sub">捕捉每一个闪过的想法，将它们变成可触摸的洞察</p>
+    <p class="page-header-sub">捕捉每一个闪过的想法，将它们变成可触摸的洞见</p>
+    <div class="page-header-line"></div>
   </div>
 
-  <!-- Feed -->
   <div class="feed" id="feed"></div>
   <div id="endMarker">— 已加载全部 —</div>
 
@@ -439,9 +372,6 @@ body {
 
 <script>
 const MANIFEST = 'manifest.json';
-let posts = [];
-let loading = false;
-let allLoaded = false;
 
 async function loadManifest() {
   const r = await fetch(MANIFEST + '?t=' + Date.now() + '&r=' + Math.random());
@@ -455,145 +385,156 @@ function formatDate(iso) {
   return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
 }
 
-function formatBody(text) {
-  text = text.replace(/<strong>(.*?)<\/strong>/g, '**$1**');
-  text = text.replace(/<em>(.*?)<\/em>/g, '*$1*');
-  text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  text = text.replace(/`(.*?)`/g, '<code style="font-family:var(\'--font-mono\'),monospace;font-size:0.85em;color:var(--accent)">$1</code>');
-  text = text.replace(/\[\[(.*?)\]\]/g, '<span class="kw">[[$1]]</span>');
-  const paragraphs = text.split(/\n\n+/);
-  if (paragraphs.length > 1) {
-    text = paragraphs.map(function(p){ return '<p>' + p.replace(/\n/g, '<br>') + '</p>'; }).join('');
-  } else {
-    text = text.replace(/\n/g, '<br>');
-  }
-  return text;
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
-function flipCard(card, post) {
+function formatBody(text) {
+  text = escapeHtml(text);
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  text = text.replace(/`(.+?)`/g, '<code>$1</code>');
+  const paras = text.split(/
+
++/);
+  if (paras.length > 1) {
+    return paras.map(p => '<p>' + p.replace(/
+/g, '<br>') + '</p>').join('');
+  }
+  return text.replace(/
+/g, '<br>');
+}
+
+function flipCard(card, e) {
+  e.stopPropagation();
   card.classList.toggle('flipped');
 }
 
-function renderCard(post) {
-  var card = document.createElement('div');
+function renderCard(post, index) {
+  const card = document.createElement('div');
   card.className = 'card';
 
-  var front = document.createElement('div');
-  front.className = 'card-front';
-
-  var dateStr = formatDate(post.created);
-
-  var catTag = post.category
-    ? '<span class="tag tag-cat">' + post.category + '</span>'
+  const dateStr = formatDate(post.created);
+  const catTag = post.category
+    ? '<span class="tag tag-cat">' + escapeHtml(post.category) + '</span>'
     : '';
-  var contentTags = (post.contentTags || []).slice(0,2).map(function(t){
-    return '<span class="tag tag-content">' + t + '</span>';
-  }).join('');
+  const contentTags = (post.contentTags || []).slice(0,2).map(t =>
+    '<span class="tag tag-content">' + escapeHtml(t) + '</span>'
+  ).join('');
 
-  front.innerHTML =
-    '<div class="card-meta">' +
-      '<span class="card-date">' + dateStr + '</span>' +
-      '<div class="card-tags">' + catTag + contentTags + '</div>' +
-    '</div>' +
-    '<div class="card-body">' + formatBody(post.content) + '</div>' +
-    '<div class="card-flip-hint">' +
-      '<svg class="flip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-        '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>' +
-        '<polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>' +
-      '</svg>' +
-      'Tap to see original' +
+  const frontHTML =
+    '<div class="card-content-wrap">' +
+      '<div class="card-meta">' +
+        '<span class="card-date">' + dateStr + '</span>' +
+        '<div class="card-tags">' + catTag + contentTags + '</div>' +
+      '</div>' +
+      '<div class="card-body">' + formatBody(post.content) + '</div>' +
+      '<div class="card-flip-hint">' +
+        '<svg class="flip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+          '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>' +
+          '<polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>' +
+        '</svg>' +
+        'Tap to see original' +
+      '</div>' +
     '</div>';
 
-  var back = document.createElement('div');
-  back.className = 'card-back';
-  var originalContent = post.originalContent || post.content;
-  back.innerHTML =
-    '<div class="card-back-label">Original</div>' +
-    '<div class="card-back-body">' + formatBody(originalContent) + '</div>' +
-    (post.question ? '<div class="card-back-question"><strong>Question:</strong> ' + post.question + '</div>' : '');
+  const originalContent = post.originalContent || post.content;
+  const backHTML =
+    '<div class="card-back-content">' +
+      '<div class="card-back-label">Original</div>' +
+      '<div class="card-back-body">' + formatBody(originalContent) + '</div>' +
+      (post.question
+        ? '<div class="card-back-question"><strong>Question:</strong> ' + escapeHtml(post.question) + '</div>'
+        : '') +
+    '</div>';
 
-  card.appendChild(front);
-  card.appendChild(back);
-  card.addEventListener('click', function(){ flipCard(card, post); });
+  card.innerHTML =
+    '<div class="card-inner">' +
+      '<div class="card-front">' + frontHTML + '</div>' +
+      '<div class="card-back">' + backHTML + '</div>' +
+    '</div>';
+
+  card.addEventListener('click', e => flipCard(card, e));
+
+  setTimeout(() => {
+    card.classList.add('visible');
+    card.style.animation = 'cardEntrance 0.55s cubic-bezier(0.16,1,0.3,1) ' + (index * 80) + 'ms forwards';
+  }, 10);
+
   return card;
 }
 
 function showSkeletons(n) {
-  var feed = document.getElementById('feed');
-  for (var i = 0; i < n; i++) {
-    var s = document.createElement('div');
+  const feed = document.getElementById('feed');
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
     s.className = 'skeleton-card';
     s.innerHTML =
       '<div class="skeleton-line short"></div>' +
       '<div class="skeleton-line long"></div>' +
       '<div class="skeleton-line med"></div>' +
-      '<div class="skeleton-line long"></div>';
+      '<div class="skeleton-line long"></div>' +
+      '<div class="skeleton-line long2"></div>';
     feed.appendChild(s);
   }
 }
 
 function clearSkeletons() {
-  var els = document.querySelectorAll('.skeleton-card');
-  for (var i = 0; i < els.length; i++) els[i].remove();
+  document.querySelectorAll('.skeleton-card').forEach(el => el.remove());
 }
 
 async function loadPosts() {
-  if (loading || allLoaded) return;
-  loading = true;
+  if (window.allLoaded) return;
+  window.allLoaded = true;
   showSkeletons(3);
   try {
-    var manifest = await loadManifest();
+    const manifest = await loadManifest();
     clearSkeletons();
     if (manifest.length === 0) {
-      allLoaded = true;
-      document.getElementById('endMarker').style.display = 'block';
-      document.getElementById('endMarker').textContent = 'NO POSTS YET';
+      const em = document.getElementById('endMarker');
+      em.style.display = 'block';
+      em.textContent = 'NO POSTS YET';
       return;
     }
-    var sorted = manifest.slice().reverse();
-    var feed = document.getElementById('feed');
-    for (var i = 0; i < sorted.length; i++) {
-      feed.appendChild(renderCard(sorted[i]));
-    }
-    allLoaded = true;
+    const sorted = manifest.slice().reverse();
+    const feed = document.getElementById('feed');
+    sorted.forEach((post, i) => feed.appendChild(renderCard(post, i)));
     document.getElementById('endMarker').style.display = 'block';
-  } catch (e) {
+  } catch(e) {
     clearSkeletons();
     console.error(e);
   }
-  loading = false;
 }
 
 (function() {
-  var saved = localStorage.getItem('theme');
-  var prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
-  var isDark = saved === 'dark' || (!saved && prefersDark);
+  const saved = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const isDark = saved === 'dark' || (!saved && prefersDark);
   if (isDark) {
     document.documentElement.setAttribute('data-theme','dark');
-    var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
-    if (s) s.style.display = 'none';
-    if (m) m.style.display = 'inline';
+    document.querySelectorAll('.sun-icon').forEach(s => s.style.display = 'none');
+    document.querySelectorAll('.moon-icon').forEach(m => m.style.display = 'inline');
   }
   window.toggleTheme = function() {
-    var isD = document.documentElement.getAttribute('data-theme') === 'dark';
+    const isD = document.documentElement.getAttribute('data-theme') === 'dark';
     if (isD) {
       document.documentElement.removeAttribute('data-theme');
       localStorage.setItem('theme','light');
-      var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
-      if (s) s.style.display = 'inline';
-      if (m) m.style.display = 'none';
+      document.querySelectorAll('.sun-icon').forEach(s => s.style.display = 'inline');
+      document.querySelectorAll('.moon-icon').forEach(m => m.style.display = 'none');
     } else {
       document.documentElement.setAttribute('data-theme','dark');
       localStorage.setItem('theme','dark');
-      var s = document.querySelector('.sun-icon'), m = document.querySelector('.moon-icon');
-      if (s) s.style.display = 'none';
-      if (m) m.style.display = 'inline';
+      document.querySelectorAll('.sun-icon').forEach(s => s.style.display = 'none');
+      document.querySelectorAll('.moon-icon').forEach(m => m.style.display = 'inline');
     }
   };
 })();
 
+window.allLoaded = false;
 loadPosts();
 </script>
 </body>
